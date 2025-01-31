@@ -7,10 +7,10 @@ TOP_MODULE ?=
 
 all: flash
 
-flash: pack
+flash: packed.fs
 	openFPGALoader -b tangnano20k packed.fs
 
-packed.fs: pnr
+packed.fs: pnr.json
 	gowin_pack -d GW2A-18C -o packed.fs pnr.json
 
 pnr.json: tangnano20k.cst synth.json

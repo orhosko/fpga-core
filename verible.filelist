@@ -1,2 +1,3 @@
-src/test.sv
 src/gowin_prom.v
+src/uart/uart_test.sv
+src/uart/uart_tx.v
