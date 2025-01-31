@@ -1,4 +1,4 @@
-.PHONY: all clean flash pack pnr synth
+.PHONY: all clean flash
 
 FILELIST ?= verible.filelist
 
@@ -10,13 +10,13 @@ all: flash
 flash: pack
 	openFPGALoader -b tangnano20k packed.fs
 
-pack: pnr
+packed.fs: pnr
 	gowin_pack -d GW2A-18C -o packed.fs pnr.json
 
-pnr: tangnano20k.cst synth
+pnr.json: tangnano20k.cst synth.json
 	nextpnr-himbaechel --json synth.json --write pnr.json --device GW2AR-LV18QN88C8/I7 --vopt family=GW2A-18C --vopt cst=tangnano20k.cst 
 
-synth: $(FILELIST)
+synth.json: $(FILELIST)
 	@if [ ! -f $(FILELIST) ]; then \
 		echo "Error: File list $(FILELIST) not found."; \
 		exit 1; \
