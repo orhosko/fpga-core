@@ -1,4 +1,4 @@
-.PHONY: all clean flash
+.PHONY: all clean flash pack pnr synth
 
 FILELIST ?= verible.filelist
 
@@ -7,16 +7,18 @@ TOP_MODULE ?=
 
 all: flash
 
-flash: packed.fs
-	openFPGALoader -b tangnano20k packed.fs
+flash: pack
+	openFPGALoader -b tangnano20k build/packed.fs
 
-packed.fs: pnr.json
-	gowin_pack -d GW2A-18C -o packed.fs pnr.json
+pack: pnr
+	gowin_pack -d GW2A-18C -o build/packed.fs build/pnr.json
 
-pnr.json: tangnano20k.cst synth.json
-	nextpnr-himbaechel --json synth.json --write pnr.json --device GW2AR-LV18QN88C8/I7 --vopt family=GW2A-18C --vopt cst=tangnano20k.cst 
+pnr: tangnano20k.cst synth
+	nextpnr-himbaechel --json build/synth.json --write build/pnr.json --device GW2AR-LV18QN88C8/I7 --vopt family=GW2A-18C --vopt cst=tangnano20k.cst
 
-synth.json: $(FILELIST)
+synth: $(FILELIST)
+	mkdir -p build
+
 	@if [ ! -f $(FILELIST) ]; then \
 		echo "Error: File list $(FILELIST) not found."; \
 		exit 1; \
@@ -31,9 +33,8 @@ synth.json: $(FILELIST)
 		script=$$script"hierarchy -top $(TOP_MODULE); "; \
 		echo "Using top module: $(TOP_MODULE)"; \
 	fi; \
-	script=$$script"synth_gowin -json synth.json -family gw2a;"; \
+	script=$$script"synth_gowin -json build/synth.json -family gw2a;"; \
 	yosys -p "$$script"
 
 clean:
-	rm -f synth.json pnr.json packed.fs
-
+	rm -rf build

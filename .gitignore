@@ -2,7 +2,4 @@
 .idea
 *.log
 tmp/
-packed.fs
-synth.json
-pnr.json
-packed.fs
+build/
