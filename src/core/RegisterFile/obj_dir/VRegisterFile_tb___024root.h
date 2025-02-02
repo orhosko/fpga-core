@@ -16,20 +16,20 @@ class alignas(VL_CACHE_LINE_BYTES) VRegisterFile_tb___024root final : public Ver
 
     // DESIGN SPECIFIC STATE
     VL_IN8(clk,0,0);
-    CData/*4:0*/ RegisterFile_tb__DOT__write_sel;
-    CData/*4:0*/ RegisterFile_tb__DOT__read_selA;
-    CData/*4:0*/ RegisterFile_tb__DOT__read_selB;
-    CData/*0:0*/ RegisterFile_tb__DOT__write_en;
+    CData/*4:0*/ RegisterFile_tb__DOT__rsel1;
+    CData/*4:0*/ RegisterFile_tb__DOT__rsel2;
+    CData/*4:0*/ RegisterFile_tb__DOT__wsel;
+    CData/*0:0*/ RegisterFile_tb__DOT__wen;
+    CData/*0:0*/ RegisterFile_tb__DOT__rst;
     CData/*0:0*/ __Vtrigprevexpr___TOP__clk__0;
     CData/*0:0*/ __VactContinue;
-    IData/*31:0*/ RegisterFile_tb__DOT__data_in;
-    IData/*31:0*/ RegisterFile_tb__DOT__data_outA;
-    IData/*31:0*/ RegisterFile_tb__DOT__data_outB;
+    IData/*31:0*/ RegisterFile_tb__DOT__wdata;
+    IData/*31:0*/ RegisterFile_tb__DOT__rdata1;
+    IData/*31:0*/ RegisterFile_tb__DOT__rdata2;
     IData/*31:0*/ __VactIterCount;
-    VlUnpacked<IData/*31:0*/, 32> RegisterFile_tb__DOT__dut__DOT__registers;
-    VlTriggerScheduler __VtrigSched_h21d37587__0;
-    VlTriggerScheduler __VtrigSched_h21d375c6__0;
+    VlUnpacked<IData/*31:0*/, 32> RegisterFile_tb__DOT__DUT__DOT__registers;
     VlDelayScheduler __VdlySched;
+    VlTriggerScheduler __VtrigSched_h21d375c6__0;
     VlTriggerVec<3> __VactTriggered;
     VlTriggerVec<3> __VnbaTriggered;
 

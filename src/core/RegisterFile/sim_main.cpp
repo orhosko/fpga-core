@@ -1,31 +1,66 @@
+#include <verilated.h>
+#include "VRegisterFile_tb.h"   // Verilator-generated header for your testbench module
 
-#include "VRegisterFile_tb.h"
-#include "verilated.h"
-#include <cstdio> // for fflush
+#if VM_TRACE
+# include <verilated_vcd_c.h>   // If you want VCD waveform tracing
+#endif
 
-vluint64_t main_time = 0;
-double sc_time_stamp() { return main_time; }
+// A global time for the simulation
+static vluint64_t main_time = 0;
 
-int main(int argc, char **argv) {
-  Verilated::commandArgs(argc, argv);
-  VRegisterFile_tb *top = new VRegisterFile_tb;
+// Verilator calls this function to get the current simulation time
+double sc_time_stamp() {
+    return main_time;
+}
 
-  const vluint64_t sim_end = 1000; // Adjust simulation duration if needed
-  const int clk_period = 10;       // Clock period in simulation ticks
+int main(int argc, char** argv) {
+    // Pass arguments to Verilated
+    Verilated::commandArgs(argc, argv);
 
-  while (!Verilated::gotFinish() && main_time < sim_end) {
-    // Toggle clock: high for half period, low for the other half
-    top->clk = ((main_time % clk_period) < (clk_period / 2)) ? 1 : 0;
+    // Instantiate the top-level testbench
+    VRegisterFile_tb* tb = new VRegisterFile_tb;
 
-    top->eval();
-    main_time++;
+    // (Optional) Enable wave traces
+    #if VM_TRACE
+    Verilated::traceEverOn(true);
+    VerilatedVcdC* tfp = new VerilatedVcdC;
+    tb->trace(tfp, 99);     // Trace 99 levels of hierarchy
+    tfp->open("dump.vcd");  // Name of VCD file
+    #endif
 
-    // Optional: flush stdout every cycle (or every few cycles)
-    std::fflush(stdout);
-  }
+    // Simulation loop
+    const vluint64_t max_time = 2000;  // Arbitrary stop time to avoid infinite loops
+    const vluint64_t clk_period = 10;  // Each clock cycle is 10 time units
 
-  top->final();
-  std::fflush(stdout); // Ensure all output is flushed before exit
-  delete top;
-  return 0;
+    while (!Verilated::gotFinish()) {
+        // Drive the testbench clock from C++
+        tb->clk = ((main_time % clk_period) < (clk_period/2)) ? 0 : 1;
+
+        // Evaluate the model
+        tb->eval();
+
+        // Dump trace if enabled
+        #if VM_TRACE
+        tfp->dump(main_time);
+        #endif
+
+        main_time++;
+
+        // Optionally stop if we've run long enough
+        if (main_time > max_time) {
+            break;
+        }
+    }
+
+    // Final model cleanup
+    tb->final();
+
+    // Close waveform file
+    #if VM_TRACE
+    tfp->close();
+    delete tfp;
+    #endif
+
+    delete tb;
+    return 0;
 }

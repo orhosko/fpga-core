@@ -19,122 +19,6 @@ void VRegisterFile_tb___024root___eval_initial(VRegisterFile_tb___024root* vlSel
     vlSelfRef.__Vtrigprevexpr___TOP__clk__0 = vlSelfRef.clk;
 }
 
-VL_INLINE_OPT VlCoroutine VRegisterFile_tb___024root___eval_initial__TOP__Vtiming__0(VRegisterFile_tb___024root* vlSelf) {
-    (void)vlSelf;  // Prevent unused variable warning
-    VRegisterFile_tb__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    VRegisterFile_tb___024root___eval_initial__TOP__Vtiming__0\n"); );
-    auto& vlSelfRef = std::ref(*vlSelf).get();
-    // Body
-    VL_WRITEF_NX("Starting Register File testbench\n",0);
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 0U;
-    vlSelfRef.RegisterFile_tb__DOT__data_in = 0U;
-    vlSelfRef.RegisterFile_tb__DOT__write_sel = 0U;
-    vlSelfRef.RegisterFile_tb__DOT__read_selA = 0U;
-    vlSelfRef.RegisterFile_tb__DOT__read_selB = 0U;
-    co_await vlSelfRef.__VtrigSched_h21d37587__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(negedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         42);
-    vlSelfRef.RegisterFile_tb__DOT__write_sel = 5U;
-    vlSelfRef.RegisterFile_tb__DOT__data_in = 0xdeadbeefU;
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 1U;
-    co_await vlSelfRef.__VtrigSched_h21d37587__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(negedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         46);
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 0U;
-    VL_WRITEF_NX("Starting Register File testbench\n",0);
-    co_await vlSelfRef.__VtrigSched_h21d375c6__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(posedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         51);
-    vlSelfRef.RegisterFile_tb__DOT__read_selA = 5U;
-    vlSelfRef.RegisterFile_tb__DOT__read_selB = 5U;
-    co_await vlSelfRef.__VtrigSched_h21d375c6__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(posedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         55);
-    if (((0xdeadbeefU != vlSelfRef.RegisterFile_tb__DOT__data_outA) 
-         | (0xdeadbeefU != vlSelfRef.RegisterFile_tb__DOT__data_outB))) {
-        VL_WRITEF_NX("Test Case 1 FAILED: Expected 0xDEADBEEF, got data_outA = %x, data_outB = %x\n",0,
-                     32,vlSelfRef.RegisterFile_tb__DOT__data_outA,
-                     32,vlSelfRef.RegisterFile_tb__DOT__data_outB);
-    } else {
-        VL_WRITEF_NX("Test Case 1 PASSED\n",0);
-    }
-    co_await vlSelfRef.__VtrigSched_h21d37587__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(negedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         67);
-    vlSelfRef.RegisterFile_tb__DOT__write_sel = 0xaU;
-    vlSelfRef.RegisterFile_tb__DOT__data_in = 0x12345678U;
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 1U;
-    co_await vlSelfRef.__VtrigSched_h21d37587__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(negedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         71);
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 0U;
-    co_await vlSelfRef.__VtrigSched_h21d375c6__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(posedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         75);
-    vlSelfRef.RegisterFile_tb__DOT__read_selA = 0xaU;
-    vlSelfRef.RegisterFile_tb__DOT__read_selB = 0xfU;
-    co_await vlSelfRef.__VtrigSched_h21d375c6__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(posedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         79);
-    if ((0x12345678U != vlSelfRef.RegisterFile_tb__DOT__data_outA)) {
-        VL_WRITEF_NX("Test Case 2 FAILED (Register 10): Expected 0x12345678, got %x\n",0,
-                     32,vlSelfRef.RegisterFile_tb__DOT__data_outA);
-    } else {
-        VL_WRITEF_NX("Test Case 2 PASSED for Register 10\n",0);
-    }
-    co_await vlSelfRef.__VtrigSched_h21d37587__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(negedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         85);
-    vlSelfRef.RegisterFile_tb__DOT__write_sel = 0xfU;
-    vlSelfRef.RegisterFile_tb__DOT__data_in = 0xaaaaaaaaU;
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 1U;
-    co_await vlSelfRef.__VtrigSched_h21d37587__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(negedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         89);
-    vlSelfRef.RegisterFile_tb__DOT__write_en = 0U;
-    co_await vlSelfRef.__VtrigSched_h21d375c6__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(posedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         92);
-    vlSelfRef.RegisterFile_tb__DOT__read_selB = 0xfU;
-    co_await vlSelfRef.__VtrigSched_h21d375c6__0.trigger(0U, 
-                                                         nullptr, 
-                                                         "@(posedge clk)", 
-                                                         "RegisterFile_tb.sv", 
-                                                         95);
-    if ((0xaaaaaaaaU != vlSelfRef.RegisterFile_tb__DOT__data_outB)) {
-        VL_WRITEF_NX("Test Case 2 FAILED (Register 15): Expected 0xAAAAAAAA, got %x\n",0,
-                     32,vlSelfRef.RegisterFile_tb__DOT__data_outB);
-    } else {
-        VL_WRITEF_NX("Test Case 2 PASSED for Register 15\n",0);
-    }
-    co_await vlSelfRef.__VdlySched.delay(0x4e20ULL, 
-                                         nullptr, "RegisterFile_tb.sv", 
-                                         100);
-    VL_FINISH_MT("RegisterFile_tb.sv", 101, "");
-}
-
 void VRegisterFile_tb___024root___eval_act(VRegisterFile_tb___024root* vlSelf) {
     (void)vlSelf;  // Prevent unused variable warning
     VRegisterFile_tb__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -165,24 +49,26 @@ VL_INLINE_OPT void VRegisterFile_tb___024root___nba_sequent__TOP__0(VRegisterFil
     VL_DEBUG_IF(VL_DBG_MSGF("+    VRegisterFile_tb___024root___nba_sequent__TOP__0\n"); );
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Init
-    IData/*31:0*/ __VdlyVal__RegisterFile_tb__DOT__dut__DOT__registers__v0;
-    __VdlyVal__RegisterFile_tb__DOT__dut__DOT__registers__v0 = 0;
-    CData/*4:0*/ __VdlyDim0__RegisterFile_tb__DOT__dut__DOT__registers__v0;
-    __VdlyDim0__RegisterFile_tb__DOT__dut__DOT__registers__v0 = 0;
-    CData/*0:0*/ __VdlySet__RegisterFile_tb__DOT__dut__DOT__registers__v0;
-    __VdlySet__RegisterFile_tb__DOT__dut__DOT__registers__v0 = 0;
+    IData/*31:0*/ __VdlyVal__RegisterFile_tb__DOT__DUT__DOT__registers__v0;
+    __VdlyVal__RegisterFile_tb__DOT__DUT__DOT__registers__v0 = 0;
+    CData/*4:0*/ __VdlyDim0__RegisterFile_tb__DOT__DUT__DOT__registers__v0;
+    __VdlyDim0__RegisterFile_tb__DOT__DUT__DOT__registers__v0 = 0;
+    CData/*0:0*/ __VdlySet__RegisterFile_tb__DOT__DUT__DOT__registers__v0;
+    __VdlySet__RegisterFile_tb__DOT__DUT__DOT__registers__v0 = 0;
     // Body
-    __VdlySet__RegisterFile_tb__DOT__dut__DOT__registers__v0 = 0U;
-    if (vlSelfRef.RegisterFile_tb__DOT__write_en) {
-        __VdlyVal__RegisterFile_tb__DOT__dut__DOT__registers__v0 
-            = vlSelfRef.RegisterFile_tb__DOT__data_in;
-        __VdlyDim0__RegisterFile_tb__DOT__dut__DOT__registers__v0 
-            = vlSelfRef.RegisterFile_tb__DOT__write_sel;
-        __VdlySet__RegisterFile_tb__DOT__dut__DOT__registers__v0 = 1U;
+    __VdlySet__RegisterFile_tb__DOT__DUT__DOT__registers__v0 = 0U;
+    if (((IData)(vlSelfRef.RegisterFile_tb__DOT__wen) 
+         & (0U != (IData)(vlSelfRef.RegisterFile_tb__DOT__wsel)))) {
+        __VdlyVal__RegisterFile_tb__DOT__DUT__DOT__registers__v0 
+            = ((IData)(vlSelfRef.RegisterFile_tb__DOT__rst)
+                ? 0U : vlSelfRef.RegisterFile_tb__DOT__wdata);
+        __VdlyDim0__RegisterFile_tb__DOT__DUT__DOT__registers__v0 
+            = vlSelfRef.RegisterFile_tb__DOT__wsel;
+        __VdlySet__RegisterFile_tb__DOT__DUT__DOT__registers__v0 = 1U;
     }
-    if (__VdlySet__RegisterFile_tb__DOT__dut__DOT__registers__v0) {
-        vlSelfRef.RegisterFile_tb__DOT__dut__DOT__registers[__VdlyDim0__RegisterFile_tb__DOT__dut__DOT__registers__v0] 
-            = __VdlyVal__RegisterFile_tb__DOT__dut__DOT__registers__v0;
+    if (__VdlySet__RegisterFile_tb__DOT__DUT__DOT__registers__v0) {
+        vlSelfRef.RegisterFile_tb__DOT__DUT__DOT__registers[__VdlyDim0__RegisterFile_tb__DOT__DUT__DOT__registers__v0] 
+            = __VdlyVal__RegisterFile_tb__DOT__DUT__DOT__registers__v0;
     }
 }
 
@@ -192,10 +78,10 @@ VL_INLINE_OPT void VRegisterFile_tb___024root___nba_sequent__TOP__1(VRegisterFil
     VL_DEBUG_IF(VL_DBG_MSGF("+    VRegisterFile_tb___024root___nba_sequent__TOP__1\n"); );
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    vlSelfRef.RegisterFile_tb__DOT__data_outA = vlSelfRef.RegisterFile_tb__DOT__dut__DOT__registers
-        [vlSelfRef.RegisterFile_tb__DOT__read_selA];
-    vlSelfRef.RegisterFile_tb__DOT__data_outB = vlSelfRef.RegisterFile_tb__DOT__dut__DOT__registers
-        [vlSelfRef.RegisterFile_tb__DOT__read_selB];
+    vlSelfRef.RegisterFile_tb__DOT__rdata1 = vlSelfRef.RegisterFile_tb__DOT__DUT__DOT__registers
+        [vlSelfRef.RegisterFile_tb__DOT__rsel1];
+    vlSelfRef.RegisterFile_tb__DOT__rdata2 = vlSelfRef.RegisterFile_tb__DOT__DUT__DOT__registers
+        [vlSelfRef.RegisterFile_tb__DOT__rsel2];
 }
 
 void VRegisterFile_tb___024root___timing_commit(VRegisterFile_tb___024root* vlSelf) {
@@ -204,10 +90,6 @@ void VRegisterFile_tb___024root___timing_commit(VRegisterFile_tb___024root* vlSe
     VL_DEBUG_IF(VL_DBG_MSGF("+    VRegisterFile_tb___024root___timing_commit\n"); );
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    if ((! (1ULL & vlSelfRef.__VactTriggered.word(0U)))) {
-        vlSelfRef.__VtrigSched_h21d37587__0.commit(
-                                                   "@(negedge clk)");
-    }
     if ((! (2ULL & vlSelfRef.__VactTriggered.word(0U)))) {
         vlSelfRef.__VtrigSched_h21d375c6__0.commit(
                                                    "@(posedge clk)");
@@ -220,10 +102,6 @@ void VRegisterFile_tb___024root___timing_resume(VRegisterFile_tb___024root* vlSe
     VL_DEBUG_IF(VL_DBG_MSGF("+    VRegisterFile_tb___024root___timing_resume\n"); );
     auto& vlSelfRef = std::ref(*vlSelf).get();
     // Body
-    if ((1ULL & vlSelfRef.__VactTriggered.word(0U))) {
-        vlSelfRef.__VtrigSched_h21d37587__0.resume(
-                                                   "@(negedge clk)");
-    }
     if ((2ULL & vlSelfRef.__VactTriggered.word(0U))) {
         vlSelfRef.__VtrigSched_h21d375c6__0.resume(
                                                    "@(posedge clk)");
@@ -295,7 +173,7 @@ void VRegisterFile_tb___024root___eval(VRegisterFile_tb___024root* vlSelf) {
 #ifdef VL_DEBUG
             VRegisterFile_tb___024root___dump_triggers__nba(vlSelf);
 #endif
-            VL_FATAL_MT("RegisterFile_tb.sv", 3, "", "NBA region did not converge.");
+            VL_FATAL_MT("RegisterFile_tb.sv", 4, "", "NBA region did not converge.");
         }
         __VnbaIterCount = ((IData)(1U) + __VnbaIterCount);
         __VnbaContinue = 0U;
@@ -306,7 +184,7 @@ void VRegisterFile_tb___024root___eval(VRegisterFile_tb___024root* vlSelf) {
 #ifdef VL_DEBUG
                 VRegisterFile_tb___024root___dump_triggers__act(vlSelf);
 #endif
-                VL_FATAL_MT("RegisterFile_tb.sv", 3, "", "Active region did not converge.");
+                VL_FATAL_MT("RegisterFile_tb.sv", 4, "", "Active region did not converge.");
             }
             vlSelfRef.__VactIterCount = ((IData)(1U) 
                                          + vlSelfRef.__VactIterCount);

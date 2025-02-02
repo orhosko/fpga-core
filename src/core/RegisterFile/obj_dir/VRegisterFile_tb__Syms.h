@@ -27,6 +27,11 @@ class alignas(VL_CACHE_LINE_BYTES)VRegisterFile_tb__Syms final : public Verilate
     // MODULE INSTANCE STATE
     VRegisterFile_tb___024root     TOP;
 
+    // SCOPE NAMES
+    VerilatedScope __Vscope_RegisterFile_tb;
+    VerilatedScope __Vscope_RegisterFile_tb__unnamedblk1;
+    VerilatedScope __Vscope_RegisterFile_tb__unnamedblk2;
+
     // CONSTRUCTORS
     VRegisterFile_tb__Syms(VerilatedContext* contextp, const char* namep, VRegisterFile_tb* modelp);
     ~VRegisterFile_tb__Syms();

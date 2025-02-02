@@ -1,103 +1,208 @@
-`timescale 1ns / 1ps
+`timescale 1ns/1ps
 `include "RegisterFile.sv"
-module RegisterFile_tb (
 
-    input logic clk
+module RegisterFile_tb(
+  input logic        clk
 );
-  // Testbench signals
-  logic [ 4:0] write_sel;
-  logic [ 4:0] read_selA;
-  logic [ 4:0] read_selB;
-  logic [31:0] data_in;
-  logic        write_en;
-  logic [31:0] data_outA;
-  logic [31:0] data_outB;
+
+  // DUT Signals
+  logic [4:0]  rsel1;
+  logic [4:0]  rsel2;
+  logic [4:0]  wsel;
+  logic [31:0] wdata;
+  logic        wen;
+  logic [31:0] rdata1;
+  logic [31:0] rdata2;
+  logic        rst;
+
   // Instantiate the DUT
-  RegisterFile dut (
-      .write_sel(write_sel),
-      .read_selA(read_selA),
-      .read_selB(read_selB),
-      .data_in  (data_in),
-      .write_en (write_en),
-      .clk      (clk),
-      .data_outA(data_outA),
-      .data_outB(data_outB)
+  RegisterFile DUT (
+    .rsel1  (rsel1),
+    .rsel2  (rsel2),
+    .wsel   (wsel),
+    .wdata  (wdata),
+    .wen    (wen),
+    .rdata1 (rdata1),
+    .rdata2 (rdata2),
+    .rst    (rst),
+    .clk    (clk)
   );
 
-  // Test sequence
+  // Task: Apply reset for two cycles
+  task do_reset();
+    begin
+      rst = 1;
+      @(posedge clk);
+      @(posedge clk);
+      rst = 0;
+      @(posedge clk); // one extra cycle after de-assert
+    end
+  endtask
+
   initial begin
-    $display("Starting Register File testbench");
-    // Initialize inputs
-    write_en  = 0;
-    data_in   = 32'd0;
-    write_sel = 5'd0;
-    read_selA = 5'd0;
-    read_selB = 5'd0;
+    // Initialize signals
+    rsel1  = 5'd0;
+    rsel2  = 5'd0;
+    wsel   = 5'd0;
+    wdata  = 32'd0;
+    wen    = 1'b0;
+    rst    = 1'b0;
 
+    // Small delay for external clock startup (if any)
+    #1;
 
-    // ------------------------------------------
-    // Test Case 1: Write and then read register 5
-    // ------------------------------------------
-    // On the negative edge, write to register 5
-    @(negedge clk);
-    write_sel = 5'd5;
-    data_in   = 32'hDEADBEEF;
-    write_en  = 1;
-    @(negedge clk);  // Allow the write to complete on a negative edge
-    write_en = 0;
+    $display("=============================================================");
+    $display("   Time   rsel1 rsel2 wsel wen  wdata         rdata1  rdata2 ");
+    $display("=============================================================");
 
-    $display("Starting Register File testbench");
-    // On the next positive edge, set read selectors (reads are synchronous)
+    //----------------------------------------------------------------
+    // TEST 1: Reset behavior
+    //----------------------------------------------------------------
+    $display("\n--- TEST 1: Reset Behavior ---");
+    do_reset();
+    for (int i = 0; i < 32; i++) begin
+      rsel1 = 5'(i);
+      rsel2 = 5'((i + 1) % 32);
+      @(posedge clk);
+
+      // Expect registers to be 0 after reset
+      if (rdata1 !== 32'h0) begin
+        $error("Test 1 FAILED: Register r%0d not reset to 0 (Got 0x%08h)", rsel1, rdata1);
+      end
+      if (rdata2 !== 32'h0) begin
+        $error("Test 1 FAILED: Register r%0d not reset to 0 (Got 0x%08h)", rsel2, rdata2);
+      end
+    end
+    $display("Test 1 PASSED (All registers read 0 after reset)");
+
+    //----------------------------------------------------------------
+    // TEST 2: Simple Write/Read
+    //----------------------------------------------------------------
+    $display("\n--- TEST 2: Simple Write/Read ---");
+    wsel   = 5'd10;
+    wdata  = 32'hABCD_1234;
+    wen    = 1'b1;
+    @(posedge clk); // perform the write
+    wen    = 1'b0;
+    rsel1  = 5'd10;
     @(posedge clk);
-    read_selA = 5'd5;
-    read_selB = 5'd5;
-    // Wait one more positive edge for the outputs to update
-    @(posedge clk);
-    if (data_outA !== 32'hDEADBEEF || data_outB !== 32'hDEADBEEF) begin
-      $display("Test Case 1 FAILED: Expected 0xDEADBEEF, got data_outA = %h, data_outB = %h",
-               data_outA, data_outB);
+
+    // Check read
+    if (rdata1 !== 32'hABCD_1234) begin
+      $error("Test 2 FAILED: Expected 0xABCD_1234 in r10, got 0x%08h", rdata1);
     end else begin
-      $display("Test Case 1 PASSED");
+      $display("Test 2 PASSED");
     end
 
-    // ------------------------------------------------------
-    // Test Case 2: Write to registers 10 and 15 and verify
-    // ------------------------------------------------------
-    // Write to register 10
-    @(negedge clk);
-    write_sel = 5'd10;
-    data_in   = 32'h12345678;
-    write_en  = 1;
-    @(negedge clk);
-    write_en = 0;
-
-    // Wait for the new value to be available at the outputs
+    //----------------------------------------------------------------
+    // TEST 3: Attempt Write with wen=0 (shouldn't change the register)
+    //----------------------------------------------------------------
+    $display("\n--- TEST 3: Write Attempt with wen=0 ---");
+    wsel   = 5'd11;
+    wdata  = 32'hDEAD_BEEF;
+    wen    = 1'b0;
     @(posedge clk);
-    // Set read selectors to check registers 10 and 15 concurrently.
-    read_selA = 5'd10;
-    read_selB = 5'd15;
+    rsel1  = 5'd11;
     @(posedge clk);
-    if (data_outA !== 32'h12345678)
-      $display("Test Case 2 FAILED (Register 10): Expected 0x12345678, got %h", data_outA);
-    else $display("Test Case 2 PASSED for Register 10");
 
-    // Write to register 15
-    @(negedge clk);
-    write_sel = 5'd15;
-    data_in   = 32'hAAAAAAAA;
-    write_en  = 1;
-    @(negedge clk);
-    write_en = 0;
+    // Check read (expect still 0, if never written before)
+    if (rdata1 !== 32'h00000000) begin
+      $error("Test 3 FAILED: Expected 0x00000000 in r11 when wen=0, got 0x%08h", rdata1);
+    end else begin
+      $display("Test 3 PASSED");
+    end
 
+    //----------------------------------------------------------------
+    // TEST 4: Simultaneous Read/Write to same register
+    //         Old data must be read, new data is visible next cycle
+    //----------------------------------------------------------------
+    $display("\n--- TEST 4: Simultaneous Read/Write (Old data read) ---");
+    // Write a known value to r12
+    wsel   = 5'd12;
+    wdata  = 32'hAAAA_5555;
+    wen    = 1'b1;
     @(posedge clk);
-    // Now check register 15
-    read_selB = 5'd15;
-    @(posedge clk);
-    if (data_outB !== 32'hAAAAAAAA)
-      $display("Test Case 2 FAILED (Register 15): Expected 0xAAAAAAAA, got %h", data_outB);
-    else $display("Test Case 2 PASSED for Register 15");
+    wen    = 1'b0;
 
-    #20;
+    // Next cycle, read & write r12 simultaneously
+    wsel   = 5'd12;
+    wdata  = 32'hFFFF_0000;
+    wen    = 1'b1;
+    rsel1  = 5'd12;
+    @(posedge clk);
+
+    // Check old data
+    if (rdata1 !== 32'hAAAA_5555) begin
+      $error("Test 4 FAILED: Expected old data 0xAAAA_5555, got 0x%08h", rdata1);
+    end
+    // Now read new data in subsequent cycle
+    wen   = 1'b0;
+    @(posedge clk);
+    if (rdata1 !== 32'hFFFF_0000) begin
+      $error("Test 4 FAILED: Expected new data 0xFFFF_0000, got 0x%08h", rdata1);
+    end else begin
+      $display("Test 4 PASSED");
+    end
+
+    //----------------------------------------------------------------
+    // TEST 5: Edge Cases (r0 and r31)
+    //----------------------------------------------------------------
+    $display("\n--- TEST 5: Edge Cases (r0 and r31) ---");
+    // r0 (in RISC-V typically remains 0 no matter what)
+    wsel  = 5'd0;
+    wdata = 32'hDECAFBAD;
+    wen   = 1'b1;
+    @(posedge clk);
+    wen   = 1'b0;
+    rsel1 = 5'd0;
+    @(posedge clk);
+
+    // Check if r0 stays 0
+    if (rdata1 !== 32'h00000000) begin
+      $error("Test 5 FAILED (r0): Expected 0, got 0x%08h (RISC-V x0 is read-only=0)", rdata1);
+    end else begin
+      $display("r0 forced to 0 as expected (RISC-V behavior)");
+    end
+
+    // r31
+    wsel  = 5'd31;
+    wdata = 32'h12345678;
+    wen   = 1'b1;
+    @(posedge clk);
+    wen   = 1'b0;
+    rsel1 = 5'd31;
+    @(posedge clk);
+
+    // Check read
+    if (rdata1 !== 32'h12345678) begin
+      $error("Test 5 FAILED (r31): Expected 0x12345678, got 0x%08h", rdata1);
+    end else begin
+      $display("Test 5 PASSED (r31 read correct)");
+    end
+
+    //----------------------------------------------------------------
+    // TEST 6: Randomized Writes/Reads
+    //----------------------------------------------------------------
+    $display("\n--- TEST 6: Randomized Writes/Reads ---");
+    for (int i = 0; i < 10; i++) begin
+      wsel  = 5'($urandom_range(31, 0));
+      wdata = $urandom();
+      wen   = 1'b1;
+      @(posedge clk);
+      wen   = 1'b0;
+      // Read back
+      rsel1 = wsel;
+      @(posedge clk);
+
+      if (rdata1 !== wdata) begin
+        $error("Test 6 FAILED at iteration %0d: Wrote 0x%08h to r%d, got 0x%08h",
+               i, wdata, wsel, rdata1);
+      end else begin
+        $display("Test 6 iteration %0d PASSED: r%d=0x%08h", i, wsel, rdata1);
+      end
+    end
+
+    $display("\nAll tests completed. Simulation will end now.\n");
     $finish;
   end
 

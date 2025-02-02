@@ -25,4 +25,8 @@ VRegisterFile_tb__Syms::VRegisterFile_tb__Syms(VerilatedContext* contextp, const
     // Setup each module's pointers to their submodules
     // Setup each module's pointer back to symbol table (for public functions)
     TOP.__Vconfigure(true);
+    // Setup scopes
+    __Vscope_RegisterFile_tb.configure(this, name(), "RegisterFile_tb", "RegisterFile_tb", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_RegisterFile_tb__unnamedblk1.configure(this, name(), "RegisterFile_tb.unnamedblk1", "unnamedblk1", "<null>", -9, VerilatedScope::SCOPE_OTHER);
+    __Vscope_RegisterFile_tb__unnamedblk2.configure(this, name(), "RegisterFile_tb.unnamedblk2", "unnamedblk2", "<null>", -9, VerilatedScope::SCOPE_OTHER);
 }
