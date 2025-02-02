@@ -1,3 +1,1 @@
-src/uart/uart_tx.v
-src/uart/uart_rx.v
-synth/uart_basic_echo_test.sv
+./src/definitions.sv
