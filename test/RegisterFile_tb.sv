@@ -1,6 +1,3 @@
-`timescale 1ns/1ps
-`include "RegisterFile.sv"
-
 module RegisterFile_tb(
   input logic        clk
 );

@@ -3,6 +3,8 @@
 *.log
 tmp/
 build/
+build-sim/
 builds/
 ./*/obj_*
 .nvim/
+dump.vcd

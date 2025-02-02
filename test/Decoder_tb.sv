@@ -1,15 +1,13 @@
-`timescale 1ns / 1ps
-`include "decoder.sv"
 module decoder_tb;
   // Parameter for the input width (should match the decoder module)
-  parameter INPUT_WIDTH = 4;
+  parameter INPUT_WIDTH = 5;
 
   // Declare testbench signals
   reg [INPUT_WIDTH-1:0] in;
   wire [2**INPUT_WIDTH-1:0] out;
 
   // Instantiate the decoder module
-  decoder #(
+  Decoder #(
       .INPUT_WIDTH(INPUT_WIDTH)
   ) uut (
       .in (in),
@@ -21,10 +19,9 @@ module decoder_tb;
 
   initial begin
     for (i = 0; i < (2 ** INPUT_WIDTH); i = i + 1) begin
-      in = i[INPUT_WIDTH-1:0];  // assign the loop counter to input
-      #2;  // Wait for the combinational logic to settle
+      in = i[INPUT_WIDTH-1:0];
+      #1;
 
-      // Compute expected output
       if (out !== (1 << in)) begin
         $display("Test FAILED for input %b: expected %h, got %h", in, (1 << in), out);
       end else begin
@@ -32,7 +29,6 @@ module decoder_tb;
       end
     end
 
-    // End the simulation
     #2;
     $finish;
   end
