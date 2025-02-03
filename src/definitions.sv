@@ -94,7 +94,7 @@
 // | imm[20] | imm[10:1] | imm[11] | imm[19:12] | rd         | opcode  |
 
 `define OPC_JAL 7'b1101111
-`define OPC_JALR 7'b1100111
+`define OPC_JALR 7'b1100111 // uses I_TYPE encoding
 
 // ----------------------------------------------------------------
 //                       Branch - B Type

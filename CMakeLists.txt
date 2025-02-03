@@ -16,6 +16,7 @@ endif()
 set(TEST_NAMES
     ALUTest
     Decoder_tb
+    InstructionTest
     RegisterFile_tb
     register_file
     # ...
