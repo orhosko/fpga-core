@@ -1,1 +1,2 @@
 ./src/definitions.sv
+./src/alu_definitions.svh

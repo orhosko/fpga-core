@@ -1,5 +1,5 @@
 module SimDataMem (
-    input logic clock,
+    input logic clk,
     input logic [31:0] data_in,
     input logic [31:0] addr_in,
     input logic wr_en,
@@ -8,7 +8,7 @@ module SimDataMem (
 
   logic [7:0] mem[1024];
 
-  always_ff @(negedge clock) begin
+  always_ff @(negedge clk) begin
     if (wr_en) begin
       mem[addr_in]   <= data_in[7:0];
       mem[addr_in+1] <= data_in[15:8];
@@ -17,7 +17,7 @@ module SimDataMem (
     end
   end
 
-  always_ff @(posedge clock) begin
+  always_ff @(posedge clk) begin
     data_out <= {mem[addr_in+3], mem[addr_in+2], mem[addr_in+1], mem[addr_in]};
   end
 
