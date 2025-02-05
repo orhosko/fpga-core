@@ -32,8 +32,7 @@ module Core (
       .RF_wdata_sel(RF_wdata_sel),
       .ALU_OP1_SEL(ALU_OP1_SEL),
       .ALU_OP2_SEL(ALU_OP2_SEL),
-      .ALU_Operation(ALU_Operation),
-      .immediate(Immediate_imm)
+      .ALU_Operation(ALU_Operation)
   );
 
 
