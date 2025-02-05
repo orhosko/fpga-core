@@ -1,10 +1,10 @@
 `include "../alu_definitions.svh"
 
 module ALU_Base (
-    input  wire [31:0] A,
-    input  wire [31:0] B,
-    input  wire [ 3:0] Ctr,
-    output reg  [31:0] Out
+    input  logic [31:0] A,
+    input  logic [31:0] B,
+    input  logic [ 3:0] Ctr,
+    output logic  [31:0] Out
 );
 
   always_comb begin

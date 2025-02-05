@@ -5,13 +5,15 @@ module SimInstructionMem (
 );
 
   logic [7:0] mem_array[1024];
+
+  logic [31:0] _addr = addr - 32'h80000000;
+
   always_ff @(posedge clk) begin
-    data_out <= {mem_array[addr+3], mem_array[addr+2], mem_array[addr+1], mem_array[addr+0]};
+    data_out <= {mem_array[_addr+3], mem_array[_addr+2], mem_array[_addr+1], mem_array[_addr]};
   end
 
   initial begin
-    $readmemh("memory/instructions.mem",
-              mem_array);  // Replace "memory_file.mem" with your variable file name
+    $readmemh("./mem_files/add.mem", mem_array);
   end
 
 endmodule

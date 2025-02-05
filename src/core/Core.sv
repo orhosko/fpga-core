@@ -2,7 +2,8 @@
 `include "../alu_definitions.svh"
 
 module Core (
-    input wire clk
+    input wire clk,
+    output logic [5:0] leds
 );
 
   logic [31:0] program_counter = 32'h80000000;
@@ -36,7 +37,8 @@ module Core (
   );
 
 
-  logic [31:0] RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
+   logic [31:0] RF_wdata;
+   assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
                           (RF_wdata_sel == `RF_WDATA_SEL_ALU) ? ALU_OUT :
                           (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT : 32'h0;
   logic [31:0] RF_rdata1;
@@ -69,8 +71,12 @@ module Core (
       .data_out(DM_OUT)
   );
 
-  logic [31:0] ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
-  logic [31:0] ALU_B = (ALU_OP2_SEL == `ALU_OP2_SEL_REG) ? RF_rdata2 : Immediate_imm;
+  logic [31:0] ALU_A;
+  assign ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
+
+  logic [31:0] ALU_B;
+  assign ALU_B = (ALU_OP2_SEL == `ALU_OP2_SEL_REG) ? RF_rdata2 : Immediate_imm;
+
   logic [31:0] ALU_OUT;
   ALU_Base alu (
       .A  (ALU_A),
@@ -98,5 +104,8 @@ module Core (
       .imm(Immediate_imm)
   );
 
+  always_ff @(posedge clk) begin
+    leds <= RF_rdata1[5:0];
+  end
+
 endmodule
-;

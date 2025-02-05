@@ -126,5 +126,4 @@ module ControlUnit (
     endcase
   end
 
-
 endmodule

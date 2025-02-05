@@ -1,2 +1,12 @@
 ./src/definitions.sv
 ./src/alu_definitions.svh
+./src/controlunit_definitions.svh
+./src/components
+./src/components/ALU_Base.sv
+./src/components/BranchLogic.sv
+./src/components/ControlUnit.sv
+./src/components/Immediate.sv
+./src/core/Core.sv
+./src/core/RegisterFile.sv
+./src/memory/SimDataMem.sv
+./src/memory/SimInstructionMem.sv
