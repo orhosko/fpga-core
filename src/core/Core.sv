@@ -1,3 +1,6 @@
+`include "../controlunit_definitions.svh"
+`include "../alu_definitions.svh"
+
 module Core (
     input wire clk
 );
@@ -9,12 +12,13 @@ module Core (
   logic [ 4:0] RF_rsel2;
   logic [ 4:0] RF_wsel;
   logic        RF_wen;
-  logic        branch_taken;  // TODO: different design
+  logic        branch_taken;
   logic        DM_wen;
   logic [ 1:0] RF_wdata_sel;
   logic        ALU_OP1_SEL;
   logic        ALU_OP2_SEL;
   logic [ 3:0] ALU_Operation;
+  logic [ 2:0] branch_condition;
 
   ControlUnit cu (
       .instruction(instruction),
@@ -23,21 +27,32 @@ module Core (
       .RF_rsel2(RF_rsel2),
       .RF_wsel(RF_wsel),
       .RF_wen(RF_wen),
-      .branch_taken(branch_taken),
+      .branch_condition(branch_condition),
       .DM_wen(DM_wen),
       .RF_wdata_sel(RF_wdata_sel),
       .ALU_OP1_SEL(ALU_OP1_SEL),
       .ALU_OP2_SEL(ALU_OP2_SEL),
-      .ALU_Operation(ALU_Operation)
+      .ALU_Operation(ALU_Operation),
+      .immediate(Immediate_imm)
   );
 
+
+  logic [31:0] RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
+                          (RF_wdata_sel == `RF_WDATA_SEL_ALU) ? ALU_OUT :
+                          (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT : 32'h0;
+  logic [31:0] RF_rdata1;
+  logic [31:0] RF_rdata2;
+
   RegisterFile rf (
-      .clk  (clk),
+      .clk(clk),
       .rsel1(RF_rsel1),
       .rsel2(RF_rsel2),
-      .wsel (RF_wsel),
-      .wen  (RF_wen),
-      .wdata()
+      .wsel(RF_wsel),
+      .wen(RF_wen),
+      .wdata(RF_wdata),
+      .rdata1(RF_rdata1),
+      .rdata2(RF_rdata2),
+      .rst(0)
   );
 
   SimInstructionMem im (
@@ -46,23 +61,43 @@ module Core (
       .data_out(instruction)
   );
 
+  logic [31:0] DM_OUT;
   SimDataMem dm (
       .clk(clk),
-      .data_in(),
-      .addr_in(),
+      .data_in(RF_rdata2),
+      .addr_in(ALU_OUT),
       .wr_en(DM_wen),
-      .data_out()
+      .data_out(DM_OUT)
   );
 
+  logic [31:0] ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
+  logic [31:0] ALU_B = (ALU_OP2_SEL == `ALU_OP2_SEL_REG) ? RF_rdata2 : Immediate_imm;
+  logic [31:0] ALU_OUT;
   ALU_Base alu (
-      .A  (),
-      .B  (),
+      .A  (ALU_A),
+      .B  (ALU_B),
       .Ctr(ALU_Operation),
-      .Out()
+      .Out(ALU_OUT)
+  );
+
+  BranchLogic bl (
+      .branch_cond(branch_condition),
+      .rdata1(RF_rdata1),
+      .rdata2(RF_rdata2),
+      .branch(branch_taken)
   );
 
   always_ff @(posedge clk) begin
-    program_counter <= program_counter + 4;
+    if (instruction[6:0] == `OPC_BRANCH && branch_taken == `BRANCH_SEL_ALU) begin
+      program_counter <= ALU_OUT;
+    end else program_counter <= program_counter + 4;
   end
 
-endmodule;
+  logic [31:0] Immediate_imm;
+  Immediate immediate (
+      .instruction(instruction),
+      .imm(Immediate_imm)
+  );
+
+endmodule
+;

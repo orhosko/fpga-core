@@ -36,6 +36,12 @@ module ALU_Base (
       `ALU_XOR: begin
         Out = A ^ B;
       end
+      `ALU_SLT: begin
+        Out = ($signed(A) < $signed(B)) ? 32'd1 : 32'd0;
+      end
+      `ALU_SLTU: begin
+        Out = ($unsigned(A) < $unsigned(B)) ? 32'd1 : 32'd0;
+      end
       default: Out = 32'b0;
     endcase
   end
