@@ -73,8 +73,11 @@ module ControlUnit (
   logic [4:0] rd = instruction[11:7];
   always_comb begin
     casez (OPC)
-      U_TYPE, R_TYPE, I_TYPE, J_TYPE, S_TYPE: begin
+      U_TYPE, R_TYPE, I_TYPE, J_TYPE: begin
         RF_wen = 1'b1;
+      end
+      S_TYPE:begin
+        RF_wen = (instruction[6:0] == `OPC_LOAD) ? 1'b1 : 1'b0;
       end
       default: RF_wen = 1'b0;
     endcase

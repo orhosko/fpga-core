@@ -17,8 +17,6 @@ module SimDataMem (
     end
   end
 
-  always_ff @(posedge clk) begin
-    data_out <= {mem[addr_in+3], mem[addr_in+2], mem[addr_in+1], mem[addr_in]};
-  end
+  assign data_out = {mem[addr_in+3], mem[addr_in+2], mem[addr_in+1], mem[addr_in]};
 
 endmodule

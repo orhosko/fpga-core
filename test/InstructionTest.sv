@@ -17,6 +17,7 @@ module InstructionTest;
 
   end
 
+  logic [31:0] i = 0;
   logic clk = 0;
   always #50 clk = ~clk;
 
@@ -60,16 +61,16 @@ module InstructionTest;
     end
     $display(">>>> DM_OUT: %h", core.DM_OUT);
 
-    if(core.program_counter == 32'h80000080) begin
-      $display("Instruction: %h", core.instruction);
-      $finish;
-    end
-
     $display(">> Registers:");
     for (int i = 0; i < 32; i++) begin
       $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
     end
 
+    i++;
+    if(core.program_counter == 32'h800000FF || i==32'd150) begin
+      $display("Instruction: %h", core.instruction);
+      $finish;
+    end
   end
 
 endmodule

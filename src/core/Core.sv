@@ -37,8 +37,8 @@ module Core (
   );
 
 
-   logic [31:0] RF_wdata;
-   assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
+  logic [31:0] RF_wdata;
+  assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
                           (RF_wdata_sel == `RF_WDATA_SEL_ALU) ? ALU_OUT :
                           (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT : 32'h0;
   logic [31:0] RF_rdata1;
@@ -92,11 +92,20 @@ module Core (
       .branch(branch_taken)
   );
 
-  always_ff @(posedge clk) begin
-    if (instruction[6:0] == `OPC_BRANCH && branch_taken == `BRANCH_SEL_ALU) begin
-      program_counter <= ALU_OUT;
-    end else program_counter <= program_counter + 4;
+  always_ff @(negedge clk) begin
+    casez (instruction[6:0])
+      B_TYPE: begin
+        if (branch_taken == `BRANCH_SEL_ALU) begin
+          program_counter <= ALU_OUT;
+        end else program_counter <= program_counter + 4;
+      end
+      J_TYPE, `OPC_JALR: begin
+        program_counter <= ALU_OUT;
+      end
+      default begin program_counter <= program_counter + 4; end
+    endcase
   end
+
 
   logic [31:0] Immediate_imm;
   Immediate immediate (

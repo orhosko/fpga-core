@@ -23,8 +23,6 @@ module RegisterFile (
     end
   end
 
-  always_ff @(posedge clk) begin
-    rdata1 <= registers[rsel1];
-    rdata2 <= registers[rsel2];
-  end
+  assign rdata1 = registers[rsel1];
+  assign rdata2 = registers[rsel2];
 endmodule

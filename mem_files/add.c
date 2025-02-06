@@ -1,13 +1,17 @@
+int func(int a, int b);
+
 int main() {
     asm volatile("li sp, 0x0200");
 
-    volatile int a = 1;
-    int b = 1;
+    volatile int a = 5;
+    volatile int b = 2;
 
-    for(int i = 0; i < 10; i++) {
-        b = a;
-        a = a + b;
-    }
+    return func(a, b);
+}
 
-    return a;
+int func(int a, int b) {
+    if(b==0)
+        return 0;
+
+    return func(a, b-1) - a;
 }
