@@ -87,15 +87,11 @@ module ControlUnit (
 
   always_comb begin
     casez (OPC)
-      R_TYPE, B_TYPE: begin
+      R_TYPE, B_TYPE, S_TYPE: begin
         RF_rsel1 = rs1;
         RF_rsel2 = rs2;
       end
-      I_TYPE, S_TYPE: begin
-        RF_rsel1 = rs1;
-        RF_rsel2 = 5'b0;
-      end
-      J_TYPE: begin
+      I_TYPE: begin
         RF_rsel1 = rs1;
         RF_rsel2 = 5'b0;
       end

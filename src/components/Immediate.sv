@@ -23,7 +23,11 @@ module Immediate (
         imm = {{20{instruction[31]}}, instruction[31:20]};
       end
       S_TYPE: begin
-        imm = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
+        if (OPC == `OPC_LOAD) begin
+          imm = {{20{instruction[31]}}, instruction[31:20]};
+        end else begin
+          imm = {{20{instruction[31]}}, instruction[31:25], instruction[11:7]};
+        end
       end
       B_TYPE: begin
         imm = {

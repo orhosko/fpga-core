@@ -65,6 +65,11 @@ module InstructionTest;
       $finish;
     end
 
+    $display(">> Registers:");
+    for (int i = 0; i < 32; i++) begin
+      $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
+    end
+
   end
 
 endmodule

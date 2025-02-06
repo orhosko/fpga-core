@@ -1,4 +1,5 @@
 int main() {
+    asm volatile("li sp, 0x0200");
 
     volatile int a = 1;
     int b = 1;
