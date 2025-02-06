@@ -9,7 +9,7 @@ assemble: add2.s
 
 add.mem: add.c
 	clang --target=riscv32 -march=rv32i -mabi=ilp32 -O3 -ffreestanding -nostdlib -fno-pie -c add.c -o add.o
-	ld.lld -Ttext=0x0 -Tdata=0x0 add.o -o add.elf
+	ld.lld -Ttext=0x80000000 -Tdata=0x0 add.o -o add.elf
 	riscv64-linux-gnu-objcopy -O binary add.elf add.bin
 	hexdump -v -e '1/1 "%02x\n"' add.bin > add.mem
 
