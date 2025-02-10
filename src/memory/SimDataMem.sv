@@ -6,7 +6,7 @@ module SimDataMem (
     output logic [31:0] data_out
 );
 
-  logic [7:0] mem[1024];
+  logic [7:0] mem[8196];
 
   always_ff @(negedge clk) begin
     if (wr_en) begin

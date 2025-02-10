@@ -1,4 +1,5 @@
-`include "../definitions.sv"
+`include "../definitions.svh"
+
 module BranchLogic (
     input logic [2:0] branch_cond,
     input logic [31:0] rdata1,

@@ -1,3 +1,4 @@
+`include "../definitions.svh"
 `include "../controlunit_definitions.svh"
 `include "../alu_definitions.svh"
 
@@ -102,7 +103,9 @@ module Core (
       J_TYPE, `OPC_JALR: begin
         program_counter <= ALU_OUT;
       end
-      default begin program_counter <= program_counter + 4; end
+      default begin
+        program_counter <= program_counter + 4;
+      end
     endcase
   end
 

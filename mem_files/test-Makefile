@@ -1,0 +1,12 @@
+SRC_DIR := ./mem_files/rv32ui-p
+
+# Collect all test names (without extensions)
+TESTS := $(notdir $(basename $(wildcard $(SRC_DIR)/*)))
+RUN_TESTS := $(addprefix ./test ,$(TESTS))
+
+# Run tests target
+run-tests:
+	@for test in $(TESTS); do \
+		echo "Running $$test"; \
+		./build-sim/InstructionTest +testname=$$test || exit 1; \
+	done

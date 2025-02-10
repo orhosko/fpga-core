@@ -1,4 +1,4 @@
-`include "./definitions.sv"
+`include "definitions.svh"
 
 `ifndef CONTROLUNIT_DEFS
 `define CONTROLUNIT_DEFS

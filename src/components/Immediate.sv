@@ -1,5 +1,5 @@
 `include "../controlunit_definitions.svh"
-`include "../definitions.sv"
+`include "../definitions.svh"
 module Immediate (
     input  logic [31:0] instruction,
     output logic [31:0] imm

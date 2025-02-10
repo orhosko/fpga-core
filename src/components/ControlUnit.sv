@@ -1,6 +1,7 @@
-`include "../definitions.sv"
+`include "../definitions.svh"
 `include "../alu_definitions.svh"
 `include "../controlunit_definitions.svh"
+
 module ControlUnit (
     input logic [31:0] instruction,
     input logic clk,

@@ -1,4 +1,4 @@
-`include "definitions.sv"
+`include "definitions.svh"
 
 `define TESTS   \
    `X(32'd123)  \

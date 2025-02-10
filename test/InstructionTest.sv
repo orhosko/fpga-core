@@ -1,21 +1,6 @@
-`include "definitions.sv"
-
-`define FOR_TESTCASE1(DO)   \
-   `DO(0, 32'd123)  \
-   `DO(0, 122)      \
-   `DO(0, `FN3_BEQ) \
-   `DO(0, `FN3_BNE) \
-   `DO(0, `FN3_BLT) \
-   `DO(0, `FN3_BGE)
+`include "definitions.svh"
 
 module InstructionTest;
-
-  initial begin
-
-    `define CREATE_TESTCASE1(unused, a) if(a==a) begin $display("a=%d",a); end
-    `FOR_TESTCASE1(CREATE_TESTCASE1)
-
-  end
 
   logic [31:0] i = 0;
   logic clk = 0;
@@ -24,7 +9,49 @@ module InstructionTest;
    logic [5:0] leds;
   Core core (.clk(clk), .leds(leds));
 
+  `define DEBUG 0
+
+  logic [31:0] pass [1];
+  logic [31:0] fail [1];
+
+   reg [1023:0]   test_name;
+
+   reg [2047:0] pass_file;
+   reg [2047:0] fail_file;
+   reg [2047:0] mem_file;
+
+  initial begin
+    if (!$value$plusargs("testname=%s", test_name)) begin
+       $finish;
+    end
+
+     /* verilator lint_off WIDTHEXPAND */
+     pass_file = {"mem_files/rv32ui-p-tests/", test_name, "_pass.txt"};
+     fail_file = {"mem_files/rv32ui-p-tests/", test_name, "_fail.txt"};
+     mem_file = {"mem_files/rv32ui-p-tests/", test_name, ".mem"};
+     /* verilator lint_on WIDTHEXPAND */
+
+      $readmemh(pass_file, pass);
+      $readmemh(fail_file, fail);
+      $readmemh(mem_file, core.im.mem_array);
+
+     $display("Test name: %s", test_name);
+
+     if(`DEBUG) begin
+     $display("Pass: %h", pass[0]);
+     $display("Fail: %h", fail[0]);
+
+     $display("Pass file: %s", pass_file);
+     $display("Fail file: %s", fail_file);
+     $display("Mem file: %s", mem_file);
+     end
+
+   end
+
+
   always_ff @(negedge clk) begin
+
+    if(`DEBUG) begin
 
     $display("-----------------------------");
     $display("Read data: %h", core.im.data_out);
@@ -66,8 +93,19 @@ module InstructionTest;
       $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
     end
 
+       end
+
+     if (core.program_counter == pass[0]) begin
+        $display("PASS");
+        $finish;
+     end
+     if (core.program_counter == fail[0]) begin
+        $display("FAIL");
+        $finish;
+     end
+
     i++;
-    if(core.program_counter == 32'h800000FF || i==32'd150) begin
+    if(i==32'd1000) begin
       $display("Instruction: %h", core.instruction);
       $finish;
     end

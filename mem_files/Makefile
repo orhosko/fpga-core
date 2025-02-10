@@ -1,4 +1,4 @@
-.PHONY: all clean dump hexdump
+.PHONY: all clean dump hexdump riscv-test
 
 all: add.mem
 
@@ -12,6 +12,14 @@ add.mem: add.c
 	ld.lld -Ttext=0x80000000 -Tdata=0x0 add.o -o add.elf
 	riscv64-linux-gnu-objcopy -O binary add.elf add.bin
 	hexdump -v -e '1/1 "%02x\n"' add.bin > add.mem
+
+riscv-test: rv32ui-p-addi
+	riscv64-linux-gnu-objcopy -O binary rv32ui-p-addi rv32ui-p-addi.bin
+	hexdump -v -e '1/1 "%02x\n"' rv32ui-p-addi.bin > rv32ui-p-addi.mem
+	grep '<pass>:' rv32ui-p-addi.dump | awk '{print $$1}' > pass.txt
+	grep '<fail>:' rv32ui-p-addi.dump | awk '{print $$1}' > fail.txt
+
+
 
 dump: add.o
 	riscv64-linux-gnu-objdump -d add.elf

@@ -1,0 +1,28 @@
+RV32UI_P_DIR := ./rv32ui-p
+RV32UI_P_TESTS_DIR := ./rv32ui-p-tests
+
+# Find all input files in rv32ui-p directory
+BINARY_TESTS := $(filter-out %.dump, $(wildcard $(RV32UI_P_DIR)/*))
+DUMPS := $(wildcard $(RV32UI_P_DIR)/*.dump)
+BINS := $(patsubst $(RV32UI_P_DIR)/%, $(RV32UI_P_TESTS_DIR)/%, $(BINARY_TESTS))
+MEMS := $(patsubst $(RV32UI_P_DIR)/%, $(RV32UI_P_TESTS_DIR)/%.mem, $(BINARY_TESTS))
+PASS := $(patsubst $(RV32UI_P_DIR)/%.dump, $(RV32UI_P_TESTS_DIR)/%_pass.txt, $(DUMPS))
+FAIL := $(patsubst $(RV32UI_P_DIR)/%.dump, $(RV32UI_P_TESTS_DIR)/%_fail.txt, $(DUMPS))
+
+all: $(BINS) $(MEMS) $(PASS) $(FAIL)
+
+$(RV32UI_P_TESTS_DIR)/%: $(RV32UI_P_DIR)/%
+	@mkdir -p $(RV32UI_P_TESTS_DIR)
+	riscv64-linux-gnu-objcopy -O binary $< $@
+
+$(RV32UI_P_TESTS_DIR)/%.mem: $(RV32UI_P_TESTS_DIR)/%
+	hexdump -v -e '1/1 "%02x\n"' $< > $@
+
+$(RV32UI_P_TESTS_DIR)/%_pass.txt: $(RV32UI_P_DIR)/%.dump
+	grep '<pass>:' $< | awk '{print $$1}' > $@
+
+$(RV32UI_P_TESTS_DIR)/%_fail.txt: $(RV32UI_P_DIR)/%.dump
+	grep '<fail>:' $< | awk '{print $$1}' > $@
+
+clean:
+	rm -rf $(RV32UI_P_TESTS_DIR)
