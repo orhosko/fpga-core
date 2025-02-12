@@ -74,6 +74,7 @@ module InstructionTest;
       $display(">>>> RF_rdata1: %h", core.RF_rdata1);
       $display(">>>> RF_rsel2: %h", core.RF_rsel2);
       $display(">>>> RF_rdata2: %h", core.RF_rdata2);
+      $display(">>>> RF_wdata_sel:%h", core.RF_wdata_sel);
       $display(">>>> RF_wsel: %h", core.RF_wsel);
       if (core.cu.RF_wen) begin
         $display(">>>>>> RF_wen: %h", core.cu.RF_wen);

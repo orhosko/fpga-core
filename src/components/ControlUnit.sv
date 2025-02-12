@@ -21,7 +21,7 @@ module ControlUnit (
   opcode_t OPC;
   always_comb begin
     OPC = opcode_t'(instruction[6:0]);
-    OPC = (OPC == `OPC_JALR) ? I_TYPE : OPC;
+    OPC = (OPC == `OPC_JALR) ? I_TYPE : OPC; // TODO: BU BÖYLE OLMAZ!!!!!! instruction[6:0] ile kullanmayınca dev tuzak
   end
 
   always_comb begin
@@ -49,7 +49,7 @@ module ControlUnit (
         `FN3_SLT:  ALU_Operation = `ALU_SLT;  // SLT, SLTI
         `FN3_SLTU: ALU_Operation = `ALU_SLTU;  // SLTU, SLTIU
         `FN3_XOR:  ALU_Operation = `ALU_XOR;  // XOR, XORI
-        `FN3_SRL:  ALU_Operation = `ALU_SRL;  // SRL, SRA
+        `FN3_SRL:  ALU_Operation = (fn7 == `FN7_SRL) ? `ALU_SRL : `ALU_SRA;
         `FN3_OR:   ALU_Operation = `ALU_OR;  // OR, ORI
         `FN3_AND:  ALU_Operation = `ALU_AND;  // AND, ANDI
         default:   ALU_Operation = `ALU_ADD;
@@ -57,6 +57,8 @@ module ControlUnit (
     end else if (OPC == I_TYPE) begin
       unique case (fn3)
         `FN3_ADDI: ALU_Operation = `ALU_ADD;
+        `FN3_SLLI: ALU_Operation = `ALU_SLL;
+        `FN3_SRLI:  ALU_Operation = (fn7 == `FN7_SRL) ? `ALU_SRL : `ALU_SRA;
         `FN3_SLTI: ALU_Operation = `ALU_SLT;
         `FN3_SLTIU: ALU_Operation = `ALU_SLTU;
         `FN3_XORI: ALU_Operation = `ALU_XOR;
@@ -107,9 +109,9 @@ module ControlUnit (
   end
 
   always_comb begin
-    casez (OPC)
+    casez (instruction[6:0])
       J_TYPE: RF_wdata_sel = `RF_WDATA_SEL_PC;
-      R_TYPE, I_TYPE, B_TYPE, U_TYPE: RF_wdata_sel = `RF_WDATA_SEL_ALU;
+      R_TYPE, I_TYPE, B_TYPE, U_TYPE: RF_wdata_sel = (instruction[6:0] != `OPC_JALR) ? `RF_WDATA_SEL_ALU: `RF_WDATA_SEL_PC;
       S_TYPE: RF_wdata_sel = `RF_WDATA_SEL_DM;
       default: RF_wdata_sel = 2'b00;
     endcase

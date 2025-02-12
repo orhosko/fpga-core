@@ -42,6 +42,7 @@ module Core (
   assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
                           (RF_wdata_sel == `RF_WDATA_SEL_ALU) ? ALU_OUT :
                           (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT : 32'h0;
+
   logic [31:0] RF_rdata1;
   logic [31:0] RF_rdata2;
 
