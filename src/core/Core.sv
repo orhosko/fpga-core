@@ -69,6 +69,7 @@ module Core (
       .data_in(RF_rdata2),
       .addr_in(ALU_OUT),
       .wr_en(DM_wen),
+      .fn3(instruction[14:12]),
       .data_out(DM_OUT)
   );
 

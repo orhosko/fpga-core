@@ -1,8 +1,7 @@
 SRC_DIR := ./mem_files/rv32ui-p
 
 # Collect all test names (without extensions)
-TESTS := $(notdir $(basename $(wildcard $(SRC_DIR)/*)))
-RUN_TESTS := $(addprefix ./test ,$(TESTS))
+TESTS := $(shell find $(SRC_DIR) -type f ! -name "*.dump" -exec basename {} \;)
 
 # Run tests target
 run-tests:
