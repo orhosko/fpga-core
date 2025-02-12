@@ -32,11 +32,15 @@ make --file ./mem_files/test-Makefile run-tests > test-res.txt;
 - [X] UART basic data send
 - [X] Block memory as ROM
 - [X] read ROM and send on UART
+- [X] Single cycle core
+- [X] rv32ui-p tests
+- [ ] FPGA BSRAM usage
+- [ ] Documentation
+- [ ] Memory mapped I/O
 - [ ] UART "echo server"
 - [ ] UART "echo server" + ROM
-- [ ] basic riscv core
+- [ ] Interrupts
 - [ ] run binaries on core
 - [ ] UART calculator
-- [ ] memory mapped i/o
 - [ ] ...
 - [ ] pipelining
