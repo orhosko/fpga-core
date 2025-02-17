@@ -14,7 +14,9 @@ module ControlUnit (
     output logic ALU_OP1_SEL,
     output logic ALU_OP2_SEL,
     output logic [3:0] ALU_Operation,
-    output logic [2:0] branch_condition
+    output logic [2:0] branch_condition,
+    output logic CSR_SEL,
+    output logic CSR_wen
 );
 
 
@@ -58,7 +60,7 @@ module ControlUnit (
       unique case (fn3)
         `FN3_ADDI: ALU_Operation = `ALU_ADD;
         `FN3_SLLI: ALU_Operation = `ALU_SLL;
-        `FN3_SRLI:  ALU_Operation = (fn7 == `FN7_SRL) ? `ALU_SRL : `ALU_SRA;
+        `FN3_SRLI: ALU_Operation = (fn7 == `FN7_SRL) ? `ALU_SRL : `ALU_SRA;
         `FN3_SLTI: ALU_Operation = `ALU_SLT;
         `FN3_SLTIU: ALU_Operation = `ALU_SLTU;
         `FN3_XORI: ALU_Operation = `ALU_XOR;
@@ -79,7 +81,7 @@ module ControlUnit (
       U_TYPE, R_TYPE, I_TYPE, J_TYPE: begin
         RF_wen = 1'b1;
       end
-      S_TYPE:begin
+      S_TYPE: begin
         RF_wen = (instruction[6:0] == `OPC_LOAD) ? 1'b1 : 1'b0;
       end
       default: RF_wen = 1'b0;
@@ -111,7 +113,8 @@ module ControlUnit (
   always_comb begin
     casez (instruction[6:0])
       J_TYPE: RF_wdata_sel = `RF_WDATA_SEL_PC;
-      R_TYPE, I_TYPE, B_TYPE, U_TYPE: RF_wdata_sel = (instruction[6:0] != `OPC_JALR) ? `RF_WDATA_SEL_ALU: `RF_WDATA_SEL_PC;
+      R_TYPE, I_TYPE, B_TYPE, U_TYPE:
+      RF_wdata_sel = (instruction[6:0] != `OPC_JALR) ? `RF_WDATA_SEL_ALU : `RF_WDATA_SEL_PC;
       S_TYPE: RF_wdata_sel = `RF_WDATA_SEL_DM;
       default: RF_wdata_sel = 2'b00;
     endcase
@@ -126,6 +129,18 @@ module ControlUnit (
         branch_condition = 3'b000;
       end
     endcase
+  end
+
+  always_comb begin
+    case (fn3)
+      `FN3_CSRRW, `FN3_CSRRS, `FN3_CSRRC: CSR_SEL = `CSR_SEL_RS1;
+      `FN3_CSRWI, `FN3_CSRSI, `FN3_CSRCI: CSR_SEL = `CSR_SEL_IMM;
+      default: CSR_SEL = `CSR_SEL_RS1;
+    endcase
+  end
+
+  always_comb begin
+    CSR_wen = (OPC == CSR_TYPE) & (fn3 != 3'b000) ? 1'b1 : 1'b0;
   end
 
 endmodule

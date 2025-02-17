@@ -44,6 +44,9 @@ module Immediate (
           {12{instruction[31]}}, instruction[19:12], instruction[20], instruction[30:21], 1'b0
         };
       end
+      CSR_TYPE: begin
+        imm = {27'b0, {instruction[19:15]}};
+      end
       default: begin
         imm = 32'd0;
       end

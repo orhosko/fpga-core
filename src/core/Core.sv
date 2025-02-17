@@ -21,7 +21,8 @@ module Core (
   logic        ALU_OP2_SEL;
   logic [ 3:0] ALU_Operation;
   logic [ 2:0] branch_condition;
-
+  logic        CSR_SEL;
+  logic        CSR_wen;
   ControlUnit cu (
       .instruction(instruction),
       .clk(clk),
@@ -34,18 +35,32 @@ module Core (
       .RF_wdata_sel(RF_wdata_sel),
       .ALU_OP1_SEL(ALU_OP1_SEL),
       .ALU_OP2_SEL(ALU_OP2_SEL),
-      .ALU_Operation(ALU_Operation)
+      .ALU_Operation(ALU_Operation),
+      .CSR_SEL(CSR_SEL),
+      .CSR_wen(CSR_wen)
   );
-
 
   logic [31:0] RF_wdata;
   assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
                           (RF_wdata_sel == `RF_WDATA_SEL_ALU) ? ALU_OUT :
-                          (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT : 32'h0;
+                          (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT :
+                          (RF_wdata_sel == `RF_WDATA_SEL_CSR) ? CSR_OUT : 32'b0;
+
+
+  logic [31:0] CSR_OUT;
+  logic [31:0] CSR_wdata;
+  assign CSR_wdata = (CSR_SEL == `CSR_SEL_RS1) ? RF_rdata1 : Immediate_imm;
+  CSRFile cf (
+      .sel  (instruction[31:20]),
+      .wdata(CSR_wdata),
+      .wen  (CSR_wen),
+      .clk  (clk),
+      .rst  (0),
+      .rdata(CSR_OUT)
+  );
 
   logic [31:0] RF_rdata1;
   logic [31:0] RF_rdata2;
-
   RegisterFile rf (
       .clk(clk),
       .rsel1(RF_rsel1),

@@ -163,4 +163,19 @@
 `define FN12_ECALL 12'b000000000000
 `define FN12_EBREAK 12'b000000000001
 
+// ----------------------------------------------------------------
+//                 CSR
+// ----------------------------------------------------------------
+
+// | 31:20  | 19:15 | 14:12 | 11:7  | 6:0     |
+// | csr    | rs1   | fn3   | rd    | 1110011 |
+
+`define OPC_CSR 7'b1110011
+`define FN3_CSRRW 3'b001
+`define FN3_CSRRS 3'b010
+`define FN3_CSRRC 3'b011
+`define FN3_CSRWI 3'b101
+`define FN3_CSRSI 3'b110
+`define FN3_CSRCI 3'b111
+
 `endif
