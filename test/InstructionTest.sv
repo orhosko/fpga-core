@@ -12,8 +12,8 @@ module InstructionTest;
       .leds(leds)
   );
 
-  logic [  31:0] pass      [1];
-  logic [  31:0] fail      [1];
+  logic [  31:0] pass          [1];
+  logic [  31:0] fail          [1];
 
   reg   [1023:0] test_name;
 
@@ -22,7 +22,7 @@ module InstructionTest;
   reg   [2047:0] mem_file;
   reg   [2047:0] data_mem_file;
 
-  reg DEBUG = 0;
+  reg            DEBUG = 0;
 
   initial begin
     if (!$value$plusargs("testname=%s", test_name)) begin
@@ -31,10 +31,10 @@ module InstructionTest;
     $value$plusargs("DEBUG=%b", DEBUG);
 
     /* verilator lint_off WIDTHEXPAND */
-    pass_file = {"mem_files/rv32ui-p-tests/", test_name, "_pass.txt"};
-    fail_file = {"mem_files/rv32ui-p-tests/", test_name, "_fail.txt"};
-    mem_file  = {"mem_files/rv32ui-p-tests/", test_name, ".mem"};
-    data_mem_file  = {"mem_files/rv32ui-p-tests/", test_name, ".data.mem"};
+    pass_file = {"./rv32ui-p-tests/", test_name, "_pass.txt"};
+    fail_file = {"./rv32ui-p-tests/", test_name, "_fail.txt"};
+    mem_file = {"./rv32ui-p-tests/", test_name, ".mem"};
+    data_mem_file = {"./rv32ui-p-tests/", test_name, ".data.mem"};
     /* verilator lint_on WIDTHEXPAND */
 
     $readmemh(pass_file, pass);

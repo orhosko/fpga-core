@@ -1,39 +1,49 @@
-.PHONY: all clean dump hexdump riscv-test
+RV32UI_P_DIR := ./rv32ui-p
+RV32UI_P_TESTS_DIR := ./rv32ui-p-tests
 
-all: add.mem
+OBJCOPY=riscv64-unknown-elf-objcopy
 
-assemble: add2.s
-	riscv64-linux-gnu-as add2.s -o add2.o
-	riscv64-linux-gnu-objcopy -O binary add2.o add2.bin
-	hexdump -v -e '1/1 "%02x\n"' add2.bin > add2.mem
+# Find all input files in rv32ui-p directory
+BINARY_TESTS := $(filter-out %.dump, $(wildcard $(RV32UI_P_DIR)/*))
+DUMPS := $(wildcard $(RV32UI_P_DIR)/*.dump)
+BINS := $(patsubst $(RV32UI_P_DIR)/%, $(RV32UI_P_TESTS_DIR)/%, $(BINARY_TESTS))
+MEMS := $(patsubst $(RV32UI_P_DIR)/%, $(RV32UI_P_TESTS_DIR)/%.mem, $(BINARY_TESTS))
+DATA_MEMS := $(patsubst $(RV32UI_P_DIR)/%, $(RV32UI_P_TESTS_DIR)/%.data.mem, $(BINARY_TESTS))
+PASS := $(patsubst $(RV32UI_P_DIR)/%.dump, $(RV32UI_P_TESTS_DIR)/%_pass.txt, $(DUMPS))
+FAIL := $(patsubst $(RV32UI_P_DIR)/%.dump, $(RV32UI_P_TESTS_DIR)/%_fail.txt, $(DUMPS))
 
-add.mem: add.c
-	clang --target=riscv32 -march=rv32i -mabi=ilp32 -O3 -ffreestanding -nostdlib -fno-pie -c add.c -o add.o
-	ld.lld -Ttext=0x80000000 -Tdata=0x80002000 add.o -o add.elf
-	riscv64-linux-gnu-objcopy -O binary add.elf add.bin
-	riscv64-linux-gnu-objcopy -O binary -j .data* add.elf add.data.bin
-	hexdump -v -e '1/1 "%02x\n"' add.bin > add.mem
+all: $(BINS) $(MEMS) $(DATA_MEMS) $(PASS) $(FAIL)
 
-riscv-test: rv32ui-p-addi
-	riscv64-linux-gnu-objcopy -O binary rv32ui-p-addi rv32ui-p-addi.bin
-	riscv64-linux-gnu-objcopy -O binary -j .data* rv32ui-p-addi rv32ui-p-addi.data.bin
-	hexdump -v -e '1/1 "%02x\n"' rv32ui-p-addi.bin > rv32ui-p-addi.mem
-	grep '<pass>:' rv32ui-p-addi.dump | awk '{print $$1}' > pass.txt
-	grep '<fail>:' rv32ui-p-addi.dump | awk '{print $$1}' > fail.txt
+$(RV32UI_P_TESTS_DIR)/%: $(RV32UI_P_DIR)/%
+	@mkdir -p $(RV32UI_P_TESTS_DIR)
+	$(OBJCOPY) -O binary -j .text* $< $@
 
-riscv-test2: rv32ui-p/rv32ui-p-lh
-	riscv64-linux-gnu-objcopy -O binary -j .text* ./rv32ui-p/rv32ui-p-lh rv32ui-p-lh.bin
-	riscv64-linux-gnu-objcopy -O binary -j .data* ./rv32ui-p/rv32ui-p-lh rv32ui-p-lh.data.bin
-	hexdump -v -e '1/1 "%02x\n"' rv32ui-p-addi.bin > rv32ui-p-addi.mem
-	grep '<pass>:' rv32ui-p-addi.dump | awk '{print $$1}' > pass.txt
-	grep '<fail>:' rv32ui-p-addi.dump | awk '{print $$1}' > fail.txt
+$(RV32UI_P_TESTS_DIR)/%.mem: $(RV32UI_P_TESTS_DIR)/%
+	hexdump -v -e '1/1 "%02x\n"' $< > $@
 
+$(RV32UI_P_TESTS_DIR)/%.data: $(RV32UI_P_DIR)/%
+	@mkdir -p $(RV32UI_P_TESTS_DIR)
+	$(OBJCOPY) -O binary -j .data* $< $@
 
-dump: add.o
-	riscv64-linux-gnu-objdump -d add.elf
+$(RV32UI_P_TESTS_DIR)/%.data.mem: $(RV32UI_P_TESTS_DIR)/%.data
+	hexdump -v -e '1/1 "%02x\n"' $< > $@
 
-hexdump: add.bin
-	hexdump add.bin
+$(RV32UI_P_TESTS_DIR)/%_pass.txt: $(RV32UI_P_DIR)/%.dump
+	grep '<pass>:' $< | awk '{print $$1}' > $@
+
+$(RV32UI_P_TESTS_DIR)/%_fail.txt: $(RV32UI_P_DIR)/%.dump
+	grep '<fail>:' $< | awk '{print $$1}' > $@
 
 clean:
-	rm -f add.o add.bin add.mem add2.o add2.bin add2.mem
+	rm -rf $(RV32UI_P_TESTS_DIR)
+
+
+
+TESTS := $(shell find $(RV32UI_P_DIR) -type f ! -name "*.dump" -exec basename {} \;)
+
+# Run tests target
+run-tests:
+	@for test in $(TESTS); do \
+		echo "Running $$test"; \
+		../build-sim/InstructionTest +testname=$$test || exit 1; \
+	done
