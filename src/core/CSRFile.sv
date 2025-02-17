@@ -15,7 +15,7 @@ module CSRFile (
   end
 
   always_ff @(negedge clk) begin
-    if (wen) begin
+    if (wen & ~(sel[11:10] == 2'b11)) begin
       registers[sel] <= (rst) ? 32'b0 : wdata;
     end
   end
