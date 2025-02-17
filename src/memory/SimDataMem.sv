@@ -9,7 +9,7 @@ module SimDataMem (
     output logic [31:0] data_out
 );
 
-  logic [7:0] mem[16384];
+  (* ram_style = "block" *) logic [7:0] mem[16384];
 
   logic [31:0] _addr_in;
   assign _addr_in = addr_in - 32'h80002000;
