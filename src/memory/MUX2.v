@@ -1,4 +1,4 @@
-module MUX2 (
+module MUH2 (
     input O,
     input I0,
     input I1,

@@ -119,7 +119,11 @@ module Core (
   );
 
   always_ff @(posedge clk) begin
-    leds <= RF_rdata1[5:0];
+    leds[5:1] <= RF_rdata1[5:1];
+  end
+
+  always_comb begin
+    leds[0] = clk;
   end
 
 endmodule

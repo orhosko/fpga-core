@@ -3,7 +3,7 @@
 FILELIST ?= verible.filelist
 
 # Optional top module, leave blank to skip hierarchy command
-TOP_MODULE ?= 
+TOP_MODULE ?=
 
 synth-all: flash
 

@@ -16,8 +16,8 @@ IO_PORT "leds[1]" PULL_MODE=UP DRIVE=8 BANK_VCCIO=1.8;
 IO_LOC "leds[0]" 15;
 IO_PORT "leds[0]" PULL_MODE=UP DRIVE=8 BANK_VCCIO=1.8;
 
-IO_LOC "clk" 4;
-IO_PORT "clk" PULL_MODE=UP BANK_VCCIO=1.8;
+IO_LOC "clk_old" 4;
+IO_PORT "clk_ol_oldd" PULL_MODE=UP BANK_VCCIO=1.8;
 
 IO_LOC "uart_tx" 69;
 IO_PORT "uart_tx" IO_TYPE=LVCMOS33;
@@ -25,5 +25,5 @@ IO_PORT "uart_tx" IO_TYPE=LVCMOS33;
 IO_LOC "uart_rx" 70;
 IO_PORT "uart_rx" IO_TYPE=LVCMOS33;
 
-IO_LOC "rst" 88;
-IO_PORT "rst" IO_TYPE=LVCMOS33;
+IO_LOC "clk" 88;
+IO_PORT "clk" IO_TYPE=LVCMOS33;
