@@ -23,6 +23,8 @@ module Core (
   logic [ 2:0] branch_condition;
   logic        CSR_SEL;
   logic        CSR_wen;
+  logic        IM_RETURN_FROM_INT;
+  logic        IM_INTERRUPT_PENDING;
   ControlUnit cu (
       .instruction(instruction),
       .clk(clk),
@@ -37,7 +39,8 @@ module Core (
       .ALU_OP2_SEL(ALU_OP2_SEL),
       .ALU_Operation(ALU_Operation),
       .CSR_SEL(CSR_SEL),
-      .CSR_wen(CSR_wen)
+      .CSR_wen(CSR_wen),
+      .return_from_interrupt(IM_RETURN_FROM_INT)
   );
 
   logic [31:0] RF_wdata;
@@ -49,6 +52,7 @@ module Core (
 
   logic [31:0] CSR_OUT;
   logic [31:0] CSR_wdata;
+  logic [31:0] CSR_rdata;
   assign CSR_wdata = (CSR_SEL == `CSR_SEL_RS1) ? RF_rdata1 : Immediate_imm;
   CSRFile cf (
       .sel  (instruction[31:20]),
@@ -56,7 +60,21 @@ module Core (
       .wen  (CSR_wen),
       .clk  (clk),
       .rst  (0),
-      .rdata(CSR_OUT)
+      .rdata()
+  );
+
+  logic [31:0] IM_PC_OUT;
+  InterruptManager int_man (
+      .clk(clk),
+      .wen(CSR_wen),  //TODO: Memory Mapping
+      .return_from_int(IM_RETURN_FROM_INT),
+      .wdata(CSR_wdata),
+      .addr(instruction[31:20]),
+      .IRQ_lines(),
+      .pc_in(program_counter + 4),
+      .pc_out(IM_PC_OUT),
+      .rdata(CSR_OUT),
+      .interrupt_pending(IM_INTERRUPT_PENDING)
   );
 
   logic [31:0] RF_rdata1;
@@ -111,19 +129,34 @@ module Core (
   );
 
   always_ff @(negedge clk) begin
-    casez (instruction[6:0])
-      B_TYPE: begin
-        if (branch_taken == `BRANCH_SEL_ALU) begin
+
+    if (IM_INTERRUPT_PENDING) begin
+      program_counter <= IM_PC_OUT;
+    end else begin
+      casez (instruction[6:0])
+
+        B_TYPE: begin
+          if (branch_taken == `BRANCH_SEL_ALU) begin
+            program_counter <= ALU_OUT;
+          end else program_counter <= program_counter + 4;
+        end
+
+        J_TYPE, `OPC_JALR: begin
           program_counter <= ALU_OUT;
-        end else program_counter <= program_counter + 4;
-      end
-      J_TYPE, `OPC_JALR: begin
-        program_counter <= ALU_OUT;
-      end
-      default begin
-        program_counter <= program_counter + 4;
-      end
-    endcase
+        end
+
+        SYSTEM_TYPE: begin
+          if (IM_RETURN_FROM_INT) begin
+            program_counter <= IM_PC_OUT;
+          end
+        end
+
+        default begin
+          program_counter <= program_counter + 4;
+        end
+
+      endcase
+    end
   end
 
 

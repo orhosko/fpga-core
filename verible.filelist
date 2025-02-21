@@ -4,6 +4,7 @@
 ./src/components/ALU_Base.sv
 ./src/components/BranchLogic.sv
 ./src/components/ControlUnit.sv
+./src/components/InterruptManager.sv
 ./src/components/Immediate.sv
 ./src/core/Core.sv
 ./src/core/RegisterFile.sv

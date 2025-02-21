@@ -162,6 +162,8 @@
 `define OPC_SYSTEM 7'b1110011
 `define FN12_ECALL 12'b000000000000
 `define FN12_EBREAK 12'b000000000001
+`define FN12_MRET 12'b001100000010
+`define FN12_SRET 12'b000100000010
 
 // ----------------------------------------------------------------
 //                 CSR
@@ -171,6 +173,8 @@
 // | csr    | rs1   | fn3   | rd    | 1110011 |
 
 `define OPC_CSR 7'b1110011
+
+`define FN3_PRIV 3'b000
 `define FN3_CSRRW 3'b001
 `define FN3_CSRRS 3'b010
 `define FN3_CSRRC 3'b011

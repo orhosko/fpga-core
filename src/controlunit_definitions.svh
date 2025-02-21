@@ -27,7 +27,7 @@ typedef enum logic [6:0] {
   U_TYPE = 7'b0?10111,  // `OPC_LUI, `OPC_AUIPC
   B_TYPE = `OPC_BRANCH,
   S_TYPE = 7'b0?00011,  // `OPC_STORE, `OPC_LOAD
-  CSR_TYPE = 7'b1110011
+  SYSTEM_TYPE = 7'b1110011
 } opcode_t;
 
 `endif

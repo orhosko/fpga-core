@@ -16,7 +16,8 @@ module ControlUnit (
     output logic [3:0] ALU_Operation,
     output logic [2:0] branch_condition,
     output logic CSR_SEL,
-    output logic CSR_wen
+    output logic CSR_wen,
+    output logic return_from_interrupt
 );
 
 
@@ -41,8 +42,9 @@ module ControlUnit (
     endcase
   end
 
-  logic [2:0] fn3 = instruction[14:12];  // yosys doesn't allow nested initialization
-  logic [6:0] fn7 = instruction[31:25];
+  logic [ 2:0] fn3 = instruction[14:12];  // yosys doesn't allow nested initialization
+  logic [ 6:0] fn7 = instruction[31:25];
+  logic [11:0] fn12 = instruction[31:20];
   always_comb begin
     if (OPC == R_TYPE) begin
       unique case (fn3)
@@ -140,7 +142,11 @@ module ControlUnit (
   end
 
   always_comb begin
-    CSR_wen = (OPC == CSR_TYPE) & (fn3 != 3'b000) ? 1'b1 : 1'b0;
+    CSR_wen = (OPC == SYSTEM_TYPE) & (fn3 != `FN3_PRIV) ? 1'b1 : 1'b0;
   end
 
+  always_comb begin
+    return_from_interrupt = (OPC == SYSTEM_TYPE) & (fn3 == `FN3_PRIV)
+    & (fn12 == `FN12_MRET) ? 1'b1 : 1'b0;
+  end
 endmodule
