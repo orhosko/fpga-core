@@ -94,22 +94,6 @@ module InterruptManager (
     interrupt_pending = interrupt_line;
   end
 
-  always_ff @(posedge interrupt_line) begin
-    registers[`MEPC_INTERNAL_ADDR] <= pc_in;  //mepc = Interrupted PC, save the return address.
-    registers[`MCAUSE_INTERNAL_ADDR] <= {
-      {interrupt_line, 31'd11}
-    };  // mcause.interrupt = 1; mcause.exception_code = I
-    registers[`MSTATUS_INTERNAL_ADDR] <= registers[`MSTATUS_INTERNAL_ADDR] | `MSTATUS_MASK_MPIE | `MSTATUS_MASK_MPP & (~`MSTATUS_MASK_MIE);  // save previous interrupt enable
-
-    unique case (registers[`MTVEC_INTERNAL_ADDR][1:0])
-      2'd0: pc_out <= (registers[`MTVEC_INTERNAL_ADDR] & 32'hFFFFFFF0);  // PC = (mtvec & ~0xF)
-      2'd1:
-      pc_out <= (registers[`MTVEC_INTERNAL_ADDR] & 32'hFFFFFFF0) + (11 * 4);  // PC = (mtvec & ~0xF) + (I * 4)
-      default: pc_out <= pc_in;
-    endcase
-  end
-
-
   always_ff @(negedge clk) begin
     if (return_from_int) begin
       /* https://five-embeddev.com/quickref/interrupts.html
@@ -121,9 +105,15 @@ module InterruptManager (
                registers[`MEPC_INTERNAL_ADDR]);
       registers[`MSTATUS_INTERNAL_ADDR][3] <= registers[`MSTATUS_INTERNAL_ADDR][7];  // mstatus.mie = mstatus.mpie, restore interrupt enable
       registers[`MSTATUS_INTERNAL_ADDR] <= registers[`MSTATUS_INTERNAL_ADDR] | `MSTATUS_MASK_MPIE | `MSTATUS_MASK_MPP; // mstatus.mpie = 1 mpp set to MACHINE 
-      pc_out <= registers[`MEPC_INTERNAL_ADDR];  //PC = mepc
+    end else begin
+      if (interrupt_line) begin
+        registers[`MEPC_INTERNAL_ADDR] <= pc_in;  //mepc = Interrupted PC, save the return address.
+        registers[`MCAUSE_INTERNAL_ADDR] <= {
+          {interrupt_line, 31'd11}
+        };  // mcause.interrupt = 1; mcause.exception_code = I
+        registers[`MSTATUS_INTERNAL_ADDR] <= registers[`MSTATUS_INTERNAL_ADDR] | `MSTATUS_MASK_MPIE | `MSTATUS_MASK_MPP & (~`MSTATUS_MASK_MIE);  // save previous interrupt enable
+      end
     end
-
 
     if (wen & (internal_addr != `INVALID_INTERNAL_ADDR)) begin
       registers[internal_addr] <= wdata;
@@ -138,5 +128,16 @@ module InterruptManager (
     end
   end
 
+  always_comb begin
+    if (return_from_int) pc_out = registers[`MEPC_INTERNAL_ADDR];  //PC = mepc
+    else begin
+      unique case (registers[`MTVEC_INTERNAL_ADDR][1:0])
+        2'd0: pc_out = (registers[`MTVEC_INTERNAL_ADDR] & 32'hFFFFFFF0);  // PC = (mtvec & ~0xF)
+        2'd1:
+        pc_out = (registers[`MTVEC_INTERNAL_ADDR] & 32'hFFFFFFF0) + (11 * 4);  // PC = (mtvec & ~0xF) + (I * 4)
+        default: pc_out = pc_in;
+      endcase
+    end
+  end
 endmodule
 /* verilator lint_on MULTIDRIVEN */
