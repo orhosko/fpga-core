@@ -66,6 +66,12 @@ module InstructionTest;
       $display("Read data: %h", core.im.data_out);
 
       $display(">> PC: %h", core.program_counter);
+      $display("[ Interrupt Manager ] CSR_SEL %h", core.cu.CSR_SEL);
+      $display("[ Control Manager ] return_from_interrupt %h", core.cu.return_from_interrupt);
+      $display("[ Interrupt Manager ] pc_out %h", core.int_man.pc_out);
+      $display("[ Interrupt Manager ] interrupt_pending %h", core.int_man.interrupt_pending);
+      $display("[ Interrupt Manager ]  %h", core.int_man.return_from_int);
+
       $display(">> Instruction: %h", core.instruction);
       $display(">> Branch taken: %h", core.branch_taken);
 

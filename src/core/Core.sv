@@ -53,7 +53,9 @@ module Core (
   logic [31:0] CSR_OUT;
   logic [31:0] CSR_wdata;
   logic [31:0] CSR_rdata;
+
   assign CSR_wdata = (CSR_SEL == `CSR_SEL_RS1) ? RF_rdata1 : Immediate_imm;
+
   CSRFile cf (
       .sel  (instruction[31:20]),
       .wdata(CSR_wdata),
@@ -129,7 +131,6 @@ module Core (
   );
 
   always_ff @(negedge clk) begin
-
     if (IM_INTERRUPT_PENDING) begin
       program_counter <= IM_PC_OUT;
     end else begin
@@ -148,6 +149,8 @@ module Core (
         SYSTEM_TYPE: begin
           if (IM_RETURN_FROM_INT) begin
             program_counter <= IM_PC_OUT;
+          end else begin
+            program_counter <= program_counter + 4;
           end
         end
 

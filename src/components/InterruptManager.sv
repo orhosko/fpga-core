@@ -117,14 +117,24 @@ module InterruptManager (
          //TODO: Privilege mode = mstatus.mpp, restore privilege NOT IMPLEMENTED mstatus.mpp = least-privileged supported mode (U if U-mode is implemented, else M)
          //TODO: IF mstatus.mpp != m: mstatus.mprv = 0
       */
+      $display("InterruptManager: %0t, return_from_int: %b, mepc: 0x%h", $time, return_from_int,
+               registers[`MEPC_INTERNAL_ADDR]);
       registers[`MSTATUS_INTERNAL_ADDR][3] <= registers[`MSTATUS_INTERNAL_ADDR][7];  // mstatus.mie = mstatus.mpie, restore interrupt enable
       registers[`MSTATUS_INTERNAL_ADDR] <= registers[`MSTATUS_INTERNAL_ADDR] | `MSTATUS_MASK_MPIE | `MSTATUS_MASK_MPP; // mstatus.mpie = 1 mpp set to MACHINE 
       pc_out <= registers[`MEPC_INTERNAL_ADDR];  //PC = mepc
     end
 
 
-    if (wen & ~(internal_addr != `INVALID_INTERNAL_ADDR)) begin
+    if (wen & (internal_addr != `INVALID_INTERNAL_ADDR)) begin
       registers[internal_addr] <= wdata;
+    end
+    $display("InterruptManager: %0t, pc_out: %h, interrupt_line: %h, interrupt_pending: %h", $time,
+             pc_out, interrupt_line, interrupt_pending);
+    $display("InterruptManager: %0t, wdata: %h, rdata: %h, addr: %h, internal_addr: %h, wen: %b",
+             $time, wdata, rdata, addr, internal_addr, wen);
+    //print all registers
+    for (int i = 0; i < 16; i++) begin
+      $display("InterruptManager: %0t, registers[%0d]: %h", $time, i, registers[i]);
     end
   end
 

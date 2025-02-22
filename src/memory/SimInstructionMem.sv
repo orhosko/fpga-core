@@ -12,8 +12,5 @@ module SimInstructionMem (
     data_out <= {mem_array[_addr+3], mem_array[_addr+2], mem_array[_addr+1], mem_array[_addr]};
   end
 
-  initial begin
-    $readmemh("../../mem_files/rv32ui-p-addi.mem", mem_array);
-  end
 
 endmodule

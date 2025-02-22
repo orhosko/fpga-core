@@ -105,6 +105,10 @@ module ControlUnit (
         RF_rsel1 = rs1;
         RF_rsel2 = 5'b0;
       end
+      SYSTEM_TYPE: begin
+        RF_rsel1 = rs1;
+        RF_rsel2 = 5'b0;
+      end
       default: begin
         RF_rsel1 = 5'b0;
         RF_rsel2 = 5'b0;
@@ -118,6 +122,7 @@ module ControlUnit (
       R_TYPE, I_TYPE, B_TYPE, U_TYPE:
       RF_wdata_sel = (instruction[6:0] != `OPC_JALR) ? `RF_WDATA_SEL_ALU : `RF_WDATA_SEL_PC;
       S_TYPE: RF_wdata_sel = `RF_WDATA_SEL_DM;
+      SYSTEM_TYPE: RF_wdata_sel = `RF_WDATA_SEL_CSR;
       default: RF_wdata_sel = 2'b00;
     endcase
   end
