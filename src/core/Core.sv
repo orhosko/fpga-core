@@ -4,6 +4,7 @@
 
 module Core (
     input wire clk,
+    input wire btn,
     output logic [5:0] leds
 );
 
@@ -96,19 +97,21 @@ module Core (
   );
 
   always_ff @(negedge clk) begin
-    casez (instruction[6:0])
-      B_TYPE: begin
-        if (branch_taken == `BRANCH_SEL_ALU) begin
+    if (~halt) begin
+      casez (instruction[6:0])
+        B_TYPE: begin
+          if (branch_taken == `BRANCH_SEL_ALU) begin
+            program_counter <= ALU_OUT;
+          end else program_counter <= program_counter + 4;
+        end
+        J_TYPE, `OPC_JALR: begin
           program_counter <= ALU_OUT;
-        end else program_counter <= program_counter + 4;
-      end
-      J_TYPE, `OPC_JALR: begin
-        program_counter <= ALU_OUT;
-      end
-      default begin
-        program_counter <= program_counter + 4;
-      end
-    endcase
+        end
+        default begin
+          program_counter <= program_counter + 4;
+        end
+      endcase
+    end
   end
 
 
@@ -118,12 +121,32 @@ module Core (
       .imm(Immediate_imm)
   );
 
+  logic halt = 0;
+
+  logic [31:0] gp;
+  assign gp[31:0] = rf.registers[3];
+
+  assign leds[0]  = halt;
+
+  initial begin
+    leds[5:1] <= 5'b00000;
+  end
+
   always_ff @(posedge clk) begin
-    leds[5:1] <= RF_rdata1[5:1];
-  end
 
-  always_comb begin
-    leds[0] = clk;
-  end
+    if (program_counter == 32'h8000066c) begin
+      halt <= 1;
+      leds[5:1] <= 5'b11100;
+    end else if (program_counter == 32'h80000688) begin
+      leds[5:1] <= 5'b10101;
+      halt <= 1;
+    end else begin
+      leds[5:1] <= program_counter[6:2];
+    end
 
+    if (~btn) begin
+      halt <= 1;
+      leds[5:1] <= gp[4:0];
+    end
+  end
 endmodule

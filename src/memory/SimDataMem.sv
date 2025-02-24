@@ -2,9 +2,6 @@
 ////////////////////////////////////////////////////////////
 // simdatamem.sv
 ////////////////////////////////////////////////////////////
-
-`timescale 1ns / 1ps
-
 //----------------------------------------------------------------------
 // 1) Define fn3 Macros (loads and stores share opcode bits in RISC-V)
 //    For partial loads/stores: same fn3, but wr_en=1 => store, wr_en=0 => load
@@ -86,6 +83,8 @@ module SimDataMem (
       default: byte_sel = 4'b0000;
     endcase
   end
+  logic [31:0] _addr_in;
+  assign _addr_in = addr_in - 32'h8000_2000;
   Gowin_SP your_instance_name (
       .dout(data_out),  //output [31:0] dout
       .clk(clk),  //input clk
@@ -93,7 +92,7 @@ module SimDataMem (
       .ce(1'b1),  //input ce
       .reset(1'b0),  //input reset
       .wre(wr_en),  //input wre
-      .ad(addr_in[8:0]),  //input [8:0] ad
+      .ad(_addr_in[8:0]),  //input [8:0] ad
       .din(data_in),  //input [31:0] din
       .byte_en(byte_sel)  //input byte_en
   );

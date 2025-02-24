@@ -46,7 +46,6 @@ module Gowin_SP (
       .AD({ad[8:0], gw_gnd, bt_en[3:0]}),
       .DI(din[31:0])
   );
-
   defparam sp_inst_0.READ_MODE = 1'b0; defparam sp_inst_0.WRITE_MODE = 2'b00;
       defparam sp_inst_0.BIT_WIDTH = 32; defparam sp_inst_0.BLK_SEL = 3'b000;
       defparam sp_inst_0.RESET_MODE = "SYNC";

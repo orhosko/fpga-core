@@ -13,7 +13,7 @@ module SimInstructionMem (
   end
 
   initial begin
-    $readmemh("../../mem_files/rv32ui-p-addi.mem", mem_array);
+    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-add.mem", mem_array);
   end
 
 endmodule
