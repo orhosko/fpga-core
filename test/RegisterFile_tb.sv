@@ -1,11 +1,11 @@
-module RegisterFile_tb(
-  input logic        clk
+module RegisterFile_tb (
+    input logic clk
 );
 
   // DUT Signals
-  logic [4:0]  rsel1;
-  logic [4:0]  rsel2;
-  logic [4:0]  wsel;
+  logic [ 4:0] rsel1;
+  logic [ 4:0] rsel2;
+  logic [ 4:0] wsel;
   logic [31:0] wdata;
   logic        wen;
   logic [31:0] rdata1;
@@ -14,15 +14,16 @@ module RegisterFile_tb(
 
   // Instantiate the DUT
   RegisterFile DUT (
-    .rsel1  (rsel1),
-    .rsel2  (rsel2),
-    .wsel   (wsel),
-    .wdata  (wdata),
-    .wen    (wen),
-    .rdata1 (rdata1),
-    .rdata2 (rdata2),
-    .rst    (rst),
-    .clk    (clk)
+      .rsel1 (rsel1),
+      .rsel2 (rsel2),
+      .wsel  (wsel),
+      .wdata (wdata),
+      .wen   (wen),
+      .rdata1(rdata1),
+      .rdata2(rdata2),
+      .rst   (rst),
+      .rclk  (clk),
+      .wclk  (clk)
   );
 
   // Task: Apply reset for two cycles
@@ -32,18 +33,18 @@ module RegisterFile_tb(
       @(posedge clk);
       @(posedge clk);
       rst = 0;
-      @(posedge clk); // one extra cycle after de-assert
+      @(posedge clk);  // one extra cycle after de-assert
     end
   endtask
 
   initial begin
     // Initialize signals
-    rsel1  = 5'd0;
-    rsel2  = 5'd0;
-    wsel   = 5'd0;
-    wdata  = 32'd0;
-    wen    = 1'b0;
-    rst    = 1'b0;
+    rsel1 = 5'd0;
+    rsel2 = 5'd0;
+    wsel  = 5'd0;
+    wdata = 32'd0;
+    wen   = 1'b0;
+    rst   = 1'b0;
 
     // Small delay for external clock startup (if any)
     #1;
@@ -76,12 +77,12 @@ module RegisterFile_tb(
     // TEST 2: Simple Write/Read
     //----------------------------------------------------------------
     $display("\n--- TEST 2: Simple Write/Read ---");
-    wsel   = 5'd10;
-    wdata  = 32'hABCD_1234;
-    wen    = 1'b1;
-    @(posedge clk); // perform the write
-    wen    = 1'b0;
-    rsel1  = 5'd10;
+    wsel  = 5'd10;
+    wdata = 32'hABCD_1234;
+    wen   = 1'b1;
+    @(posedge clk);  // perform the write
+    wen   = 1'b0;
+    rsel1 = 5'd10;
     @(posedge clk);
 
     // Check read
@@ -95,11 +96,11 @@ module RegisterFile_tb(
     // TEST 3: Attempt Write with wen=0 (shouldn't change the register)
     //----------------------------------------------------------------
     $display("\n--- TEST 3: Write Attempt with wen=0 ---");
-    wsel   = 5'd11;
-    wdata  = 32'hDEAD_BEEF;
-    wen    = 1'b0;
+    wsel  = 5'd11;
+    wdata = 32'hDEAD_BEEF;
+    wen   = 1'b0;
     @(posedge clk);
-    rsel1  = 5'd11;
+    rsel1 = 5'd11;
     @(posedge clk);
 
     // Check read (expect still 0, if never written before)
@@ -115,17 +116,17 @@ module RegisterFile_tb(
     //----------------------------------------------------------------
     $display("\n--- TEST 4: Simultaneous Read/Write (Old data read) ---");
     // Write a known value to r12
-    wsel   = 5'd12;
-    wdata  = 32'hAAAA_5555;
-    wen    = 1'b1;
+    wsel  = 5'd12;
+    wdata = 32'hAAAA_5555;
+    wen   = 1'b1;
     @(posedge clk);
-    wen    = 1'b0;
+    wen   = 1'b0;
 
     // Next cycle, read & write r12 simultaneously
-    wsel   = 5'd12;
-    wdata  = 32'hFFFF_0000;
-    wen    = 1'b1;
-    rsel1  = 5'd12;
+    wsel  = 5'd12;
+    wdata = 32'hFFFF_0000;
+    wen   = 1'b1;
+    rsel1 = 5'd12;
     @(posedge clk);
 
     // Check old data
@@ -133,7 +134,7 @@ module RegisterFile_tb(
       $error("Test 4 FAILED: Expected old data 0xAAAA_5555, got 0x%08h", rdata1);
     end
     // Now read new data in subsequent cycle
-    wen   = 1'b0;
+    wen = 1'b0;
     @(posedge clk);
     if (rdata1 !== 32'hFFFF_0000) begin
       $error("Test 4 FAILED: Expected new data 0xFFFF_0000, got 0x%08h", rdata1);
@@ -192,8 +193,8 @@ module RegisterFile_tb(
       @(posedge clk);
 
       if (rdata1 !== wdata) begin
-        $error("Test 6 FAILED at iteration %0d: Wrote 0x%08h to r%d, got 0x%08h",
-               i, wdata, wsel, rdata1);
+        $error("Test 6 FAILED at iteration %0d: Wrote 0x%08h to r%d, got 0x%08h", i, wdata, wsel,
+               rdata1);
       end else begin
         $display("Test 6 iteration %0d PASSED: r%d=0x%08h", i, wsel, rdata1);
       end

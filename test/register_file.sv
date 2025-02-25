@@ -22,7 +22,8 @@ module register_file;
       .wdata(data_in),
       .wen(write_en),
       .rst(rst),
-      .clk(clk)
+      .wclk(clk),
+      .rclk(clk)
   );
 
 

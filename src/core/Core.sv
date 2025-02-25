@@ -9,6 +9,25 @@ module Core (
     output logic [31:0] tx_word
 );
 
+  logic [1:0] state_counter = 2'b00;
+
+  always_ff @(negedge clk) begin
+    if (state_counter == 2'b00) state_counter <= 2'b01;
+    else if (state_counter == 2'b01) state_counter <= 2'b10;
+    else if (state_counter == 2'b10) state_counter <= 2'b11;
+    else state_counter <= 2'b00;
+  end
+
+  logic sig_pc;
+  logic sig_compute;
+  logic sig_mem;
+  logic sig_write_back;
+
+  assign sig_pc = (state_counter == 2'b00);
+  assign sig_mem = (state_counter == 2'b01);
+  assign sig_compute = (state_counter == 2'b10);
+  assign sig_write_back = (state_counter == 2'b11);
+
   logic [31:0] program_counter = 32'h80000000;
 
   logic [31:0] instruction;
@@ -49,7 +68,8 @@ module Core (
   logic [31:0] RF_rdata2;
 
   RegisterFile rf (
-      .clk(clk),
+      .rclk(sig_mem),
+      .wclk(sig_write_back),
       .rsel1(RF_rsel1),
       .rsel2(RF_rsel2),
       .wsel(RF_wsel),
@@ -68,7 +88,8 @@ module Core (
 
   logic [31:0] DM_OUT;
   SimDataMem dm (
-      .clk(clk),
+      .rclk(sig_compute),
+      .wclk(sig_write_back),
       .data_in(RF_rdata2),
       .addr_in(ALU_OUT),
       .wr_en(DM_wen),
@@ -97,7 +118,7 @@ module Core (
       .branch(branch_taken)
   );
 
-  always_ff @(negedge clk) begin
+  always_ff @(negedge sig_pc) begin
     if (~halt) begin
       casez (instruction[6:0])
         B_TYPE: begin
@@ -115,7 +136,6 @@ module Core (
     end
   end
 
-
   logic [31:0] Immediate_imm;
   Immediate immediate (
       .instruction(instruction),
@@ -126,7 +146,6 @@ module Core (
 
   logic [31:0] gp;
   assign gp[31:0] = rf.registers[3];
-
 
   initial begin
     leds[5:1] = 5'b00000;
@@ -151,8 +170,6 @@ module Core (
       tx_word <= "pass";
     end else begin
       leds[5:1] <= program_counter[6:2];
-
-      // Convert program_counter to hex ASCII
       tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);
       tx_word[23:16] <= hex_to_ascii(program_counter[11:8]);
       tx_word[15:8] <= hex_to_ascii(program_counter[7:4]);
