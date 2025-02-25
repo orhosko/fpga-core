@@ -159,22 +159,22 @@ module Core (
     end
   endfunction
 
-  always_ff @(posedge clk) begin
-    if (program_counter == 32'h80000690) begin
-      halt <= 1;
-      leds[5:1] <= 5'b11100;
-      tx_word <= "fail";
-    end else if (program_counter == 32'h800006ac) begin
-      leds[5:1] <= 5'b10101;
-      halt <= 1;
-      tx_word <= "pass";
-    end else begin
-      leds[5:1] <= program_counter[6:2];
-      tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);
-      tx_word[23:16] <= hex_to_ascii(program_counter[11:8]);
-      tx_word[15:8] <= hex_to_ascii(program_counter[7:4]);
-      tx_word[7:0] <= hex_to_ascii(program_counter[3:0]);
-    end
-  end
+  //always_ff @(posedge clk) begin
+  //  if (program_counter == 32'h80000690) begin
+  //    halt <= 1;
+  //    leds[5:1] <= 5'b11100;
+  //    tx_word <= "fail";
+  //  end else if (program_counter == 32'h800006ac) begin
+  //    leds[5:1] <= 5'b10101;
+  //    halt <= 1;
+  //    tx_word <= "pass";
+  //  end else begin
+  //    leds[5:1] <= program_counter[6:2];
+  //    tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);
+  //    tx_word[23:16] <= hex_to_ascii(program_counter[11:8]);
+  //    tx_word[15:8] <= hex_to_ascii(program_counter[7:4]);
+  //    tx_word[7:0] <= hex_to_ascii(program_counter[3:0]);
+  //  end
+  //end
 
 endmodule

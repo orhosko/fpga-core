@@ -112,12 +112,6 @@ module InstructionTest;
                core.dm.data_out);
       $display("[SDM] wr_en=%d, fn3=%d, write_data=%08x, read_data=%08x", core.dm.wr_en,
                core.dm.fn3, core.dm.write_data, core.dm.read_data);
-      $display("[SDM] Spesifix data location 0x0004 %h, %h, %h, %h", core.dm.mem[{12'h0004, 2'b00
-               }], core.dm.mem[{12'h0004, 2'b01}], core.dm.mem[{12'h0004, 2'b10}], core.dm.mem[{
-               12'h0004, 2'b11}]);
-      $display("[SDM] Spesifix data location 0x01c8 %h, %h, %h, %h", core.dm.mem[{12'h01c8, 2'b00
-               }], core.dm.mem[{12'h01c8, 2'b01}], core.dm.mem[{12'h01c8, 2'b10}], core.dm.mem[{
-               12'h01c8, 2'b11}]);
       $display("[SIM DATA MEM END]");
 
     end
@@ -131,7 +125,7 @@ module InstructionTest;
     end
 
     i++;
-    if (i == 32'd10000) begin
+    if (i / 4 == 32'd4000) begin
       $display("TIMEOUT");
       $finish;
     end

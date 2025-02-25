@@ -8,8 +8,8 @@ gmake[1]: Entering directory '/Users/firatkb/FPGA/fpga-core/build-sim'
 [ 40%] Built target Decoder_tb
 [ 41%] Generating CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024root__DepSet_ha52909c1__0.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024root__DepSet_hd087e3b6__0.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024root__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024root__DepSet_ha52909c1__0__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024root__DepSet_hd087e3b6__0__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024unit__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest___024unit__DepSet_h2b9a9b91__0__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest__Trace__0.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest__Syms.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest__Trace__0__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest__TraceDecls__0__Slow.cpp, CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest.cmake
 - V e r i l a t i o n   R e p o r t: Verilator 5.032 2025-01-01 rev UNKNOWN.REV
-- Verilator: Built from 0.058 MB sources in 11 modules, into 0.232 MB in 12 C++ files needing 0.000 MB
-- Verilator: Walltime 0.025 s (elab=0.001, cvt=0.013, bld=0.000); cpu 0.021 s on 1 threads
+- Verilator: Built from 0.057 MB sources in 11 modules, into 0.224 MB in 12 C++ files needing 0.000 MB
+- Verilator: Walltime 0.020 s (elab=0.001, cvt=0.009, bld=0.000); cpu 0.019 s on 1 threads
 [ 42%] Generating CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest_copy.cmake
 [ 43%] Building CXX object CMakeFiles/InstructionTest.dir/test/InstructionTest.cpp.o
 [ 44%] Building CXX object CMakeFiles/InstructionTest.dir/CMakeFiles/InstructionTest.dir/VInstructionTest.dir/VInstructionTest.cpp.o
@@ -38,336 +38,336 @@ Running rv32ui-p-bltu
 Test name:                                                                                                                    rv32ui-p-bltu
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 138ns; walltime 0.036 s; speed 3.915 us/s
-- Verilator: cpu 0.035 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 138ns; walltime 0.036 s; speed 3.804 us/s
+- Verilator: cpu 0.036 s on 1 threads; alloced 0 MB
 Running rv32ui-p-xori
 Test name:                                                                                                                    rv32ui-p-xori
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 95ns; walltime 0.018 s; speed 5.413 us/s
-- Verilator: cpu 0.017 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 95ns; walltime 0.018 s; speed 5.336 us/s
+- Verilator: cpu 0.018 s on 1 threads; alloced 0 MB
 Running rv32ui-p-blt
 Test name:                                                                                                                     rv32ui-p-blt
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 128ns; walltime 0.021 s; speed 6.389 us/s
-- Verilator: cpu 0.020 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 128ns; walltime 0.021 s; speed 6.226 us/s
+- Verilator: cpu 0.021 s on 1 threads; alloced 0 MB
 Running rv32ui-p-add
 Test name:                                                                                                                     rv32ui-p-add
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 198ns; walltime 0.029 s; speed 7.072 us/s
+- Verilator: $finish at 198ns; walltime 0.028 s; speed 7.106 us/s
 - Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
 Running rv32ui-p-and
 Test name:                                                                                                                     rv32ui-p-and
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 206ns; walltime 0.029 s; speed 7.335 us/s
-- Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 206ns; walltime 0.028 s; speed 7.505 us/s
+- Verilator: cpu 0.027 s on 1 threads; alloced 0 MB
 Running rv32ui-p-srli
 Test name:                                                                                                                    rv32ui-p-srli
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 112ns; walltime 0.017 s; speed 7.197 us/s
-- Verilator: cpu 0.016 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 112ns; walltime 0.016 s; speed 7.218 us/s
+- Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sub
 Test name:                                                                                                                     rv32ui-p-sub
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 195ns; walltime 0.027 s; speed 7.370 us/s
+- Verilator: $finish at 195ns; walltime 0.026 s; speed 7.487 us/s
 - Verilator: cpu 0.026 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sh
 Test name:                                                                                                                      rv32ui-p-sh
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 215ns; walltime 0.031 s; speed 7.162 us/s
-- Verilator: cpu 0.030 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 215ns; walltime 0.029 s; speed 7.472 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
 Running rv32ui-p-srai
 Test name:                                                                                                                    rv32ui-p-srai
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 114ns; walltime 0.016 s; speed 7.305 us/s
+- Verilator: $finish at 114ns; walltime 0.017 s; speed 7.110 us/s
 - Verilator: cpu 0.016 s on 1 threads; alloced 0 MB
 Running rv32ui-p-srl
 Test name:                                                                                                                     rv32ui-p-srl
 DEBUG: 0
-TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+PASS
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.134 s; speed 7.471 us/s
-- Verilator: cpu 0.134 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 214ns; walltime 0.029 s; speed 7.442 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
 Running rv32ui-p-ld_st
 Test name:                                                                                                                   rv32ui-p-ld_st
 DEBUG: 0
-TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+PASS
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.139 s; speed 7.250 us/s
-- Verilator: cpu 0.138 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 243ns; walltime 0.035 s; speed 7.060 us/s
+- Verilator: cpu 0.034 s on 1 threads; alloced 0 MB
 Running rv32ui-p-or
 Test name:                                                                                                                      rv32ui-p-or
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 207ns; walltime 0.030 s; speed 7.388 us/s
+- Verilator: $finish at 207ns; walltime 0.028 s; speed 7.464 us/s
 - Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
 Running rv32ui-p-lbu
 Test name:                                                                                                                     rv32ui-p-lbu
 DEBUG: 0
 FAIL
-- test/InstructionTest.sv:130: Verilog $finish
+- test/InstructionTest.sv:124: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 37ns; walltime 0.007 s; speed 6.644 us/s
-- Verilator: cpu 0.006 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 37ns; walltime 0.006 s; speed 6.868 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-bge
 Test name:                                                                                                                     rv32ui-p-bge
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 135ns; walltime 0.019 s; speed 7.254 us/s
-- Verilator: cpu 0.019 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 135ns; walltime 0.018 s; speed 7.460 us/s
+- Verilator: cpu 0.018 s on 1 threads; alloced 0 MB
 Running rv32ui-p-lhu
 Test name:                                                                                                                     rv32ui-p-lhu
 DEBUG: 0
 FAIL
-- test/InstructionTest.sv:130: Verilog $finish
+- test/InstructionTest.sv:124: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.747 us/s
+- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.715 us/s
 - Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-lh
 Test name:                                                                                                                      rv32ui-p-lh
 DEBUG: 0
 FAIL
-- test/InstructionTest.sv:130: Verilog $finish
+- test/InstructionTest.sv:124: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 34ns; walltime 0.006 s; speed 6.658 us/s
+- Verilator: $finish at 34ns; walltime 0.005 s; speed 6.586 us/s
 - Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-jal
 Test name:                                                                                                                     rv32ui-p-jal
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 34ns; walltime 0.006 s; speed 6.860 us/s
+- Verilator: $finish at 34ns; walltime 0.005 s; speed 6.911 us/s
 - Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-slt
 Test name:                                                                                                                     rv32ui-p-slt
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 195ns; walltime 0.027 s; speed 7.313 us/s
-- Verilator: cpu 0.027 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 195ns; walltime 0.026 s; speed 7.504 us/s
+- Verilator: cpu 0.026 s on 1 threads; alloced 0 MB
 Running rv32ui-p-bne
 Test name:                                                                                                                     rv32ui-p-bne
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 128ns; walltime 0.019 s; speed 7.019 us/s
-- Verilator: cpu 0.018 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 128ns; walltime 0.017 s; speed 7.453 us/s
+- Verilator: cpu 0.017 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sltiu
 Test name:                                                                                                                   rv32ui-p-sltiu
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 107ns; walltime 0.016 s; speed 7.080 us/s
+- Verilator: $finish at 107ns; walltime 0.015 s; speed 7.283 us/s
 - Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
 Running rv32ui-p-beq
 Test name:                                                                                                                     rv32ui-p-beq
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 128ns; walltime 0.019 s; speed 6.941 us/s
-- Verilator: cpu 0.018 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 128ns; walltime 0.017 s; speed 7.429 us/s
+- Verilator: cpu 0.017 s on 1 threads; alloced 0 MB
 Running rv32ui-p-slli
 Test name:                                                                                                                    rv32ui-p-slli
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 108ns; walltime 0.016 s; speed 7.226 us/s
+- Verilator: $finish at 108ns; walltime 0.016 s; speed 7.084 us/s
 - Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
 Running rv32ui-p-slti
 Test name:                                                                                                                    rv32ui-p-slti
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 107ns; walltime 0.015 s; speed 7.240 us/s
+- Verilator: $finish at 107ns; walltime 0.015 s; speed 7.121 us/s
 - Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sltu
 Test name:                                                                                                                    rv32ui-p-sltu
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 195ns; walltime 0.027 s; speed 7.324 us/s
-- Verilator: cpu 0.027 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 195ns; walltime 0.027 s; speed 7.433 us/s
+- Verilator: cpu 0.026 s on 1 threads; alloced 0 MB
 Running rv32ui-p-fence_i
 Test name:                                                                                                                 rv32ui-p-fence_i
 DEBUG: 0
 TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+- test/InstructionTest.sv:130: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.133 s; speed 7.569 us/s
-- Verilator: cpu 0.132 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 2us; walltime 0.210 s; speed 7.623 us/s
+- Verilator: cpu 0.210 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sb
 Test name:                                                                                                                      rv32ui-p-sb
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 193ns; walltime 0.028 s; speed 7.214 us/s
+- Verilator: $finish at 193ns; walltime 0.028 s; speed 7.089 us/s
 - Verilator: cpu 0.027 s on 1 threads; alloced 0 MB
 Running rv32ui-p-xor
 Test name:                                                                                                                     rv32ui-p-xor
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 207ns; walltime 0.029 s; speed 7.384 us/s
-- Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 207ns; walltime 0.030 s; speed 7.064 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
 Running rv32ui-p-andi
 Test name:                                                                                                                    rv32ui-p-andi
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 91ns; walltime 0.013 s; speed 7.176 us/s
-- Verilator: cpu 0.013 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 91ns; walltime 0.013 s; speed 7.299 us/s
+- Verilator: cpu 0.012 s on 1 threads; alloced 0 MB
 Running rv32ui-p-addi
 Test name:                                                                                                                    rv32ui-p-addi
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 109ns; walltime 0.016 s; speed 7.195 us/s
+- Verilator: $finish at 109ns; walltime 0.015 s; speed 7.404 us/s
 - Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sw
 Test name:                                                                                                                      rv32ui-p-sw
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 217ns; walltime 0.030 s; speed 7.427 us/s
+- Verilator: $finish at 217ns; walltime 0.029 s; speed 7.487 us/s
 - Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
 Running rv32ui-p-auipc
 Test name:                                                                                                                   rv32ui-p-auipc
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.814 us/s
+- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.788 us/s
 - Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-lui
 Test name:                                                                                                                     rv32ui-p-lui
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 38ns; walltime 0.006 s; speed 6.811 us/s
-- Verilator: cpu 0.006 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 38ns; walltime 0.006 s; speed 6.897 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-simple
 Test name:                                                                                                                  rv32ui-p-simple
 DEBUG: 0
 TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+- test/InstructionTest.sv:130: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.133 s; speed 7.534 us/s
-- Verilator: cpu 0.133 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 2us; walltime 0.224 s; speed 7.157 us/s
+- Verilator: cpu 0.224 s on 1 threads; alloced 0 MB
 Running rv32ui-p-ma_data
 Test name:                                                                                                                 rv32ui-p-ma_data
 DEBUG: 0
 FAIL
-- test/InstructionTest.sv:130: Verilog $finish
+- test/InstructionTest.sv:124: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 31ns; walltime 0.007 s; speed 6.141 us/s
+- Verilator: $finish at 31ns; walltime 0.005 s; speed 6.363 us/s
 - Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sra
 Test name:                                                                                                                     rv32ui-p-sra
 DEBUG: 0
-TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+PASS
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.134 s; speed 7.506 us/s
-- Verilator: cpu 0.133 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 217ns; walltime 0.029 s; speed 7.486 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
 Running rv32ui-p-lb
 Test name:                                                                                                                      rv32ui-p-lb
 DEBUG: 0
 FAIL
-- test/InstructionTest.sv:130: Verilog $finish
+- test/InstructionTest.sv:124: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 37ns; walltime 0.007 s; speed 6.605 us/s
-- Verilator: cpu 0.006 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 37ns; walltime 0.006 s; speed 6.792 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-bgeu
 Test name:                                                                                                                    rv32ui-p-bgeu
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 145ns; walltime 0.022 s; speed 7.232 us/s
+- Verilator: $finish at 145ns; walltime 0.020 s; speed 7.431 us/s
 - Verilator: cpu 0.020 s on 1 threads; alloced 0 MB
 Running rv32ui-p-lw
 Test name:                                                                                                                      rv32ui-p-lw
 DEBUG: 0
 FAIL
-- test/InstructionTest.sv:130: Verilog $finish
+- test/InstructionTest.sv:124: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.692 us/s
+- Verilator: $finish at 35ns; walltime 0.005 s; speed 6.743 us/s
 - Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
 Running rv32ui-p-sll
 Test name:                                                                                                                     rv32ui-p-sll
 DEBUG: 0
-TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+PASS
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.133 s; speed 7.541 us/s
-- Verilator: cpu 0.133 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 209ns; walltime 0.028 s; speed 7.498 us/s
+- Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
 Running rv32ui-p-st_ld
 Test name:                                                                                                                   rv32ui-p-st_ld
 DEBUG: 0
-TIMEOUT
-- test/InstructionTest.sv:136: Verilog $finish
+PASS
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 1us; walltime 0.134 s; speed 7.515 us/s
-- Verilator: cpu 0.133 s on 1 threads; alloced 0 MB
+- Verilator: $finish at 205ns; walltime 0.029 s; speed 7.115 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
 Running rv32ui-p-jalr
 Test name:                                                                                                                    rv32ui-p-jalr
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 58ns; walltime 0.010 s; speed 7.030 us/s
+- Verilator: $finish at 58ns; walltime 0.009 s; speed 7.180 us/s
 - Verilator: cpu 0.008 s on 1 threads; alloced 0 MB
 Running rv32ui-p-ori
 Test name:                                                                                                                     rv32ui-p-ori
 DEBUG: 0
 PASS
-- test/InstructionTest.sv:126: Verilog $finish
+- test/InstructionTest.sv:120: Verilog $finish
 - S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
-- Verilator: $finish at 94ns; walltime 0.014 s; speed 7.222 us/s
+- Verilator: $finish at 94ns; walltime 0.013 s; speed 7.126 us/s
 - Verilator: cpu 0.013 s on 1 threads; alloced 0 MB
 /Users/firatkb/FPGA/fpga-core

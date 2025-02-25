@@ -75,12 +75,12 @@ module SimDataMem (
   // If `sim` *is* defined, we use the RPLL + Gowin SP RAM + FSM code.
   // ---------------------------------------------------------
 `else
-  logic [11:0] write_addr;
+  logic [ 8:0] write_addr;
   logic [31:0] _addr_in;
   assign _addr_in   = addr_in - 32'h8000_2000;
-  assign write_addr = _addr_in[11:0];
-  logic [7:0] mem[2*8192];
-  logic [11:0] read_addr;
+  assign write_addr = _addr_in[8:0];
+  logic [7:0] mem[2**11];  // 4KB example
+  logic [8:0] read_addr;
   assign read_addr = write_addr;
   logic [31:0] write_data = data_in;
   logic [31:0] read_data;
@@ -95,9 +95,7 @@ module SimDataMem (
     endcase
   end
 
-
   always_ff @(negedge wclk) begin
-
     if (write_enable[0] && wr_en) mem[{write_addr, 2'b00}] <= write_data[7:0];
     if (write_enable[1] && wr_en) mem[{write_addr, 2'b01}] <= write_data[15:8];
     if (write_enable[2] && wr_en) mem[{write_addr, 2'b10}] <= write_data[23:16];
@@ -123,6 +121,9 @@ module SimDataMem (
       };
     else data_out <= 32'hAB_CDEF12;
   end
+  //initial begin
+  //  $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", mem);
+  //end
 
 `endif
 

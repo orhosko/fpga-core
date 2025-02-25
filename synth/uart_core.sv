@@ -16,11 +16,12 @@ module uart_core (
   );
 
   Core core (
-      .clk(rst),
+      .clk(clk),
       .btn(rst),
       .leds(leds[5:0]),
       .tx_word(TX_WORD)
   );
+
 
 
 
