@@ -5,7 +5,8 @@
 module Core (
     input wire clk,
     input wire btn,
-    output logic [5:0] leds
+    output logic [5:0] leds,
+    output logic [31:0] tx_word
 );
 
   logic [31:0] program_counter = 32'h80000000;
@@ -126,27 +127,37 @@ module Core (
   logic [31:0] gp;
   assign gp[31:0] = rf.registers[3];
 
-  assign leds[0]  = halt;
 
   initial begin
-    leds[5:1] <= 5'b00000;
+    leds[5:1] = 5'b00000;
   end
+
+  function [7:0] hex_to_ascii;
+    input [3:0] hex_digit_1;
+    begin
+      if ({4'b0, hex_digit_1} < 8'd10) hex_to_ascii = "0" + {4'b0, hex_digit_1};
+      else hex_to_ascii = "A" + ({4'b0, hex_digit_1} - 8'd10);
+    end
+  endfunction
 
   always_ff @(posedge clk) begin
-
-    if (program_counter == 32'h8000066c) begin
+    if (program_counter == 32'h80000690) begin
       halt <= 1;
       leds[5:1] <= 5'b11100;
-    end else if (program_counter == 32'h80000688) begin
+      tx_word <= "fail";
+    end else if (program_counter == 32'h800006ac) begin
       leds[5:1] <= 5'b10101;
       halt <= 1;
+      tx_word <= "pass";
     end else begin
       leds[5:1] <= program_counter[6:2];
-    end
 
-    if (~btn) begin
-      halt <= 1;
-      leds[5:1] <= gp[4:0];
+      // Convert program_counter to hex ASCII
+      tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);
+      tx_word[23:16] <= hex_to_ascii(program_counter[11:8]);
+      tx_word[15:8] <= hex_to_ascii(program_counter[7:4]);
+      tx_word[7:0] <= hex_to_ascii(program_counter[3:0]);
     end
   end
+
 endmodule

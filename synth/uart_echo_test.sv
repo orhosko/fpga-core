@@ -1,8 +1,9 @@
 module uart_test (
-    input  clk,
-    input  rst,
-    input  uart_rx,
-    output uart_tx
+    input clk,
+    input rst,
+    input uart_rx,
+    output uart_tx,
+    input logic [32:0] wbuf
 );
 
   parameter CLK_FRE = 27;  //Mhz
@@ -63,7 +64,7 @@ module uart_test (
 
           if (rx_data_valid == 1'b1) begin
 
-            rbuf[rbuf_cnt] <= rx_data;
+            //rbuf[rbuf_cnt] <= rx_data;
 
             rbuf_cnt = rbuf_cnt + 1;
             // TODO: is it wrap around?
@@ -93,11 +94,10 @@ module uart_test (
   parameter PROMPT_SIZE = 6;  // "echo> "
   parameter RBUF_SIZE = 64;
 
-  reg [7:0] rbuf[RBUF_SIZE] = 0;
   reg [5:0] rbuf_cnt;
 
-  parameter DATA_NUM = PROMPT_SIZE + RBUF_SIZE + 2;
-  wire [DATA_NUM * 8 - 1:0] send_data = {"echo> ", 16'h0d0a};
+  parameter DATA_NUM = 4 + 2;
+  wire [47:0] send_data = {wbuf, 16'h0d0a};
 
   always @(*) tx_str <= send_data[(DATA_NUM-1-tx_cnt)*8+:8];
 

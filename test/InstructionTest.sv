@@ -8,8 +8,10 @@ module InstructionTest;
 
   logic [5:0] leds;
   Core core (
-      .clk (clk),
-      .leds(leds)
+      .clk(clk),
+      .leds(leds),
+      .btn(),
+      .tx_word()
   );
 
   logic [  31:0] pass          [1];

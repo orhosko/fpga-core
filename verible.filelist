@@ -10,3 +10,4 @@
 ./src/memory/SimDataMem.sv
 ./src/memory/SimInstructionMem.sv
 ./src/memory/SP.v
+
