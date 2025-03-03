@@ -34,7 +34,7 @@ module SimDataMem (
 `ifdef sim
 
   // A simple 8-bit memory array
-  logic [7:0] mem[0:16384];  // 16KB example
+  logic [7:0] mem[16384];  // 16KB example
 
   // Address offset from some base (e.g. 0x80002000)
   logic [31:0] _addr_in;
@@ -78,13 +78,13 @@ module SimDataMem (
   logic [ 8:0] write_addr;
   logic [31:0] _addr_in;
   assign _addr_in   = addr_in - 32'h8000_2000;
-  assign write_addr = _addr_in[8:0];
+
+  assign write_addr = _addr_in[10:2];
   logic [7:0] mem[2**11];  // 4KB example
   logic [8:0] read_addr;
   assign read_addr = write_addr;
   logic [31:0] write_data = data_in;
   logic [31:0] read_data;
-
   logic [ 3:0] write_enable;
   always_comb begin
     case (fn3)
@@ -122,7 +122,7 @@ module SimDataMem (
     else data_out <= 32'hAB_CDEF12;
   end
   //initial begin
-  //  $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", mem);
+  // $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", mem);
   //end
 
 `endif
