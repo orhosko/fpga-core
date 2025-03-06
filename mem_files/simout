@@ -1,0 +1,504 @@
+Running rv32ui-p-bltu
+Test name:                                                                                                                    rv32ui-p-bltu
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 138ns; walltime 0.030 s; speed 4.608 us/s
+- Verilator: cpu 0.030 s on 1 threads; alloced 0 MB
+Running rv32ui-p-xori
+Test name:                                                                                                                    rv32ui-p-xori
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 95ns; walltime 0.016 s; speed 5.887 us/s
+- Verilator: cpu 0.016 s on 1 threads; alloced 0 MB
+Running rv32ui-p-blt
+Test name:                                                                                                                     rv32ui-p-blt
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 128ns; walltime 0.019 s; speed 6.672 us/s
+- Verilator: cpu 0.019 s on 1 threads; alloced 0 MB
+Running rv32ui-p-add
+Test name:                                                                                                                     rv32ui-p-add
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 198ns; walltime 0.028 s; speed 7.126 us/s
+- Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
+Running rv32ui-p-and
+Test name:                                                                                                                     rv32ui-p-and
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 206ns; walltime 0.029 s; speed 7.170 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
+Running rv32ui-p-srli
+Test name:                                                                                                                    rv32ui-p-srli
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 112ns; walltime 0.016 s; speed 7.037 us/s
+- Verilator: cpu 0.016 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sub
+Test name:                                                                                                                     rv32ui-p-sub
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 195ns; walltime 0.028 s; speed 7.084 us/s
+- Verilator: cpu 0.027 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sh
+Test name:                                                                                                                      rv32ui-p-sh
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 33ns; walltime 0.006 s; speed 6.383 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-srai
+Test name:                                                                                                                    rv32ui-p-srai
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 114ns; walltime 0.017 s; speed 7.017 us/s
+- Verilator: cpu 0.016 s on 1 threads; alloced 0 MB
+Running rv32ui-p-srl
+Test name:                                                                                                                     rv32ui-p-srl
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 214ns; walltime 0.030 s; speed 7.171 us/s
+- Verilator: cpu 0.030 s on 1 threads; alloced 0 MB
+Running rv32ui-p-ld_st
+Test name:                                                                                                                   rv32ui-p-ld_st
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 163ns; walltime 0.024 s; speed 6.985 us/s
+- Verilator: cpu 0.023 s on 1 threads; alloced 0 MB
+Running rv32ui-p-or
+Test name:                                                                                                                      rv32ui-p-or
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 207ns; walltime 0.029 s; speed 7.177 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
+Running rv32ui-p-lbu
+Test name:                                                                                                                     rv32ui-p-lbu
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 37ns; walltime 0.006 s; speed 6.852 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-bge
+Test name:                                                                                                                     rv32ui-p-bge
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 136ns; walltime 0.019 s; speed 7.061 us/s
+- Verilator: cpu 0.019 s on 1 threads; alloced 0 MB
+Running rv32ui-p-lhu
+Test name:                                                                                                                     rv32ui-p-lhu
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.513 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-lh
+Test name:                                                                                                                      rv32ui-p-lh
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 34ns; walltime 0.006 s; speed 6.384 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-jal
+Test name:                                                                                                                     rv32ui-p-jal
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 34ns; walltime 0.005 s; speed 6.545 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-slt
+Test name:                                                                                                                     rv32ui-p-slt
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 196ns; walltime 0.028 s; speed 7.075 us/s
+- Verilator: cpu 0.028 s on 1 threads; alloced 0 MB
+Running rv32ui-p-bne
+Test name:                                                                                                                     rv32ui-p-bne
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 128ns; walltime 0.020 s; speed 6.747 us/s
+- Verilator: cpu 0.019 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sltiu
+Test name:                                                                                                                   rv32ui-p-sltiu
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 107ns; walltime 0.015 s; speed 7.114 us/s
+- Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
+Running rv32ui-p-beq
+Test name:                                                                                                                     rv32ui-p-beq
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 128ns; walltime 0.018 s; speed 7.099 us/s
+- Verilator: cpu 0.018 s on 1 threads; alloced 0 MB
+Running rv32ui-p-slli
+Test name:                                                                                                                    rv32ui-p-slli
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 108ns; walltime 0.016 s; speed 7.027 us/s
+- Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
+Running rv32ui-p-slti
+Test name:                                                                                                                    rv32ui-p-slti
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 107ns; walltime 0.015 s; speed 6.979 us/s
+- Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sltu
+Test name:                                                                                                                    rv32ui-p-sltu
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 196ns; walltime 0.028 s; speed 7.117 us/s
+- Verilator: cpu 0.027 s on 1 threads; alloced 0 MB
+Running rv32ui-p-fence_i
+Test name:                                                                                                                 rv32ui-p-fence_i
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+TIMEOUT
+- test/InstructionTest.sv:134: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 2us; walltime 0.222 s; speed 7.215 us/s
+- Verilator: cpu 0.222 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sb
+Test name:                                                                                                                      rv32ui-p-sb
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 42ns; walltime 0.008 s; speed 6.484 us/s
+- Verilator: cpu 0.007 s on 1 threads; alloced 0 MB
+Running rv32ui-p-xor
+Test name:                                                                                                                     rv32ui-p-xor
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 207ns; walltime 0.029 s; speed 7.114 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
+Running rv32ui-p-andi
+Test name:                                                                                                                    rv32ui-p-andi
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 91ns; walltime 0.013 s; speed 6.922 us/s
+- Verilator: cpu 0.013 s on 1 threads; alloced 0 MB
+Running rv32ui-p-addi
+Test name:                                                                                                                    rv32ui-p-addi
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 109ns; walltime 0.016 s; speed 7.122 us/s
+- Verilator: cpu 0.015 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sw
+Test name:                                                                                                                      rv32ui-p-sw
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 218ns; walltime 0.031 s; speed 7.135 us/s
+- Verilator: cpu 0.030 s on 1 threads; alloced 0 MB
+Running rv32ui-p-auipc
+Test name:                                                                                                                   rv32ui-p-auipc
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 35ns; walltime 0.006 s; speed 6.506 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-lui
+Test name:                                                                                                                     rv32ui-p-lui
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 38ns; walltime 0.006 s; speed 7.100 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-simple
+Test name:                                                                                                                  rv32ui-p-simple
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+TIMEOUT
+- test/InstructionTest.sv:134: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 2us; walltime 0.220 s; speed 7.273 us/s
+- Verilator: cpu 0.220 s on 1 threads; alloced 0 MB
+Running rv32ui-p-ma_data
+Test name:                                                                                                                 rv32ui-p-ma_data
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 31ns; walltime 0.006 s; speed 5.915 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sra
+Test name:                                                                                                                     rv32ui-p-sra
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 217ns; walltime 0.031 s; speed 7.068 us/s
+- Verilator: cpu 0.031 s on 1 threads; alloced 0 MB
+Running rv32ui-p-lb
+Test name:                                                                                                                      rv32ui-p-lb
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 37ns; walltime 0.006 s; speed 6.549 us/s
+- Verilator: cpu 0.006 s on 1 threads; alloced 0 MB
+Running rv32ui-p-bgeu
+Test name:                                                                                                                    rv32ui-p-bgeu
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 146ns; walltime 0.021 s; speed 7.067 us/s
+- Verilator: cpu 0.021 s on 1 threads; alloced 0 MB
+Running rv32ui-p-lw
+Test name:                                                                                                                      rv32ui-p-lw
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 32ns; walltime 0.005 s; speed 6.514 us/s
+- Verilator: cpu 0.005 s on 1 threads; alloced 0 MB
+Running rv32ui-p-sll
+Test name:                                                                                                                     rv32ui-p-sll
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 209ns; walltime 0.030 s; speed 7.098 us/s
+- Verilator: cpu 0.029 s on 1 threads; alloced 0 MB
+Running rv32ui-p-st_ld
+Test name:                                                                                                                   rv32ui-p-st_ld
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+FAIL
+- test/InstructionTest.sv:128: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 138ns; walltime 0.020 s; speed 6.953 us/s
+- Verilator: cpu 0.020 s on 1 threads; alloced 0 MB
+Running rv32ui-p-jalr
+Test name:                                                                                                                    rv32ui-p-jalr
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 58ns; walltime 0.009 s; speed 6.678 us/s
+- Verilator: cpu 0.009 s on 1 threads; alloced 0 MB
+Running rv32ui-p-ori
+Test name:                                                                                                                     rv32ui-p-ori
+DEBUG: 0
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem:0: $readmem file not found
+%Warning: ../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem:0: $readmem file not found
+PASS
+- test/InstructionTest.sv:124: Verilog $finish
+- S i m u l a t i o n   R e p o r t: Verilator 5.032 2025-01-01
+- Verilator: $finish at 94ns; walltime 0.014 s; speed 7.018 us/s
+- Verilator: cpu 0.013 s on 1 threads; alloced 0 MB
