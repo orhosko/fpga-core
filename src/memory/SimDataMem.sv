@@ -1,20 +1,4 @@
-
-////////////////////////////////////////////////////////////
-// simdatamem.sv
-////////////////////////////////////////////////////////////
-//----------------------------------------------------------------------
-// 1) Define fn3 Macros (loads and stores share opcode bits in RISC-V)
-//    For partial loads/stores: same fn3, but wr_en=1 => store, wr_en=0 => load
-//----------------------------------------------------------------------
-`define fn3_sb 3'b000
-`define fn3_sh 3'b001
-`define fn3_sw 3'b010
-
-`define fn3_lb 3'b000
-`define fn3_lh 3'b001
-`define fn3_lw 3'b010
-`define fn3_lbu 3'b100
-`define fn3_lhu 3'b101
+`include "../definitions.svh"
 
 module SimDataMem (
     input  logic        rclk,     // CPU clock for BOTH sim & synth version
@@ -26,105 +10,81 @@ module SimDataMem (
     output logic [31:0] data_out
 );
 
-  //=========================================================
-  // S I M U L A T I O N   V E R S I O N
-  //=========================================================
-  // If `sim` is *not* defined, we use this (the original code).
-  // ---------------------------------------------------------
-`ifdef sim
-
-  // A simple 8-bit memory array
-  logic [7:0] mem[16384];  // 16KB example
-
-  // Address offset from some base (e.g. 0x80002000)
   logic [31:0] _addr_in;
   assign _addr_in = addr_in - 32'h8000_2000;
 
-  // Byte writes on negative edge for the simulation code
-  always_ff @(negedge rclk) begin
-    if (wr_en) begin
-      // Store byte
-      mem[_addr_in] <= data_in[7:0];
-      // If store halfword, also write the next byte
-      if (fn3 == `fn3_sh || fn3 == `fn3_sw) begin
-        mem[_addr_in+1] <= data_in[15:8];
-      end
-      // If store word, write 4 bytes
-      if (fn3 == `fn3_sw) begin
-        mem[_addr_in+2] <= data_in[23:16];
-        mem[_addr_in+3] <= data_in[31:24];
-      end
-    end
-  end
+  // not working 8 bit wide memory
+`ifdef seven
+  (* ram_style = "block" *) // errors if not possible
+  logic [7:0] mem[2**12];  // 4KB example
 
-  // Combinational read with sign/zero extension
-  always_ff @(negedge clk) begin
-    if (fn3 == `fn3_lbu) data_out <= {24'h00_0000, mem[_addr_in]};
-    else if (fn3 == `fn3_lhu) data_out <= {16'h0000, mem[_addr_in+1], mem[_addr_in]};
-    else if (fn3 == `fn3_lw)
-      data_out <= {mem[_addr_in+3], mem[_addr_in+2], mem[_addr_in+1], mem[_addr_in]};
-    else if (fn3 == `fn3_lb) data_out <= {{24{mem[_addr_in][7]}}, mem[_addr_in]};
-    else if (fn3 == `fn3_lh) data_out <= {{16{mem[_addr_in+1][7]}}, mem[_addr_in+1], mem[_addr_in]};
-    else data_out <= 32'hAB_CDEF12;
-  end
-
-
-  //=========================================================
-  // S Y N T H E S I S   V E R S I O N
-  //=========================================================
-  // If `sim` *is* defined, we use the RPLL + Gowin SP RAM + FSM code.
-  // ---------------------------------------------------------
-`else
-  logic [ 8:0] write_addr;
-  logic [31:0] _addr_in;
-  assign _addr_in   = addr_in - 32'h8000_2000;
-
-  assign write_addr = _addr_in[10:2];
-  logic [7:0] mem[2**11];  // 4KB example
-  logic [8:0] read_addr;
-  assign read_addr = write_addr;
-  logic [31:0] write_data = data_in;
-  logic [31:0] read_data;
-  logic [ 3:0] write_enable;
+  logic [3:0] write_enable;
   always_comb begin
     case (fn3)
-      `fn3_sb: write_enable = 4'b0001;
-      `fn3_sh: write_enable = 4'b0011;
-      `fn3_sw: write_enable = 4'b1111;
+      `FN3_SB: write_enable = 4'b0001;
+      `FN3_SH: write_enable = 4'b0011;
+      `FN3_SW: write_enable = 4'b1111;
       default: write_enable = 4'b0000;
     endcase
   end
 
-  always_ff @(negedge wclk) begin
-    if (write_enable[0] && wr_en) mem[{write_addr, 2'b00}] <= write_data[7:0];
-    if (write_enable[1] && wr_en) mem[{write_addr, 2'b01}] <= write_data[15:8];
-    if (write_enable[2] && wr_en) mem[{write_addr, 2'b10}] <= write_data[23:16];
-    if (write_enable[3] && wr_en) mem[{write_addr, 2'b11}] <= write_data[31:24];
+  logic [31:0] rdata;
+
+  integer i;
+  always @(negedge wclk) begin
+    for (i = 0; i < 4; i = i + 1) begin
+      if (write_enable[i] && wr_en) mem[_addr_in+i] <= data_in[8*i+:8];
+    end
   end
 
-  always_ff @(negedge rclk) begin
-    if (fn3 == `fn3_lbu) data_out <= {24'h00_0000, mem[{read_addr, 2'b00}]};
-    else if (fn3 == `fn3_lhu)
-      data_out <= {16'h0000, mem[{read_addr, 2'b01}], mem[{read_addr, 2'b00}]};
-    else if (fn3 == `fn3_lw)
-      data_out <= {
-        mem[{read_addr, 2'b11}],
-        mem[{read_addr, 2'b10}],
-        mem[{read_addr, 2'b01}],
-        mem[{read_addr, 2'b00}]
-      };
-    else if (fn3 == `fn3_lb)
-      data_out <= {{24{mem[{read_addr, 2'b00}][7]}}, mem[{read_addr, 2'b00}]};
-    else if (fn3 == `fn3_lh)
-      data_out <= {
-        {16{mem[{read_addr, 2'b01}][7]}}, mem[{read_addr, 2'b01}], mem[{read_addr, 2'b00}]
-      };
-    else data_out <= 32'hAB_CDEF12;
+  always @(negedge rclk) begin
+    rdata <= 0;
+    for (i = 0; i < 4; i = i + 1) begin
+      rdata[8*i+:8] <= mem[_addr_in+i];
+    end
   end
-  //initial begin
-  // $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", mem);
-  //end
 
+`else
+
+  (* ram_style = "block" *)
+  // errors if not possible
+  logic [31:0] mem[2**12];  // 4KB example
+
+  logic [3:0] write_enable;
+  always_comb begin
+    case (fn3)
+      `FN3_SB: write_enable = 1 << (_addr_in[1:0]);
+      `FN3_SH: write_enable = 3 << (_addr_in[1:0]);  // TODO: check misallignment
+      `FN3_SW: write_enable = 4'b1111;
+      default: write_enable = 4'b0000;
+    endcase
+  end
+
+  logic [31:0] rdata;
+
+  logic [ 4:0] sel_start;
+  assign sel_start = _addr_in[1:0] * 8;
+
+  integer i;
+  always @(negedge wclk) begin
+    for (i = 0; i < 4; i = i + 1) begin
+      if (write_enable[i] && wr_en) mem[_addr_in>>2][8*i+:8] <= data_in[8*i+:8];
+    end
+    rdata <= mem[_addr_in>>2];
+  end
+
+  always_comb begin
+    if (fn3 == `FN3_LBU) data_out = {24'h00_0000, rdata[sel_start+:8]};
+    else if (fn3 == `FN3_LHU) data_out = {16'h0000, rdata[sel_start+:16]};
+    else if (fn3 == `FN3_LW) data_out = rdata;
+    else if (fn3 == `FN3_LB) data_out = {{24{rdata[sel_start+7]}}, rdata[sel_start+:8]};
+    else if (fn3 == `FN3_LH) data_out = {{16{rdata[sel_start+15]}}, rdata[sel_start+:16]};
+    else data_out = 32'hABCDEF12;
+  end
 `endif
+
+  initial begin
+    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", mem);
+  end
 
 endmodule

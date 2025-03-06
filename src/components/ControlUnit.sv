@@ -4,7 +4,6 @@
 
 module ControlUnit (
     input logic [31:0] instruction,
-    input logic clk,
     output logic [4:0] RF_rsel1,
     output logic [4:0] RF_rsel2,
     output logic [4:0] RF_wsel,

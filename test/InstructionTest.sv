@@ -105,13 +105,17 @@ module InstructionTest;
         $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
       end
 
-
       $display("[SIM DATA MEM BEGIN], clk=%d", clk);
-      $display("[SDM] addr_in=%08x, _addr_in=%08x, write_addr=%04x, read_addr=%04x, data_out=%08x",
-               core.dm.addr_in, core.dm._addr_in, core.dm.write_addr, core.dm.read_addr,
-               core.dm.data_out);
-      $display("[SDM] wr_en=%d, fn3=%d, write_data=%08x, read_data=%08x", core.dm.wr_en,
-               core.dm.fn3, core.dm.write_data, core.dm.read_data);
+      $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x",
+               core.dm.addr_in, core.dm._addr_in, core.dm.data_out);
+      $display("[SDM] +0 data=%08x",
+               core.dm.mem[(core.dm._addr_in>>2)]);
+      $display("[SDM] +1 data=%08x",
+               core.dm.mem[(core.dm._addr_in>>2)+1]);
+      $display("[SDM] +2 data=%08x",
+               core.dm.mem[(core.dm._addr_in>>2)+2]);
+      $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en,
+               core.dm.fn3, core.dm.rdata);
       $display("[SIM DATA MEM END]");
 
     end

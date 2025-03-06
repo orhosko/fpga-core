@@ -10,23 +10,32 @@ module Core (
 );
 
   logic [1:0] state_counter = 2'b00;
+  logic gated_clk;
+  logic gated_clk2;
 
-  always_ff @(negedge clk) begin
-    if (state_counter == 2'b00) state_counter <= 2'b01;
-    else if (state_counter == 2'b01) state_counter <= 2'b10;
-    else if (state_counter == 2'b10) state_counter <= 2'b11;
-    else state_counter <= 2'b00;
+  // state_counter=0 posedge -> decode, inst mem read
+  // state_counter=1 negedge -> run datamem read
+  // state_counter=2 posedge -> -
+  // state_counter=3 negedge -> save reg
+  
+  assign gated_clk = (state_counter >= 2) ? 1'b0 : clk;
+  assign gated_clk2 = (state_counter < 2) ? 1'b0 : clk;
+
+  always_ff @(posedge clk) begin
+    state_counter <= state_counter + 1;
   end
 
+  /*
   logic sig_pc;
-  logic sig_compute;
   logic sig_mem;
+  logic sig_compute;
   logic sig_write_back;
 
   assign sig_pc = (state_counter == 2'b00);
   assign sig_mem = (state_counter == 2'b01);
   assign sig_compute = (state_counter == 2'b10);
   assign sig_write_back = (state_counter == 2'b11);
+  */
 
   logic [31:0] program_counter = 32'h80000000;
 
@@ -45,7 +54,6 @@ module Core (
 
   ControlUnit cu (
       .instruction(instruction),
-      .clk(clk),
       .RF_rsel1(RF_rsel1),
       .RF_rsel2(RF_rsel2),
       .RF_wsel(RF_wsel),
@@ -68,8 +76,8 @@ module Core (
   logic [31:0] RF_rdata2;
 
   RegisterFile rf (
-      .rclk(sig_mem),
-      .wclk(sig_write_back),
+      .rclk(0), // async read
+      .wclk(gated_clk2),
       .rsel1(RF_rsel1),
       .rsel2(RF_rsel2),
       .wsel(RF_wsel),
@@ -81,15 +89,15 @@ module Core (
   );
 
   SimInstructionMem im (
-      .clk(clk),
+      .clk(gated_clk),
       .addr(program_counter),
       .data_out(instruction)
   );
 
   logic [31:0] DM_OUT;
   SimDataMem dm (
-      .rclk(sig_compute),
-      .wclk(sig_write_back),
+      .rclk(gated_clk),
+      .wclk(gated_clk2),
       .data_in(RF_rdata2),
       .addr_in(ALU_OUT),
       .wr_en(DM_wen),
@@ -118,7 +126,7 @@ module Core (
       .branch(branch_taken)
   );
 
-  always_ff @(negedge sig_pc) begin
+  always_ff @(posedge gated_clk) begin
     if (~halt) begin
       casez (instruction[6:0])
         B_TYPE: begin
@@ -144,12 +152,11 @@ module Core (
 
   logic halt = 0;
 
+`define synth
+`ifdef synth
+
   logic [31:0] gp;
   assign gp[31:0] = rf.registers[3];
-
-  initial begin
-    leds[5:1] = 5'b00000;
-  end
 
   function [7:0] hex_to_ascii;
     input [3:0] hex_digit_1;
@@ -159,22 +166,34 @@ module Core (
     end
   endfunction
 
-  //always_ff @(posedge clk) begin
-  //  if (program_counter == 32'h80000690) begin
-  //    halt <= 1;
-  //    leds[5:1] <= 5'b11100;
-  //    tx_word <= "fail";
-  //  end else if (program_counter == 32'h800006ac) begin
-  //    leds[5:1] <= 5'b10101;
-  //    halt <= 1;
-  //    tx_word <= "pass";
-  //  end else begin
-  //    leds[5:1] <= program_counter[6:2];
-  //    tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);
-  //    tx_word[23:16] <= hex_to_ascii(program_counter[11:8]);
-  //    tx_word[15:8] <= hex_to_ascii(program_counter[7:4]);
-  //    tx_word[7:0] <= hex_to_ascii(program_counter[3:0]);
-  //  end
-  //end
+  logic [  31:0] pass          [1];
+  logic [  31:0] fail          [1];
+
+  initial begin
+    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt", pass);
+    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt", fail);
+    // TODO $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem", im.mem_array);
+    // TODO $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", dm.mem);
+    leds[5:1] = 5'b00000;
+  end
+
+  always_ff @(posedge gated_clk) begin
+    if (program_counter == fail[0]) begin
+      halt <= 1;
+      leds[5:1] <= 5'b11100;
+      tx_word <= "fail";
+    end else if (program_counter == pass[0]) begin
+      leds[5:1] <= 5'b10101;
+      halt <= 1;
+      tx_word <= "pass";
+    end else begin
+      leds[5:1] <= program_counter[6:2];
+      tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);
+      tx_word[23:16] <= hex_to_ascii(program_counter[11:8]);
+      tx_word[15:8] <= hex_to_ascii(program_counter[7:4]);
+      tx_word[7:0] <= hex_to_ascii(program_counter[3:0]);
+    end
+  end
+`endif
 
 endmodule

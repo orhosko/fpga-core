@@ -43,7 +43,7 @@ clean:
 sim-build: cmake-cache
 	cmake --build build-sim
 
-cmake-cache: CMakelists.txt
+cmake-cache: CMakeLists.txt
 	cmake -S . -B build-sim
 
 sim-test: sim-build
