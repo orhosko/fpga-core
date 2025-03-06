@@ -22,7 +22,4 @@ module uart_core (
       .tx_word(TX_WORD)
   );
 
-
-
-
 endmodule

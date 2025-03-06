@@ -11,5 +11,5 @@
 ./src/uart/uart_rx.v
 ./src/uart/uart_tx.v
 ./src/core/RegisterFile.sv
-./src/memory/SimDataMem.sv
-./src/memory/SimInstructionMem.sv
+./src/memory/DataMem.sv
+./src/memory/InstructionMem.sv

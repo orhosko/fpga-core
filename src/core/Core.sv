@@ -10,28 +10,22 @@ module Core (
 );
 
   logic [1:0] state_counter = 2'b00;
-
-  // state_counter=0 posedge -> decode, inst mem read
-  // state_counter=1 negedge -> run datamem read
-  // state_counter=2 posedge -> -
-  // state_counter=3 negedge -> save reg
-
   always_ff @(posedge clk) begin
-    state_counter <= state_counter + 1;
+    state_counter <= (state_counter + 1)%3;
   end
 
-  /* fuckkkkkk synth
+  /* synth didn't likey
   always_ff @(negedge clk) begin
     state_counter <= state_counter + 1;
   end
   */
 
   logic sig_read_im;
-  logic sig_compute;
   logic sig_data_read;
+  // logic sig_compute;
   logic sig_write_back;
 
-  // read immediate
+  // read inst mem
   // decode
   // read register(async)
   assign sig_read_im = (state_counter == 2'b00);
@@ -40,11 +34,12 @@ module Core (
   assign sig_data_read = (state_counter == 2'b01);
 
   // compute - combinational don't do anything
-  assign sig_compute = (state_counter == 2'b10);
+  // assign sig_compute = (state_counter == 2'b10);
 
   // write register & memory
   // update pc
-  assign sig_write_back = (state_counter == 2'b11);
+  // assign sig_write_back = (state_counter == 2'b11);
+  assign sig_write_back = (state_counter == 2'b10);
 
   logic [31:0] program_counter = 32'h80000000;
 
@@ -97,7 +92,7 @@ module Core (
       .rst(0)
   );
 
-  SimInstructionMem im (
+  InstructionMem im (
       .clk(sig_read_im),
       .addr(program_counter),
       .data_out(instruction)
@@ -181,8 +176,6 @@ module Core (
   initial begin
     $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt", pass);
     $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt", fail);
-    // TODO $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem", im.mem_array);
-    // TODO $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.data.mem", dm.mem);
     leds[5:1] = 5'b00000;
   end
 
