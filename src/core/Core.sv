@@ -99,7 +99,7 @@ module Core (
   );
 
   logic [31:0] DM_OUT;
-  SimDataMem dm (
+  DataMem dm (
       .rclk(sig_data_read),
       .wclk(sig_write_back),
       .data_in(RF_rdata2),
