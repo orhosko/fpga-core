@@ -19,14 +19,15 @@ $(RV32UI_P_TESTS_DIR)/%: $(RV32UI_P_DIR)/%
 	$(OBJCOPY) -O binary -j .text* $< $@
 
 $(RV32UI_P_TESTS_DIR)/%.mem: $(RV32UI_P_TESTS_DIR)/%
-	hexdump -v -e '1/1 "%02x\n"' $< > $@
+	hexdump -v -e '1/4 "%08x\n"' $< > $@
 
 $(RV32UI_P_TESTS_DIR)/%.data: $(RV32UI_P_DIR)/%
 	@mkdir -p $(RV32UI_P_TESTS_DIR)
 	$(OBJCOPY) -O binary -j .data* $< $@
 
 $(RV32UI_P_TESTS_DIR)/%.data.mem: $(RV32UI_P_TESTS_DIR)/%.data
-	hexdump -v -e '1/1 "%02x\n"' $< > $@
+	hexdump -v -e '1/4 "%08x\n"' $< > $@
+
 
 $(RV32UI_P_TESTS_DIR)/%_pass.txt: $(RV32UI_P_DIR)/%.dump
 	grep '<pass>:' $< | awk '{print $$1}' > $@

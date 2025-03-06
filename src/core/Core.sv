@@ -10,32 +10,35 @@ module Core (
 );
 
   logic [1:0] state_counter = 2'b00;
-  logic gated_clk;
-  logic gated_clk2;
 
   // state_counter=0 posedge -> decode, inst mem read
   // state_counter=1 negedge -> run datamem read
   // state_counter=2 posedge -> -
   // state_counter=3 negedge -> save reg
-  
-  assign gated_clk = (state_counter >= 2) ? 1'b0 : clk;
-  assign gated_clk2 = (state_counter < 2) ? 1'b0 : clk;
 
-  always_ff @(posedge clk) begin
+  always_ff @(clk) begin
     state_counter <= state_counter + 1;
   end
 
-  /*
-  logic sig_pc;
-  logic sig_mem;
+  logic sig_read_im;
   logic sig_compute;
+  logic sig_data_read;
   logic sig_write_back;
 
-  assign sig_pc = (state_counter == 2'b00);
-  assign sig_mem = (state_counter == 2'b01);
+  // read immediate
+  // decode
+  // read register(async)
+  assign sig_read_im = (state_counter == 2'b00);
+
+  // read data memory
+  assign sig_data_read = (state_counter == 2'b01);
+
+  // compute - combinational don't do anything
   assign sig_compute = (state_counter == 2'b10);
+
+  // write register & memory
+  // update pc
   assign sig_write_back = (state_counter == 2'b11);
-  */
 
   logic [31:0] program_counter = 32'h80000000;
 
@@ -77,7 +80,7 @@ module Core (
 
   RegisterFile rf (
       .rclk(0), // async read
-      .wclk(gated_clk2),
+      .wclk(sig_write_back),
       .rsel1(RF_rsel1),
       .rsel2(RF_rsel2),
       .wsel(RF_wsel),
@@ -89,15 +92,15 @@ module Core (
   );
 
   SimInstructionMem im (
-      .clk(gated_clk),
+      .clk(sig_read_im),
       .addr(program_counter),
       .data_out(instruction)
   );
 
   logic [31:0] DM_OUT;
   SimDataMem dm (
-      .rclk(gated_clk),
-      .wclk(gated_clk2),
+      .rclk(sig_data_read),
+      .wclk(sig_write_back),
       .data_in(RF_rdata2),
       .addr_in(ALU_OUT),
       .wr_en(DM_wen),
@@ -126,7 +129,7 @@ module Core (
       .branch(branch_taken)
   );
 
-  always_ff @(posedge gated_clk) begin
+  always_ff @(posedge sig_write_back) begin
     if (~halt) begin
       casez (instruction[6:0])
         B_TYPE: begin
@@ -177,7 +180,7 @@ module Core (
     leds[5:1] = 5'b00000;
   end
 
-  always_ff @(posedge gated_clk) begin
+  always_ff @(posedge clk) begin
     if (program_counter == fail[0]) begin
       halt <= 1;
       leds[5:1] <= 5'b11100;

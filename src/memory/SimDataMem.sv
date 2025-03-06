@@ -15,7 +15,8 @@ module SimDataMem (
 
   // not working 8 bit wide memory
 `ifdef seven
-  (* ram_style = "block" *) // errors if not possible
+  (* ram_style = "block" *)
+  // errors if not possible
   logic [7:0] mem[2**12];  // 4KB example
 
   logic [3:0] write_enable;
@@ -61,24 +62,42 @@ module SimDataMem (
   end
 
   logic [31:0] rdata;
+  logic [ 4:0] write_start;
 
-  logic [ 4:0] sel_start;
-  assign sel_start = _addr_in[1:0] * 8;
+  assign write_start = _addr_in[1:0] << 3;
 
   integer i;
-  always @(negedge wclk) begin
+  integer j;
+
+  always @(posedge wclk) begin
+    j <= 0;
     for (i = 0; i < 4; i = i + 1) begin
-      if (write_enable[i] && wr_en) mem[_addr_in>>2][8*i+:8] <= data_in[8*i+:8];
+      /* verilator lint_off WIDTHEXPAND */
+      if (write_enable[i] && wr_en && fn3 == `FN3_SW) mem[_addr_in>>2][8*i+:8] <= data_in[8*i+:8];
+      /* verilator lint_on WIDTHEXPAND */
+
+      if (write_enable[i] && wr_en && fn3 == `FN3_SH && j < 2) begin
+        mem[_addr_in>>2][8*i+:8] <= data_in[8*j+:8];
+        j <= +1;
+      end
+
+      if (write_enable[i] && wr_en && fn3 == `FN3_SB) mem[_addr_in>>2][8*i+:8] <= data_in[7:0];
+
     end
+  end
+
+  logic [4:0] read_start;
+  always @(posedge rclk) begin
+    read_start <= _addr_in[1:0] * 8;
     rdata <= mem[_addr_in>>2];
   end
 
   always_comb begin
-    if (fn3 == `FN3_LBU) data_out = {24'h00_0000, rdata[sel_start+:8]};
-    else if (fn3 == `FN3_LHU) data_out = {16'h0000, rdata[sel_start+:16]};
+    if (fn3 == `FN3_LBU) data_out = {24'h00_0000, rdata[read_start+:8]};
+    else if (fn3 == `FN3_LHU) data_out = {16'h0000, rdata[read_start+:16]};
     else if (fn3 == `FN3_LW) data_out = rdata;
-    else if (fn3 == `FN3_LB) data_out = {{24{rdata[sel_start+7]}}, rdata[sel_start+:8]};
-    else if (fn3 == `FN3_LH) data_out = {{16{rdata[sel_start+15]}}, rdata[sel_start+:16]};
+    else if (fn3 == `FN3_LB) data_out = {{24{rdata[read_start+7]}}, rdata[read_start+:8]};
+    else if (fn3 == `FN3_LH) data_out = {{16{rdata[read_start+15]}}, rdata[read_start+:16]};
     else data_out = 32'hABCDEF12;
   end
 `endif
