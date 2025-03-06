@@ -19,7 +19,7 @@ $(RV32UI_P_TESTS_DIR)/%: $(RV32UI_P_DIR)/%
 	$(OBJCOPY) -O binary -j .text* $< $@
 
 $(RV32UI_P_TESTS_DIR)/%.mem: $(RV32UI_P_TESTS_DIR)/%
-	hexdump -v -e '1/4 "%08x\n"' $< > $@
+	hexdump -v -e '1/1 "%02x\n"' $< > $@
 
 $(RV32UI_P_TESTS_DIR)/%.data: $(RV32UI_P_DIR)/%
 	@mkdir -p $(RV32UI_P_TESTS_DIR)

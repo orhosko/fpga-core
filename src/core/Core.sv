@@ -16,9 +16,15 @@ module Core (
   // state_counter=2 posedge -> -
   // state_counter=3 negedge -> save reg
 
-  always_ff @(clk) begin
+  always_ff @(posedge clk) begin
     state_counter <= state_counter + 1;
   end
+
+  /* fuckkkkkk synth
+  always_ff @(negedge clk) begin
+    state_counter <= state_counter + 1;
+  end
+  */
 
   logic sig_read_im;
   logic sig_compute;
