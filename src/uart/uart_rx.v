@@ -11,6 +11,7 @@ module uart_rx #(
 );
   //calculates the clock cycle for baud rate
   localparam CYCLE = CLK_FRE * 1000000 / BAUD_RATE;
+
   //state machine code
   localparam S_IDLE = 1;
   localparam S_START = 2;  //start bit
@@ -44,7 +45,7 @@ module uart_rx #(
     else state <= next_state;
   end
 
-  always @(*) begin
+  always_comb begin
     case (state)
       S_IDLE:
       if (rx_negedge) next_state <= S_START;
@@ -89,13 +90,13 @@ module uart_rx #(
     else bit_cnt <= 3'd0;
   end
 
-
   always @(posedge clk or negedge rst_n) begin
     if (rst_n == 1'b0) cycle_cnt <= 16'd0;
     else if ((state == S_REC_BYTE && cycle_cnt == CYCLE - 1) || next_state != state)
       cycle_cnt <= 16'd0;
     else cycle_cnt <= cycle_cnt + 16'd1;
   end
+
   //receive serial data bit data
   always @(posedge clk or negedge rst_n) begin
     if (rst_n == 1'b0) rx_bits <= 8'd0;

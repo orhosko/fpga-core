@@ -35,10 +35,9 @@ $(RV32UI_P_TESTS_DIR)/%_pass.txt: $(RV32UI_P_DIR)/%.dump
 $(RV32UI_P_TESTS_DIR)/%_fail.txt: $(RV32UI_P_DIR)/%.dump
 	grep '<fail>:' $< | awk '{print $$1}' > $@
 
+
 clean:
 	rm -rf $(RV32UI_P_TESTS_DIR)
-
-
 
 TESTS := $(shell find $(RV32UI_P_DIR) -type f ! -name "*.dump" -exec basename {} \;)
 

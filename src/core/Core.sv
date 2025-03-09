@@ -130,6 +130,20 @@ module Core (
       .branch(branch_taken)
   );
 
+   logic [31:0] addr_in;
+   logic        sram_wr_en;
+   logic        uart_wr_en;
+   logic [31:0] addr_out;
+   logic [ 1:0] mem_sel;
+
+ MMU mmu(
+    .addr_in(program_counter),
+    .sram_wr_en(sram_wr_en),
+    .uart_wr_en(uart_wr_en),
+    .addr_out(addr_out),
+    .mem_sel(mem_sel)
+);
+
   always_ff @(posedge sig_write_back) begin
     if (~halt) begin
       casez (instruction[6:0])
