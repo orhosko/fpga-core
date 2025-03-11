@@ -6,10 +6,10 @@
 ./src/components/ControlUnit.sv
 ./src/components/Immediate.sv
 ./src/core/Core.sv
-./synth/uart_core.sv
-./synth/uart_echo_test.sv
 ./src/uart/uart_rx.v
 ./src/uart/uart_tx.v
+./src/uart/uart_mmio.sv
 ./src/core/RegisterFile.sv
 ./src/memory/DataMem.sv
 ./src/memory/InstructionMem.sv
+./src/memory/MMU.sv

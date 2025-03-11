@@ -4,16 +4,16 @@ module InstructionMem (
     output logic [31:0] data_out
 );
 
-  logic [7:0] mem_array[2**14];  // 16KB
+  logic [7:0] mem[2**14];  // 16KB
 
   logic [31:0] _addr = addr - 32'h80000000;
 
   always_ff @(posedge clk) begin
-    data_out <= {mem_array[_addr+3], mem_array[_addr+2], mem_array[_addr+1], mem_array[_addr]};
+    data_out <= {mem[_addr+3], mem[_addr+2], mem[_addr+1], mem[_addr]};
   end
 
   initial begin
-    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw.mem", mem_array);
+    $readmemh("../../mem_files/uart-test.mem", mem);
   end
 
 endmodule

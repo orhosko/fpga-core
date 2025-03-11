@@ -11,7 +11,8 @@ module InstructionTest;
       .clk(clk),
       .leds(leds),
       .btn(),
-      .tx_word()
+      .uart_rx(),
+      .uart_tx()
   );
 
   logic [  31:0] pass          [1];
@@ -41,7 +42,7 @@ module InstructionTest;
 
     $readmemh(pass_file, pass);
     $readmemh(fail_file, fail);
-    $readmemh(mem_file, core.im.mem_array);
+    $readmemh(mem_file, core.im.mem);
     $readmemh(data_mem_file, core.dm.mem);
 
     $display("Test name: %s", test_name);
@@ -106,16 +107,12 @@ module InstructionTest;
       end
 
       $display("[SIM DATA MEM BEGIN], clk=%d", clk);
-      $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x",
-               core.dm.addr_in, core.dm._addr_in, core.dm.data_out);
-      $display("[SDM] +0 data=%08x",
-               core.dm.mem[(core.dm._addr_in>>2)]);
-      $display("[SDM] +1 data=%08x",
-               core.dm.mem[(core.dm._addr_in>>2)+1]);
-      $display("[SDM] +2 data=%08x",
-               core.dm.mem[(core.dm._addr_in>>2)+2]);
-      $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en,
-               core.dm.fn3, core.dm.rdata);
+      $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x", core.dm.addr_in,
+               core.dm._addr_in, core.dm.data_out);
+      $display("[SDM] +0 data=%08x", core.dm.mem[(core.dm._addr_in>>2)]);
+      $display("[SDM] +1 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+1]);
+      $display("[SDM] +2 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+2]);
+      $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en, core.dm.fn3, core.dm.rdata);
       $display("[SIM DATA MEM END]");
 
     end

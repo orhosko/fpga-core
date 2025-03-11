@@ -6,7 +6,8 @@ module Core (
     input wire clk,
     input wire btn,
     output logic [5:0] leds,
-    output logic [31:0] tx_word
+    input  uart_rx,
+    output uart_tx
 );
 
   logic [1:0] state_counter = 2'b00;
@@ -74,7 +75,7 @@ module Core (
   logic [31:0] RF_wdata;
   assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
                           (RF_wdata_sel == `RF_WDATA_SEL_ALU) ? ALU_OUT :
-                          (RF_wdata_sel == `RF_WDATA_SEL_DM) ? DM_OUT : 32'h0;
+                          (RF_wdata_sel == `RF_WDATA_SEL_DM) ? MMU_OUT : 32'h0;
 
   logic [31:0] RF_rdata1;
   logic [31:0] RF_rdata2;
@@ -109,6 +110,21 @@ module Core (
       .data_out(DM_OUT)
   );
 
+ logic [7:0] UART_OUT;
+ uart_mmio uart(
+    .clk(clk),
+    .rst(btn),
+    .uart_rx(uart_rx),
+    .uart_tx(uart_tx),
+    .addr(ALU_OUT[4:2]),
+    .wr_en(uart_wr_en),
+    .wr_data(RF_rdata2[7:0]),
+    .rd_data(UART_OUT)
+);
+
+  logic [31:0] MMU_OUT;
+  assign MMU_OUT = (mem_sel == `MEM_SEL_SRAM) ? DM_OUT : { 24'h000000, UART_OUT};
+
   logic [31:0] ALU_A;
   assign ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
 
@@ -137,7 +153,7 @@ module Core (
    logic [ 1:0] mem_sel;
 
  MMU mmu(
-    .addr_in(program_counter),
+    .addr_in(ALU_OUT),
     .sram_wr_en(sram_wr_en),
     .uart_wr_en(uart_wr_en),
     .addr_out(addr_out),
@@ -170,7 +186,21 @@ module Core (
 
   logic halt = 0;
 
-`define synth
+
+  assign leds[5:1] = program_counter[6:2];
+  assign leds[0] = halt;
+
+
+
+
+
+
+
+
+
+
+
+   
 `ifdef synth
 
   logic [31:0] gp;

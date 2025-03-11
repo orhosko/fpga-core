@@ -9,7 +9,9 @@ module MMU (
 
   always_comb begin
     sram_wr_en = 1'b0;
-    prom_wr_en = 1'b0;
+
+    addr_out = addr_in;
+    //prom_wr_en = 1'b0;
 
     // if (addr_in >= 32'h8000_0000 && addr_in < 32'h8000_2000) begin
     //   prom_wr_en = 1'b1;
@@ -19,10 +21,10 @@ module MMU (
      if (addr_in >= 32'h8000_2000 && addr_in < 32'h8000_4000) begin
       sram_wr_en = 1'b1;
       addr_out = addr_in - 32'h8000_2000;
-      mem_sel = 2'b10;
-    end else if (addr_in >= 32'h4000_0000 && addr_in < 32'h4000_0004) begin
+      mem_sel = `MEM_SEL_SRAM;
+    end else if (addr_in >= 32'h1000_0000 && addr_in < 32'h1000_0004) begin
       addr_out = addr_in[1:0];
-      mem_sel   = 2'b11;
+      mem_sel   = `MEM_SEL_UART;
     end else begin
       mem_sel = 2'b00;
     end
