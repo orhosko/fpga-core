@@ -1,9 +1,9 @@
 #include <stdint.h>
 
 #define UART_BASE 0x10000000
-#define UART_TX (*(volatile uint8_t *)(UART_BASE + 0x08))
-#define UART_RX (*(volatile uint8_t *)(UART_BASE + 0x0C))
-#define UART_STAT (*(volatile uint8_t *)(UART_BASE + 0x04))
+#define UART_STAT (*(volatile uint32_t *)(UART_BASE + 0x04))
+#define UART_TX (*(volatile uint32_t *)(UART_BASE + 0x08))
+#define UART_RX (*(volatile uint32_t *)(UART_BASE + 0x0C))
 
 void uart_write(uint8_t data) {
   while (!(UART_STAT & 0x02))

@@ -11,7 +11,7 @@ module DataMem (
 );
 
   logic [31:0] _addr_in;
-  assign _addr_in = addr_in - 32'h8000_2000;
+  assign _addr_in = addr_in; // - 32'h8000_2000;
 
   (* ram_style = "block" *) // errors if not possible
   logic [31:0] mem[2**13];  // 8KB max??
@@ -61,7 +61,7 @@ module DataMem (
   end
 
   initial begin
-    $readmemh("../../mem_files/uart-test.data.mem", mem);
+    $readmemh("../mem_files/uart-test.data.mem", mem);
   end
 
 endmodule

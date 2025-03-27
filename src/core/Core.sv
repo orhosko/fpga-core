@@ -104,8 +104,8 @@ module Core (
       .rclk(sig_data_read),
       .wclk(sig_write_back),
       .data_in(RF_rdata2),
-      .addr_in(ALU_OUT),
-      .wr_en(DM_wen),
+      .addr_in(mmu_addr_out),
+      .wr_en(DM_wen & sram_wr_en),
       .fn3(instruction[14:12]),
       .data_out(DM_OUT)
   );
@@ -114,10 +114,10 @@ module Core (
  uart_mmio uart(
     .clk(clk),
     .rst(btn),
-    .uart_rx(uart_rx),
-    .uart_tx(uart_tx),
-    .addr(ALU_OUT[4:2]),
-    .wr_en(uart_wr_en),
+    .uart_rx_pin(uart_rx),
+    .uart_tx_pin(uart_tx),
+    .addr(mmu_addr_out[3:2]),
+    .wr_en(DM_wen & uart_wr_en & sig_write_back & (ALU_OUT == 32'h10000008)),
     .wr_data(RF_rdata2[7:0]),
     .rd_data(UART_OUT)
 );
@@ -149,14 +149,14 @@ module Core (
    logic [31:0] addr_in;
    logic        sram_wr_en;
    logic        uart_wr_en;
-   logic [31:0] addr_out;
+   logic [31:0] mmu_addr_out;
    logic [ 1:0] mem_sel;
 
  MMU mmu(
     .addr_in(ALU_OUT),
     .sram_wr_en(sram_wr_en),
     .uart_wr_en(uart_wr_en),
-    .addr_out(addr_out),
+    .addr_out(mmu_addr_out),
     .mem_sel(mem_sel)
 );
 

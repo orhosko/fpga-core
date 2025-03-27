@@ -8,9 +8,29 @@ module MMU (
 );
 
   always_comb begin
-    sram_wr_en = 1'b0;
+    if (addr_in >= 32'h8000_2000 && addr_in < 32'h8000_4000) begin
+      uart_wr_en = 1'b0;
+      sram_wr_en = 1'b1;
 
-    addr_out = addr_in;
+      addr_out = addr_in - 32'h8000_2000;
+      mem_sel = `MEM_SEL_SRAM;
+    end else if (addr_in >= 32'h1000_0000 && addr_in < 32'h1000_0016) begin
+      uart_wr_en = 1'b1;
+      sram_wr_en = 1'b0;
+
+      addr_out = addr_in; // addr_in[1:0];
+      mem_sel   = `MEM_SEL_UART;
+    end else begin
+      uart_wr_en = 1'b0;
+      sram_wr_en = 1'b0;
+
+      addr_out = addr_in;
+      mem_sel = 2'b00;
+    end
+
+  end
+
+endmodule
     //prom_wr_en = 1'b0;
 
     // if (addr_in >= 32'h8000_0000 && addr_in < 32'h8000_2000) begin
@@ -18,17 +38,3 @@ module MMU (
     //   prom_addr = addr_in - 32'h8000_0000;
     //   mem_sel = 2'b01;
     // end
-     if (addr_in >= 32'h8000_2000 && addr_in < 32'h8000_4000) begin
-      sram_wr_en = 1'b1;
-      addr_out = addr_in - 32'h8000_2000;
-      mem_sel = `MEM_SEL_SRAM;
-    end else if (addr_in >= 32'h1000_0000 && addr_in < 32'h1000_0004) begin
-      addr_out = addr_in[1:0];
-      mem_sel   = `MEM_SEL_UART;
-    end else begin
-      mem_sel = 2'b00;
-    end
-
-  end
-
-endmodule

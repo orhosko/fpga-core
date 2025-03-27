@@ -19,6 +19,7 @@ set(TEST_NAMES
     InstructionTest
     RegisterFile_tb
     register_file
+    UART_Test
     # ...
 )
 

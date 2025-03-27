@@ -1,5 +1,7 @@
+/* verilator lint_off WIDTHEXPAND */
+
 module uart_tx #(
-    parameter CLK_FRE = 50,  //clock frequency(Mhz)
+    parameter CLK_FRE = 27,  //clock frequency(Mhz)
     parameter BAUD_RATE = 115200  //serial baud rate
 ) (
     input            clk,            //clock input
@@ -35,26 +37,27 @@ module uart_tx #(
   always_comb begin
     case (state)
       S_IDLE:
-      if (tx_data_valid == 1'b1) next_state <= S_START;
-      else next_state <= S_IDLE;
+      if (tx_data_valid == 1'b1) next_state = S_START;
+      else next_state = S_IDLE;
       S_START:
-      if (cycle_cnt == CYCLE - 1) next_state <= S_SEND_BYTE;
-      else next_state <= S_START;
+      if (cycle_cnt == CYCLE - 1) next_state = S_SEND_BYTE;
+      else next_state = S_START;
       S_SEND_BYTE:
-      if (cycle_cnt == CYCLE - 1 && bit_cnt == 3'd7) next_state <= S_STOP;
-      else next_state <= S_SEND_BYTE;
+      if (cycle_cnt == CYCLE - 1 && bit_cnt == 3'd7) next_state = S_STOP;
+      else next_state = S_SEND_BYTE;
       S_STOP:
-      if (cycle_cnt == CYCLE - 1) next_state <= S_IDLE;
-      else next_state <= S_STOP;
-      default: next_state <= S_IDLE;
+      if (cycle_cnt == CYCLE - 1) next_state = S_IDLE;
+      else next_state = S_STOP;
+      default: next_state = S_IDLE;
     endcase
   end
   always @(posedge clk or negedge rst_n) begin
     if (rst_n == 1'b0) begin
       tx_data_ready <= 1'b0;
-    end else if (state == S_IDLE)
+    end else if (state == S_IDLE) begin
       if (tx_data_valid == 1'b1) tx_data_ready <= 1'b0;
       else tx_data_ready <= 1'b1;
+    end
     else if (state == S_STOP && cycle_cnt == CYCLE - 1) tx_data_ready <= 1'b1;
   end
 

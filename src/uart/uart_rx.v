@@ -1,3 +1,5 @@
+/* verilator lint_off WIDTHEXPAND */
+
 module uart_rx #(
     parameter CLK_FRE   = 50,     //clock frequency(Mhz)
     parameter BAUD_RATE = 115200  //serial baud rate
@@ -48,25 +50,25 @@ module uart_rx #(
   always_comb begin
     case (state)
       S_IDLE:
-      if (rx_negedge) next_state <= S_START;
-      else next_state <= S_IDLE;
+      if (rx_negedge) next_state = S_START;
+      else next_state = S_IDLE;
       S_START:
       if (cycle_cnt == CYCLE - 1)  //one data cycle
-        next_state <= S_REC_BYTE;
-      else next_state <= S_START;
+        next_state = S_REC_BYTE;
+      else next_state = S_START;
       S_REC_BYTE:
       if (cycle_cnt == CYCLE - 1 && bit_cnt == 3'd7)  //receive 8bit data
-        next_state <= S_STOP;
-      else next_state <= S_REC_BYTE;
+        next_state = S_STOP;
+      else next_state = S_REC_BYTE;
       S_STOP:
       if (cycle_cnt == CYCLE / 2 - 1)  //half bit cycle,to avoid missing the next byte receiver
-        next_state <= S_DATA;
-      else next_state <= S_STOP;
+        next_state = S_DATA;
+      else next_state = S_STOP;
       S_DATA:
       if (rx_data_ready)  //data receive complete
-        next_state <= S_IDLE;
-      else next_state <= S_DATA;
-      default: next_state <= S_IDLE;
+        next_state = S_IDLE;
+      else next_state = S_DATA;
+      default: next_state = S_IDLE;
     endcase
   end
 
