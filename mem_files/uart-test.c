@@ -33,18 +33,24 @@ void uart_read_str(char *buf, int len) {
   }
   buf[i] = '\0';
 }
-static char *hello = "Hello, World!\n";
-volatile int i = 0;
-volatile int j = 1;
-volatile int k = 2;
+
 int main() {
+
+  int i = 'a';
+  while(1) {
+    uart_write(i);
+    i++;
+    if (i > 'z') {
+      i = 'a';
+    }
+  }
+  
   char buf[128];
-  uart_write_str(hello);
-  uart_write(i);
-  uart_write(j);
+  uart_write_str("hello");
   uart_read_str(buf, sizeof(buf));
   uart_write_str("You said: ");
   uart_write_str(buf);
   uart_write_str("\n");
+
   return 0;
 }

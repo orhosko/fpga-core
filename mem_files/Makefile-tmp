@@ -37,12 +37,13 @@ hexdump: add.bin
 
 
 uart-src: uart-test.c
-	riscv64-unknown-elf-gcc -march=rv32i -mabi=ilp32 -O0 -ffreestanding -nostdlib -fno-pie -nostartfiles -c uart-test.c  -o uart-test.o
-	riscv64-unknown-elf-as -march=rv32i -mabi=ilp32 -c start.s -o start.o
+	riscv64-linux-gnu-gcc -march=rv32i -mabi=ilp32 -O0 -ffreestanding -nostdlib -fno-pie -nostartfiles -fno-asynchronous-unwind-tables -c uart-test.c  -o uart-test.o
+	riscv64-linux-gnu-as -march=rv32i -mabi=ilp32 -c start.s -o start.o
 	ld.lld -Tdata=0x80002000  -T link.ld uart-test.o start.o -o uart-test.elf
-	riscv64-unknown-elf-objcopy -O binary uart-test.elf uart-test.bin
-	riscv64-unknown-elf-objcopy -O binary -j .data* uart-test.elf uart-test.data.bin
+	riscv64-linux-gnu-objcopy -O binary uart-test.elf uart-test.bin
+	riscv64-linux-gnu-objcopy -O binary -j .data* uart-test.elf uart-test.data.bin
 	hexdump -v -e '1/1 "%02x\n"' uart-test.bin > uart-test.mem
+	hexdump -v -e '1/4 "%08x\n"' uart-test.data.bin > uart-test.data.mem
 
 clean:
 	rm -f add.o add.bin add.mem add2.o add2.bin add2.mem

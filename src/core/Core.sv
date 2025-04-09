@@ -6,13 +6,13 @@ module Core (
     input wire clk,
     input wire btn,
     output logic [5:0] leds,
-    input  uart_rx,
+    input uart_rx,
     output uart_tx
 );
 
   logic [1:0] state_counter = 2'b00;
   always_ff @(posedge clk) begin
-    state_counter <= (state_counter + 1)%3;
+    state_counter <= (state_counter + 1) % 3;
   end
 
   /* synth didn't likey
@@ -81,7 +81,7 @@ module Core (
   logic [31:0] RF_rdata2;
 
   RegisterFile rf (
-      .rclk(0), // async read
+      .rclk(0),  // async read
       .wclk(sig_write_back),
       .rsel1(RF_rsel1),
       .rsel2(RF_rsel2),
@@ -110,20 +110,34 @@ module Core (
       .data_out(DM_OUT)
   );
 
- logic [7:0] UART_OUT;
- uart_mmio uart(
-    .clk(clk),
-    .rst(btn),
-    .uart_rx_pin(uart_rx),
-    .uart_tx_pin(uart_tx),
-    .addr(mmu_addr_out[3:2]),
-    .wr_en(DM_wen & uart_wr_en & sig_write_back & (ALU_OUT == 32'h10000008)),
-    .wr_data(RF_rdata2[7:0]),
-    .rd_data(UART_OUT)
-);
+  logic [7:0] UART_OUT;
+  uart_mmio uart (
+      .clk(clk),
+      .rst(0),
+      .uart_rx_pin(uart_rx),
+      .uart_tx_pin(uart_tx),
+      .addr(mmu_addr_out[3:2]),
+      .wr_en(DM_wen & uart_wr_en & sig_write_back & (ALU_OUT == 32'h10000008)),
+      .wr_data(RF_rdata2[7:0]),
+      .rd_data(UART_OUT)
+  );
+
+  logic [7:0] I2C_OUT;
+  i2c_top i2c (
+      .clk(clk),
+      .rst(0),
+      .addr(8'h27),
+      .wr_en(DM_wen & i2c_wr_en & sig_write_back & (ALU_OUT == 32'h10002008)),
+      .data_in(RF_rdata2[7:0]),
+      .data_out(I2C_OUT),
+      .scl_pin(),
+      .sda_pin()
+  );
 
   logic [31:0] MMU_OUT;
-  assign MMU_OUT = (mem_sel == `MEM_SEL_SRAM) ? DM_OUT : { 24'h000000, UART_OUT};
+  assign MMU_OUT = (mem_sel == `MEM_SEL_SRAM) ? DM_OUT :
+                   (mem_sel == `MEM_SEL_I2C)  ? {24'h000000, UART_OUT} :
+                   {24'h000000, I2C_OUT};
 
   logic [31:0] ALU_A;
   assign ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
@@ -146,22 +160,24 @@ module Core (
       .branch(branch_taken)
   );
 
-   logic [31:0] addr_in;
-   logic        sram_wr_en;
-   logic        uart_wr_en;
-   logic [31:0] mmu_addr_out;
-   logic [ 1:0] mem_sel;
+  logic [31:0] addr_in;
+  logic        sram_wr_en;
+  logic        uart_wr_en;
+  logic        i2c_wr_en;
+  logic [31:0] mmu_addr_out;
+  logic [ 1:0] mem_sel;
 
- MMU mmu(
-    .addr_in(ALU_OUT),
-    .sram_wr_en(sram_wr_en),
-    .uart_wr_en(uart_wr_en),
-    .addr_out(mmu_addr_out),
-    .mem_sel(mem_sel)
-);
+  MMU mmu (
+      .addr_in(ALU_OUT),
+      .sram_wr_en(sram_wr_en),
+      .uart_wr_en(uart_wr_en),
+      .addr_out(mmu_addr_out),
+      .i2c_wr_en(i2c_wr_en),
+      .mem_sel(mem_sel)
+  );
 
   always_ff @(posedge sig_write_back) begin
-    if (~halt) begin
+    if (halt_sig) begin
       casez (instruction[6:0])
         B_TYPE: begin
           if (branch_taken == `BRANCH_SEL_ALU) begin
@@ -184,26 +200,23 @@ module Core (
       .imm(Immediate_imm)
   );
 
-  logic halt = 0;
+  reg halt_sig = 1;
 
+  /*
+ assign leds[5] = mmu_addr_out[3];
+ assign leds[4] = mmu_addr_out[2];
+ assign leds[3] = uart.tx_data_ready;
+ assign leds[2] = uart_rx;
+ assign leds[1] = uart_tx;
+ assign leds[0] = halt_sig;
+    */
 
-  assign leds[5:1] = program_counter[6:2];
-  assign leds[0] = halt;
+  assign leds[5:0] = program_counter[7:2];
 
-
-
-
-
-
-
-
-
-
-
-   
 `ifdef synth
 
   logic [31:0] gp;
+  logic [31:0] tx_word;
   assign gp[31:0] = rf.registers[3];
 
   function [7:0] hex_to_ascii;
@@ -214,24 +227,25 @@ module Core (
     end
   endfunction
 
-  logic [  31:0] pass          [1];
-  logic [  31:0] fail          [1];
+  logic [31:0] pass[1];
+  logic [31:0] fail[1];
 
   initial begin
-    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt", pass);
-    $readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt", fail);
+    //$readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_pass.txt", pass);
+    //$readmemh("../../mem_files/rv32ui-p-tests/rv32ui-p-sw_fail.txt", fail);
     leds[5:1] = 5'b00000;
   end
 
   always_ff @(posedge clk) begin
+    leds[0] <= halt_sig;
     if (program_counter == fail[0]) begin
-      halt <= 1;
+      halt_sig  <= 0;
       leds[5:1] <= 5'b11100;
-      tx_word <= "fail";
+      tx_word   <= "fail";
     end else if (program_counter == pass[0]) begin
       leds[5:1] <= 5'b10101;
-      halt <= 1;
-      tx_word <= "pass";
+      halt_sig  <= 0;
+      tx_word   <= "pass";
     end else begin
       leds[5:1] <= program_counter[6:2];
       tx_word[31:24] <= hex_to_ascii(program_counter[15:12]);

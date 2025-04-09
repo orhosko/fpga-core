@@ -61,7 +61,7 @@ module DataMem (
   end
 
   initial begin
-    $readmemh("../mem_files/uart-test.data.mem", mem);
+    $readmemh("./mem_files/uart-test.data.mem", mem);
   end
 
 endmodule

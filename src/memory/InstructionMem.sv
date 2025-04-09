@@ -13,7 +13,7 @@ module InstructionMem (
   end
 
   initial begin
-    $readmemh("../mem_files/uart-test.mem", mem);
+    $readmemh("./mem_files/uart-test.mem", mem);
   end
 
 endmodule

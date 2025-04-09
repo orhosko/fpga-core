@@ -25,7 +25,8 @@ typedef enum logic [6:0] {
   S_TYPE = 7'b0?00011  // `OPC_STORE, `OPC_LOAD
 } opcode_t;
 
-  `define MEM_SEL_SRAM 2'b10
-  `define MEM_SEL_UART 2'b11
+  `define MEM_SEL_SRAM 2'b01
+  `define MEM_SEL_UART 2'b10
+  `define MEM_SEL_I2C 2'b11
 
 `endif
