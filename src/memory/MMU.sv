@@ -1,4 +1,4 @@
-`include "controlunit_definitions.sv"
+`include "../controlunit_definitions.svh"
 
 module MMU (
     input  logic [31:0] addr_in,

@@ -1,7 +1,8 @@
 module i2c_top (
     input  logic       clk,
     input  logic       rst,
-    input  logic [6:0] addr,
+    input  logic [1:0] addr,
+    input  logic [6:0] dev_addr,
     input  logic       wr_en,        // Read/Write control (0: Write, 1: Read)
     input  logic [7:0] data_in,   // Data to be transmitted
     output logic [7:0] data_out,  // Data received (for read transactions)
@@ -19,6 +20,11 @@ module i2c_top (
   logic       ready;
   assign ready = !busy;
 
+  logic [7:0] tx_data;  // Data to be transmitted
+
+  logic      tx_data_valid;
+  logic      tx_data_ready;
+
   // Address Map
   localparam ADDR_CTRL = 2'b00;  // Control Register
   localparam ADDR_STAT = 2'b01;  // Status Register
@@ -28,11 +34,11 @@ module i2c_top (
   // Memory-Mapped Register Read
   always_comb begin
     case (addr)
-      ADDR_CTRL: rd_data = 8'b00000000;  // Dummy control reg (can be used for enable bits)
-      ADDR_STAT: rd_data = {6'b0, ready, 0};  // TX/RX status
-      ADDR_TX:   rd_data = 8'b00000000;  // Writing-only
-      // ADDR_RX:   rd_data = rx_data;  // Read received data
-      default:   rd_data = 8'h00000000;
+      ADDR_CTRL: data_out = 8'b00000000;  // Dummy control reg (can be used for enable bits)
+      ADDR_STAT: data_out = {6'b0, ready, 1'b0};  // TX/RX status
+      ADDR_TX:   data_out = 8'b00000000;  // Writing-only
+      // ADDR_RX:   data_out = rx_data;  // Read received data
+      default:   data_out = 8'h00000000;
     endcase
   end
 
@@ -43,7 +49,7 @@ module i2c_top (
      end
 
      if (wr_en && addr == ADDR_TX)  begin
-        tx_data <= wr_data;
+        tx_data <= data_in;
         start <= 1'b1;
      end
 
@@ -57,7 +63,7 @@ module i2c_top (
       .clk     (clk),
       .rst     (rst),
       .start   (start),
-      .addr    (addr),
+      .addr    (dev_addr),
       .rw      (0),
       .data_in (tx_data),
       .data_out(),

@@ -17,7 +17,6 @@ module uart_mmio (
   wire       tx_data_ready;
   wire [7:0] rx_data;
   wire       rx_data_valid;
-  reg        rx_data_ack;  // Software acknowledges RX data
 
   // Address Map
   localparam ADDR_CTRL = 2'b00;  // Control Register
@@ -29,18 +28,20 @@ module uart_mmio (
   always_comb begin
     case (addr)
       ADDR_CTRL: rd_data = 8'b00000000;  // Dummy control reg (can be used for enable bits)
-      ADDR_STAT: rd_data = {6'b0, tx_data_ready, rx_data_valid};  // TX/RX status
+      ADDR_STAT: rd_data = {6'b0, tx_data_ready, rx_data_buffer_valid};  // TX/RX status
       ADDR_TX:   rd_data = 8'b00000000;  // Writing-only
-      ADDR_RX:   rd_data = rx_data;  // Read received data
+      ADDR_RX:   rd_data = rx_data_buffer;  // Read received data
       default:   rd_data = 8'h00000000;
     endcase
   end
 
+  logic rx_data_buffer_valid;
+  logic [7:0] rx_data_buffer;
+   
   // Memory-Mapped Register Write
   always @(posedge clk or posedge rst) begin
     if (rst) begin
       tx_data_valid <= 1'b0;
-      rx_data_ack   <= 1'b0;
     end else begin
       if (wr_en) begin
         case (addr)
@@ -57,9 +58,14 @@ module uart_mmio (
       // Clear tx_data_valid when tx_data is accepted
       if (tx_data_valid && tx_data_ready) tx_data_valid <= 1'b0;
 
-      // Acknowledge received data
-      if (rx_data_valid && addr == ADDR_RX) rx_data_ack <= 1'b1;
-      else rx_data_ack <= 1'b0;
+      if(rx_data_valid) begin
+          rx_data_buffer <= rx_data;
+          rx_data_buffer_valid <= 1'b1;
+      end
+
+      if(addr == ADDR_RX && rx_data_buffer_valid) begin
+          rx_data_buffer_valid <= 1'b0;  // Clear the buffer valid flag when read
+      end
     end
   end
 

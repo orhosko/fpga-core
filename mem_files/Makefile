@@ -1,7 +1,7 @@
 RV32UI_P_DIR := ./rv32ui-p
 RV32UI_P_TESTS_DIR := ./rv32ui-p-tests
 
-OBJCOPY=riscv64-unknown-elf-objcopy
+OBJCOPY=riscv64-linux-gnu-objcopy
 
 # Find all input files in rv32ui-p directory
 BINARY_TESTS := $(filter-out %.dump, $(wildcard $(RV32UI_P_DIR)/*))

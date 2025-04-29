@@ -36,10 +36,6 @@ synth: $(FILELIST)
 	script=$$script"synth_gowin -json build/synth.json -family gw2a;"; \
 	yosys -p "$$script"
 
-clean:
-	rm -rf build
-	rm -rf build-sim
-
 sim-build: cmake-cache
 	cmake --build build-sim
 
@@ -51,3 +47,8 @@ sim-test: sim-build
 
 sim-run: sim-test
 	cd mem_files && make run-tests && cd -
+
+clean:
+	rm -rf build
+	rm -rf build-sim
+

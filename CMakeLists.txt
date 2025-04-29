@@ -35,6 +35,7 @@ add_executable( ${TEST_NAME} test/${TEST_NAME}.cpp)
         ./src/core
         ./src/memory
         ./src/uart
+        ./src/i2c
     VERILATOR_ARGS --timing --assert --trace
 )
 endforeach()

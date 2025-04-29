@@ -34,9 +34,9 @@ make --file ./mem_files/test-Makefile run-tests > test-res.txt;
 - [X] read ROM and send on UART
 - [X] Single cycle core
 - [X] rv32ui-p tests
-- [ ] FPGA BSRAM usage
+- [X] FPGA BSRAM usage
+- [X] Memory mapped I/O
 - [ ] Documentation
-- [ ] Memory mapped I/O
 - [ ] UART "echo server"
 - [ ] UART "echo server" + ROM
 - [ ] Interrupts
@@ -44,3 +44,7 @@ make --file ./mem_files/test-Makefile run-tests > test-res.txt;
 - [ ] UART calculator
 - [ ] ...
 - [ ] pipelining
+
+## TODO
+
+- [ ] .rodata to inst mem

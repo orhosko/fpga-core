@@ -113,7 +113,7 @@ module Core (
   logic [7:0] UART_OUT;
   uart_mmio uart (
       .clk(clk),
-      .rst(0),
+      .rst(btn),
       .uart_rx_pin(uart_rx),
       .uart_tx_pin(uart_tx),
       .addr(mmu_addr_out[3:2]),
@@ -126,7 +126,8 @@ module Core (
   i2c_top i2c (
       .clk(clk),
       .rst(0),
-      .addr(8'h27),
+      .addr(mmu_addr_out[3:2]),
+      .dev_addr(7'h27),
       .wr_en(DM_wen & i2c_wr_en & sig_write_back & (ALU_OUT == 32'h10002008)),
       .data_in(RF_rdata2[7:0]),
       .data_out(I2C_OUT),
@@ -136,8 +137,9 @@ module Core (
 
   logic [31:0] MMU_OUT;
   assign MMU_OUT = (mem_sel == `MEM_SEL_SRAM) ? DM_OUT :
-                   (mem_sel == `MEM_SEL_I2C)  ? {24'h000000, UART_OUT} :
-                   {24'h000000, I2C_OUT};
+                   (mem_sel == `MEM_SEL_UART)  ? {24'h000000, UART_OUT} :
+                   (mem_sel == `MEM_SEL_I2C)  ? {24'h000000, I2C_OUT} :
+                   32'h12345678;
 
   logic [31:0] ALU_A;
   assign ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
@@ -187,7 +189,7 @@ module Core (
         J_TYPE, `OPC_JALR: begin
           program_counter <= ALU_OUT;
         end
-        default begin
+        default: begin
           program_counter <= program_counter + 4;
         end
       endcase
@@ -202,16 +204,13 @@ module Core (
 
   reg halt_sig = 1;
 
-  /*
- assign leds[5] = mmu_addr_out[3];
- assign leds[4] = mmu_addr_out[2];
+ assign leds[5] = btn;
  assign leds[3] = uart.tx_data_ready;
- assign leds[2] = uart_rx;
- assign leds[1] = uart_tx;
- assign leds[0] = halt_sig;
-    */
+ assign leds[2:0] = uart.uart_tx_inst.state[2:0];
 
+   /*
   assign leds[5:0] = program_counter[7:2];
+    */
 
 `ifdef synth
 

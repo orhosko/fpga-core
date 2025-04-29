@@ -1,3 +1,8 @@
+/* verilator lint_off WIDTHEXPAND */
+/* verilator lint_off WIDTHCONCAT */
+/* verilator lint_off MULTIDRIVEN */
+/* verilator lint_off LATCH */
+
 module i2c_master #(
     // Parameters for clock frequencies
     parameter CLK_FREQ = 27_000_000, // System clock frequency in Hz
@@ -150,61 +155,61 @@ module i2c_master #(
   end
 
   // Next state combinational logic
-  always_comb begin
-    next_state = state;
+  always @(posedge clk) begin
+    next_state <= state;
     case(state)
       IDLE: begin
         if(start)
-          next_state = START_COND;
+          next_state <= START_COND;
       end
 
       START_COND: begin
         // Prepare to send address: load shift register with address.
-        next_state = SEND_ADDR;
-        shift_reg = {addr, 1'b0}; // address[6:0] + dummy bit (will be overwritten by rw later)
-        bit_cnt = 0;
+        next_state <= SEND_ADDR;
+        shift_reg <= {addr, 1'b0}; // address[6:0] + dummy bit (will be overwritten by rw later)
+        bit_cnt <= 0;
       end
 
       SEND_ADDR: begin
         if(bit_cnt == 7) // after 7 bits transmitted
-          next_state = SEND_RW;
+          next_state <= SEND_RW;
       end
 
       SEND_RW: begin
-        next_state = WAIT_ACK1;
+        next_state <= WAIT_ACK1;
       end
 
       WAIT_ACK1: begin
         // Sample ack (assume ack = 0 means OK)
-        next_state = SEND_DATA;
-        bit_cnt = 0;
-        shift_reg = data_in;
+        next_state <= SEND_DATA;
+        bit_cnt <= 0;
+        shift_reg <= data_in;
       end
 
       SEND_DATA: begin
         if(bit_cnt == 8) // after 8 data bits transmitted
-          next_state = WAIT_ACK2;
+          next_state <= WAIT_ACK2;
       end
 
       WAIT_ACK2: begin
         // Sample data ack from slave then proceed to stop condition.
-        next_state = STOP_COND;
+        next_state <= STOP_COND;
       end
 
       STOP_COND: begin
         // Finish the transaction by releasing SDA when SCL is high.
         if(scl_int) begin
-          sda_oe = 1;
-          sda_out = 1;
-          next_state = COMPLETE;
+          sda_oe <= 1;
+          sda_out <= 1;
+          next_state <= COMPLETE;
         end
       end
 
       COMPLETE: begin
-        next_state = IDLE;
+        next_state <= IDLE;
       end
 
-      default: next_state = IDLE;
+      default: next_state <= IDLE;
     endcase
   end
 

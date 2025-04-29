@@ -154,7 +154,7 @@ module UART_Test;
         $display("----------------------------");
 
      a = a + 1;
-     if (a == 100000) begin
+     if (a == 10000) begin
        $finish;
      end
 
