@@ -9,7 +9,7 @@ BASENAME_AS := $(basename $(ASSEMBLE))
 CC = clang
 AS = riscv64-linux-gnu-as
 
-CFLAGS = --target=riscv32 -march=rv32i -mabi=ilp32 -O3 -ffreestanding -nostdlib -fno-pie
+CFLAGS = --target=riscv32 -march=rv32i -mabi=ilp32 -O0 -ffreestanding -nostdlib -fno-pie -g
 #CFLAGS = -march=rv32i -mabi=ilp32 -O0 -ffreestanding -nostdlib -fno-pie -nostartfiles -fno-asynchronous-unwind-tables
 ASFLAGS = -march=rv32i -mabi=ilp32
 
