@@ -38,8 +38,12 @@ module ControlUnit (
     endcase
   end
 
-  logic [2:0] fn3 = instruction[14:12];  // yosys doesn't allow nested initialization
-  logic [6:0] fn7 = instruction[31:25];
+  // yosys doesn't allow nested initialization
+  logic [2:0] fn3;
+  assign fn3 = instruction[14:12];
+  logic [6:0] fn7;
+  assign fn7 = instruction[31:25];
+
   always_comb begin
     if (OPC == R_TYPE) begin
       unique case (fn3)
@@ -72,7 +76,9 @@ module ControlUnit (
 
   assign DM_wen = (instruction[6:0] == `OPC_STORE) ? 1'b1 : 1'b0;
 
-  logic [4:0] rd = instruction[11:7];
+  logic [4:0] rd;
+  assign rd = instruction[11:7];
+
   always_comb begin
     casez (OPC)
       U_TYPE, R_TYPE, I_TYPE, J_TYPE: begin
@@ -87,8 +93,10 @@ module ControlUnit (
 
   assign RF_wsel = rd;
 
-  logic [4:0] rs1 = instruction[19:15];
-  logic [4:0] rs2 = instruction[24:20];
+  logic [4:0] rs1;
+  assign rs1 = instruction[19:15];
+  logic [4:0] rs2;
+  assign rs2 = instruction[24:20];
 
   always_comb begin
     casez (OPC)

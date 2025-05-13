@@ -36,7 +36,7 @@ module MMU (
 
     end else begin
       addr_out = addr_in;
-      mem_sel = 2'b00;
+      mem_sel = 2'b11;
     end
 
   end
