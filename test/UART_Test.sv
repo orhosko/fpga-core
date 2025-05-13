@@ -7,72 +7,55 @@ module UART_Test;
   always #`CLK_UNIT_TIME clk = ~clk;
 
   logic uart_rx = 1'b1;
+  wire uart_tx;
 
   Core core (
       .clk(clk),
       .leds(),
       .btn(0),
       .uart_rx(uart_rx),
-      .uart_tx()
+      .uart_tx(uart_tx)
   );
 
-  /*
-  initial begin
-    int i;
-
-    for (i = 70; i < 90; i = i + 1) begin
-      #`UART_UNIT_TIME;
-      uart_rx = 1'b0;  // start bit
-      #`UART_UNIT_TIME;
-      uart_rx = i[7];
-      #`UART_UNIT_TIME;
-      uart_rx = i[6];
-      #`UART_UNIT_TIME;
-      uart_rx = i[5];
-      #`UART_UNIT_TIME;
-      uart_rx = i[4];
-      #`UART_UNIT_TIME;
-      uart_rx = i[3];
-      #`UART_UNIT_TIME;
-      uart_rx = i[2];
-      #`UART_UNIT_TIME;
-      uart_rx = i[1];
-      #`UART_UNIT_TIME;
-      uart_rx = i[0];
-      #`UART_UNIT_TIME;
-      uart_rx = 1'b1;
-      #(`UART_UNIT_TIME * 10);
-    end
-
-  end
-
-  always_ff @(negedge clk) begin
-     if(core.ALU_OUT == 32'h1000_0008) begin
-        $display("PC: %h", core.program_counter);
-        s.itoa(t_data);
-        $display("uart_tx_state: %b", core.uart.uart_tx_inst.state);
-        $display("uart_tx_next_state: %b", core.uart.uart_tx_inst.next_state);
-        $display("tx_data_valid: %b", core.uart.tx_data_valid);
-        $display("tx_data_ready: %b", core.uart.tx_data_ready);
-        $display("t_data: %s", s);
-        $display("rx_data_valid: %b", core.uart.rx_data_valid);
-        $display("rd_data: %b", core.uart.rd_data);
-        $display("wr_en: %b", core.uart.wr_en);
-        $display("addr: %h", core.mmu_addr_out);
-        $display("uart_addr: %b", core.uart.addr);
-        //$display("r_data: %b", r_data);
-        $display("----------------------------");
-    end
-  end
-   */
-
-   int  a;
-
+  int  a;
   int i, j;
+
   string s;
   logic [7:0] r_data = 8'b0;
   logic [7:0] t_data = 8'b0;
-  // always_ff @(posedge core.uart.tx_data_valid) begin // negedge clk
+
+  always_ff @(posedge clk) begin
+     a <= a+1;
+
+     if (a==1_000_000) begin
+        core.uart.rx_data = 8'h30;
+        core.uart.rx_data_valid = 1'b1;
+        #50
+        core.uart.rx_data_valid = 1'b0;
+     end
+     if (a==2_000_000) begin
+        core.uart.rx_data = 8'h31;
+        core.uart.rx_data_valid = 1'b1;
+        #50
+        core.uart.rx_data_valid = 1'b0;
+     end
+     if (a==3_000_000) begin
+        core.uart.rx_data = 8'h0d;
+        core.uart.rx_data_valid = 1'b1;
+        #50
+        core.uart.rx_data_valid = 1'b0;
+     end
+     if (a==4_000_000) begin
+        core.uart.rx_data = 8'h0a;
+        core.uart.rx_data_valid = 1'b1;
+        #50
+        core.uart.rx_data_valid = 1'b0;
+     end
+
+     if (a==5_000_000) $finish;
+  end
+
+  /*
   always_ff @(posedge clk) begin // negedge clk
 
       if(core.uart.tx_data_ready == 1) begin
@@ -159,6 +142,7 @@ module UART_Test;
      end
 
     end
+   */
 
 
   /*

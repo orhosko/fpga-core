@@ -9,13 +9,12 @@ BASENAME_AS := $(basename $(ASSEMBLE))
 CC = clang
 AS = riscv64-linux-gnu-as
 
-CFLAGS = --target=riscv32 -march=rv32i -mabi=ilp32 -O0 -ffreestanding -nostdlib -fno-pie -g
+CFLAGS = --target=riscv32 -march=rv32i -mabi=ilp32 -ffreestanding -nostdlib -fno-pie -O0 # -O3
 #CFLAGS = -march=rv32i -mabi=ilp32 -O0 -ffreestanding -nostdlib -fno-pie -nostartfiles -fno-asynchronous-unwind-tables
 ASFLAGS = -march=rv32i -mabi=ilp32
 
-LD = ld.lld
-#LD = riscv64-linux-gnu-ld
-LDFLAGS = -Ttext=0x80000000 -Tdata=0x80002000 -T link.ld
+LD = ld.lld # riscv64-linux-gnu-ld
+LDFLAGS = -Ttext=0x80000000 -Tdata=0x80002000 -T link.ld -no-pie
 
 OBJCOPY = riscv64-linux-gnu-objcopy
 OBJCOPYFLAGS = -O binary
@@ -34,7 +33,7 @@ $(BASENAME).mem: $(SOURCE)
 	$(LD) $(LDFLAGS) $(BASENAME).o start.s.o -o $(BASENAME).elf
 
 	$(OBJCOPY) $(OBJCOPYFLAGS) $(BASENAME).elf $(BASENAME).bin
-	$(OBJCOPY) $(OBJCOPYFLAGS) -j .data* -j .rodata* $(BASENAME).elf $(BASENAME).data.bin
+	$(OBJCOPY) $(OBJCOPYFLAGS) -j .rodata.str1.1 $(BASENAME).elf $(BASENAME).data.bin
 	hexdump -v -e '1/1 "%02x\n"' $(BASENAME).bin > $(BASENAME).mem
 	hexdump -v -e '1/4 "%08x\n"' $(BASENAME).data.bin > $(BASENAME).data.mem
 
