@@ -40,4 +40,7 @@ make sim-run
 
 - [ ] create a libc-like (maybe use newlib)
 - [ ] why first uploads are iffy
-- [ ] find a efficent way to put things other than .rodata.str1.1 to sram
+- [ ] find a efficient way to put things other than .rodata.str1.1 to sram
+- [ ] why read is so slow
+- [ ] i2c
+- [ ] fix leds, use buttons for reset
