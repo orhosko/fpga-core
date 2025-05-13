@@ -13,8 +13,8 @@ flash: pack
 pack: pnr
 	gowin_pack -d GW2A-18C -o build/packed.fs build/pnr.json
 
-pnr: synth/tangnano20k.cst synth
-	nextpnr-himbaechel --json build/synth.json --write build/pnr.json --device GW2AR-LV18QN88C8/I7 --vopt family=GW2A-18C --vopt cst=synth/tangnano20k.cst
+pnr: src/tangnano20k.cst synth
+	nextpnr-himbaechel --json build/synth.json --write build/pnr.json --device GW2AR-LV18QN88C8/I7 --vopt family=GW2A-18C --vopt cst=src/tangnano20k.cst
 
 synth: $(FILELIST)
 	mkdir -p build

@@ -8,3 +8,7 @@ builds/
 ./*/obj_*
 .nvim/
 dump.vcd
+
+mem_files_compiled/*.o
+mem_files_compiled/*.bin
+mem_files_compiled/*.elf

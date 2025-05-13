@@ -6,12 +6,10 @@
 ./src/components/ControlUnit.sv
 ./src/components/Immediate.sv
 ./src/core/Core.sv
-./src/uart/uart_rx.v
-./src/uart/uart_tx.v
-./src/uart/uart_mmio.sv
-./src/i2c/i2c_top.sv
-./src/i2c/i2c_master.sv
 ./src/core/RegisterFile.sv
 ./src/memory/DataMem.sv
 ./src/memory/InstructionMem.sv
 ./src/memory/MMU.sv
+./src/uart/uart_rx.v
+./src/uart/uart_tx.v
+./src/uart/uart_mmio.sv
