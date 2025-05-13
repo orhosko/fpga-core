@@ -10,9 +10,42 @@ module Core (
     output uart_tx
 );
 
-  logic [1:0] state_counter = 2'b00;
+  typedef struct packed {
+    logic [31:0] instruction;
+    logic [31:0] program_counter;
+  } pipe_reg_if_dr_t;
+
+  typedef struct packed {
+    logic [31:0] RF_rdata1;
+    logic [31:0] RF_rdata2;
+    logic [31:0] Immediate_imm;
+    logic [31:0] program_counter;
+    logic [31:0] instruction;  // or control pins
+  } pipe_reg_id_ex_t;
+
+  typedef struct packed {
+    logic [31:0] ALU_OUT;
+    // flags
+    logic [31:0] RF_rdata2;
+    logic [31:0] target;
+    logic [31:0] instruction;  // or control pins
+  } pipe_reg_ex_mem_t;
+
+  typedef struct packed {
+    logic [31:0] ALU_OUT;
+    logic [31:0] DM_OUT;
+    logic [31:0] instruction;  // or control pins
+  } pipe_reg_mem_wb_t;
+
+  pipe_reg_if_dr_t pr_if_dr;
+  pipe_reg_id_ex_t pr_id_ex;
+  pipe_reg_ex_mem_t pr_ex_mem;
+  pipe_reg_mem_wb_t pr_mem_wb;
+
+
+  logic [1:0] state_counter = 2'b11;
   always_ff @(posedge clk) begin
-    state_counter <= (state_counter + 1) % 3;
+    state_counter <= state_counter + 1;
   end
 
   /* synth didn't likey
@@ -23,7 +56,7 @@ module Core (
 
   logic sig_read_im;
   logic sig_data_read;
-  // logic sig_compute;
+  logic sig_compute;
   logic sig_write_back;
 
   // read inst mem
@@ -35,12 +68,12 @@ module Core (
   assign sig_data_read = (state_counter == 2'b01);
 
   // compute - combinational don't do anything
-  // assign sig_compute = (state_counter == 2'b10);
+  assign sig_compute = (state_counter == 2'b10);
 
   // write register & memory
   // update pc
   // assign sig_write_back = (state_counter == 2'b11);
-  assign sig_write_back = (state_counter == 2'b10);
+  assign sig_write_back = (state_counter == 2'b11);
 
   logic [31:0] program_counter = 32'h80000000;
 
@@ -71,6 +104,7 @@ module Core (
       .ALU_Operation(ALU_Operation)
   );
 
+  logic [31:0] ALU_OUT;
 
   logic [31:0] RF_wdata;
   assign RF_wdata = (RF_wdata_sel == `RF_WDATA_SEL_PC) ? program_counter + 4 :
@@ -81,85 +115,16 @@ module Core (
   logic [31:0] RF_rdata2;
 
   RegisterFile rf (
-      .rclk(0),  // async read
-      .wclk(sig_write_back),
+      .rclk(1'b0),  // async read
+      .wclk(clk),
       .rsel1(RF_rsel1),
       .rsel2(RF_rsel2),
       .wsel(RF_wsel),
-      .wen(RF_wen),
+      .wen(RF_wen & sig_write_back),
       .wdata(RF_wdata),
       .rdata1(RF_rdata1),
       .rdata2(RF_rdata2),
-      .rst(0)
-  );
-
-  InstructionMem im (
-      .clk(sig_read_im),
-      .addr(program_counter),
-      .data_out(instruction)
-  );
-
-  logic [31:0] DM_OUT;
-  DataMem dm (
-      .rclk(sig_data_read),
-      .wclk(sig_write_back),
-      .data_in(RF_rdata2),
-      .addr_in(mmu_addr_out),
-      .wr_en(DM_wen & sram_wr_en),
-      .fn3(instruction[14:12]),
-      .data_out(DM_OUT)
-  );
-
-  logic [7:0] UART_OUT;
-  uart_mmio uart (
-      .clk(clk),
-      .rst(btn),
-      .uart_rx_pin(uart_rx),
-      .uart_tx_pin(uart_tx),
-      .addr(mmu_addr_out[3:2]),
-      .wr_en(DM_wen & uart_wr_en & sig_write_back & (ALU_OUT == 32'h10000008)),
-      .wr_data(RF_rdata2[7:0]),
-      .rd_data(UART_OUT)
-  );
-
-  logic [7:0] I2C_OUT;
-  i2c_top i2c (
-      .clk(clk),
-      .rst(0),
-      .addr(mmu_addr_out[3:2]),
-      .dev_addr(7'h27),
-      .wr_en(DM_wen & i2c_wr_en & sig_write_back & (ALU_OUT == 32'h10002008)),
-      .data_in(RF_rdata2[7:0]),
-      .data_out(I2C_OUT),
-      .scl_pin(),
-      .sda_pin()
-  );
-
-  logic [31:0] MMU_OUT;
-  assign MMU_OUT = (mem_sel == `MEM_SEL_SRAM) ? DM_OUT :
-                   (mem_sel == `MEM_SEL_UART)  ? {24'h000000, UART_OUT} :
-                   (mem_sel == `MEM_SEL_I2C)  ? {24'h000000, I2C_OUT} :
-                   32'h12345678;
-
-  logic [31:0] ALU_A;
-  assign ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
-
-  logic [31:0] ALU_B;
-  assign ALU_B = (ALU_OP2_SEL == `ALU_OP2_SEL_REG) ? RF_rdata2 : Immediate_imm;
-
-  logic [31:0] ALU_OUT;
-  ALU_Base alu (
-      .A  (ALU_A),
-      .B  (ALU_B),
-      .Ctr(ALU_Operation),
-      .Out(ALU_OUT)
-  );
-
-  BranchLogic bl (
-      .branch_cond(branch_condition),
-      .rdata1(RF_rdata1),
-      .rdata2(RF_rdata2),
-      .branch(branch_taken)
+      .rst(1'b0)
   );
 
   logic [31:0] addr_in;
@@ -178,8 +143,110 @@ module Core (
       .mem_sel(mem_sel)
   );
 
-  always_ff @(posedge sig_write_back) begin
-    if (halt_sig) begin
+  InstructionMem im (
+      .clk(clk),
+      .en(sig_read_im),
+      .addr(program_counter),
+      .data_out(instruction)
+  );
+
+  logic [31:0] DM_OUT;
+  DataMem dm (
+      .rclk(clk), //sig_data_read),
+      .wclk(clk),
+      .data_in(RF_rdata2),
+      .addr_in(mmu_addr_out),
+      .wr_en(DM_wen & sram_wr_en & sig_write_back),
+      .fn3(instruction[14:12]),
+      .data_out(DM_OUT)
+  );
+
+  logic [7:0] UART_OUT;
+  uart_mmio uart (
+      .clk(clk),
+      .rst(btn),
+      .uart_rx_pin(uart_rx),
+      .uart_tx_pin(uart_tx),
+      .addr(mmu_addr_out[3:2]),
+      .wr_en(DM_wen & uart_wr_en & sig_write_back & (ALU_OUT == 32'h10000008)),
+      .wr_data(RF_rdata2[7:0]),
+      .rd_data(UART_OUT)
+  );
+
+  /*
+  logic [ 7:0] I2C_OUT = 0;
+  i2c_top i2c (
+      .clk(clk),
+      .rst(1'b0),
+      .addr(mmu_addr_out[3:2]),
+      .dev_addr(7'h27),
+      .wr_en(DM_wen & i2c_wr_en & sig_write_back & (ALU_OUT == 32'h10002008)),
+      .data_in(RF_rdata2[7:0]),
+      .data_out(I2C_OUT),
+      .scl_pin(),
+      .sda_pin()
+  );
+   */
+
+  logic [31:0] MMU_OUT;
+  always_ff @(negedge clk) begin
+    if (sig_compute) begin //TODO: sadasdasd
+    MMU_OUT <= (mem_sel == `MEM_SEL_SRAM) ? DM_OUT :
+                   (mem_sel == `MEM_SEL_UART)  ? {24'h000000, UART_OUT} :
+                   (mem_sel == `MEM_SEL_I2C) ? 32'h00000000 : //? {24'h000000, I2C_OUT} :
+                   32'h00000078;
+    end
+
+    /*
+    if (mem_sel == 2'b11 && RF_wdata_sel == `RF_WDATA_SEL_DM && RF_wen)
+      $display(
+          "WHY THE FUCK YOU ARE HERE, mem_sel=%b, %b %b %b %b, %h",
+          mem_sel,
+          sig_read_im,
+          sig_data_read,
+          sig_compute,
+          sig_write_back,
+          ALU_OUT
+      );
+     */
+
+  end
+
+  logic [31:0] ALU_A;
+  assign ALU_A = (ALU_OP1_SEL == `ALU_OP1_SEL_REG) ? RF_rdata1 : program_counter;
+
+  logic [31:0] ALU_B;
+  assign ALU_B = (ALU_OP2_SEL == `ALU_OP2_SEL_REG) ? RF_rdata2 : Immediate_imm;
+
+  ALU_Base alu (
+      .A  (ALU_A),
+      .B  (ALU_B),
+      .Ctr(ALU_Operation),
+      .Out(ALU_OUT)
+  );
+
+  BranchLogic bl (
+      .branch_cond(branch_condition),
+      .rdata1(RF_rdata1),
+      .rdata2(RF_rdata2),
+      .branch(branch_taken)
+  );
+
+  always_ff @(negedge clk) begin
+
+    //$display("pc: %h, alu: %h", program_counter, ALU_OUT);
+    if(program_counter == 32'h80000100) begin
+
+    /*
+    for(int i=0; i<640; i=i+1) begin
+       $display("mem: %h", dm.mem[32'h960+i]);
+    end
+    */
+
+    end
+     
+    if(sig_write_back) begin
+    // if (halt_sig) begin
       casez (instruction[6:0])
         B_TYPE: begin
           if (branch_taken == `BRANCH_SEL_ALU) begin
@@ -194,6 +261,7 @@ module Core (
         end
       endcase
     end
+    // end
   end
 
   logic [31:0] Immediate_imm;
@@ -202,13 +270,14 @@ module Core (
       .imm(Immediate_imm)
   );
 
-  reg halt_sig = 1;
+ // reg halt_sig = 1;
 
- assign leds[5] = btn;
- assign leds[3] = uart.tx_data_ready;
- assign leds[2:0] = uart.uart_tx_inst.state[2:0];
+  assign leds[5]   = btn;
+  assign leds[4]   = sig_write_back;
+  assign leds[3]   = uart.tx_data_ready;
+  assign leds[2:0] = uart.uart_tx_inst.state[2:0];
 
-   /*
+  /*
   assign leds[5:0] = program_counter[7:2];
     */
 

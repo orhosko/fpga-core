@@ -38,7 +38,7 @@ module DataMem (
   end
 
   integer        i;
-  always @(posedge wclk) begin
+  always @(negedge wclk) begin
     for (i = 0; i < 4; i = i + 1) begin
         if (write_enable[i] && wr_en) mem[_addr_in>>2][8*i+:8] <= wdata[8*i+:8];
     end
@@ -46,7 +46,7 @@ module DataMem (
 
   logic [31:0] rdata;
   logic [ 4:0] read_start;
-  always @(posedge rclk) begin
+  always @(negedge rclk) begin
     read_start <= _addr_in[1:0] * 8;
     rdata <= mem[_addr_in>>2];
   end

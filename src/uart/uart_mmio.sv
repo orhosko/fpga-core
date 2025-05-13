@@ -39,7 +39,7 @@ module uart_mmio (
   logic [7:0] rx_data_buffer;
    
   // Memory-Mapped Register Write
-  always @(posedge clk or posedge rst) begin
+  always @(negedge clk or posedge rst) begin
     if (rst) begin
       tx_data_valid <= 1'b0;
     end else begin
@@ -48,7 +48,7 @@ module uart_mmio (
           ADDR_TX: begin
             tx_data <= wr_data;
             tx_data_valid <= 1'b1;  // Start TX when software writes
-            $display("SHOULDN'T BE HERE ALL THE TIME, wr_en: %b, addr: %b, wr_data: %b", wr_en, addr, wr_data);
+            $display("SHOULD BE HERE ONLY WHEN DATA IS GOING TO SEND, wr_en: %b, addr: %b, wr_data: %s", wr_en, addr, wr_data);
           end
           default: begin
           end

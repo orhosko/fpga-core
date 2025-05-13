@@ -13,12 +13,12 @@ module RegisterFile (
 
   logic [31:0] registers[32];
   initial begin
-    for (int i = 0; i < 32; i++) begin
+    for (int i = 0; i < 32; i=i+1) begin
       registers[i] = 32'b0;
     end
   end
 
-  always_ff @(posedge wclk) begin
+  always_ff @(negedge wclk) begin
     if (wen & wsel != 5'b0) begin  // Ignore writes to register 0
       registers[wsel] <= (rst) ? 32'b0 : wdata;
     end
