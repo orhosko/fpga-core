@@ -10,49 +10,10 @@ module Core (
     output uart_tx
 );
 
-  typedef struct packed {
-    logic [31:0] instruction;
-    logic [31:0] program_counter;
-  } pipe_reg_if_dr_t;
-
-  typedef struct packed {
-    logic [31:0] RF_rdata1;
-    logic [31:0] RF_rdata2;
-    logic [31:0] Immediate_imm;
-    logic [31:0] program_counter;
-    logic [31:0] instruction;  // or control pins
-  } pipe_reg_id_ex_t;
-
-  typedef struct packed {
-    logic [31:0] ALU_OUT;
-    // flags
-    logic [31:0] RF_rdata2;
-    logic [31:0] target;
-    logic [31:0] instruction;  // or control pins
-  } pipe_reg_ex_mem_t;
-
-  typedef struct packed {
-    logic [31:0] ALU_OUT;
-    logic [31:0] DM_OUT;
-    logic [31:0] instruction;  // or control pins
-  } pipe_reg_mem_wb_t;
-
-  pipe_reg_if_dr_t pr_if_dr;
-  pipe_reg_id_ex_t pr_id_ex;
-  pipe_reg_ex_mem_t pr_ex_mem;
-  pipe_reg_mem_wb_t pr_mem_wb;
-
-
   logic [1:0] state_counter = 2'b11;
   always_ff @(posedge clk) begin
     state_counter <= state_counter + 1;
   end
-
-  /* synth didn't likey
-  always_ff @(negedge clk) begin
-    state_counter <= state_counter + 1;
-  end
-  */
 
   logic sig_read_im;
   logic sig_data_read;
@@ -174,21 +135,6 @@ module Core (
       .rd_data(UART_OUT)
   );
 
-  /*
-  logic [ 7:0] I2C_OUT = 0;
-  i2c_top i2c (
-      .clk(clk),
-      .rst(1'b0),
-      .addr(mmu_addr_out[3:2]),
-      .dev_addr(7'h27),
-      .wr_en(DM_wen & i2c_wr_en & sig_write_back & (ALU_OUT == 32'h10002008)),
-      .data_in(RF_rdata2[7:0]),
-      .data_out(I2C_OUT),
-      .scl_pin(),
-      .sda_pin()
-  );
-   */
-
   logic [31:0] MMU_OUT;
   always_ff @(negedge clk) begin
     if (sig_compute) begin  //TODO: sadasdasd
@@ -251,58 +197,5 @@ module Core (
   assign leds[4]   = sig_write_back;
   assign leds[3]   = uart.tx_data_ready;
   assign leds[2:0] = uart.uart_tx_inst.state[2:0];
-
-  // ----------------------------------------------------
-
-  always_ff @(posedge clk) begin
-    if (1) begin  // TODO: add hazard detection
-      pr_if_dr.instruction <= instruction;
-      pr_if_dr.program_counter <= program_counter;
-    end
-  end
-
-  always_ff @(posedge clk) begin
-    if (1) begin  // TODO: add hazard detection
-      pr_id_ex.RF_rdata1 <= RF_rdata1;
-      pr_id_ex.RF_rdata2 <= RF_rdata2;
-      pr_id_ex.Immediate_imm <= Immediate_imm;
-      pr_id_ex.program_counter <= pr_if_dr.program_counter;
-
-      pr_id_ex.RF_rsel1 <= RF_rsel1;
-      pr_id_ex.RF_rsel2 <= RF_rsel2;
-      pr_id_ex.RF_wsel <= RF_wsel;
-      pr_id_ex.RF_wen <= RF_wen;
-      pr_id_ex.branch_taken <= branch_taken;
-      pr_id_ex.DM_wen <= DM_wen;
-      pr_id_ex.RF_wdata_sel <= RF_wdata_sel;
-      pr_id_ex.mem_sel <= mem_sel;
-      pr_id_ex.ALU_OP1_SEL <= ALU_OP1_SEL;
-      pr_id_ex.ALU_OP2_SEL <= ALU_OP2_SEL;
-      pr_id_ex.ALU_Operation <= ALU_Operation;
-      pr_id_ex.branch_condition <= branch_condition;
-    end
-  end
-
-  always_ff @(posedge clk) begin
-    if (1) begin  // TODO: add hazard detection
-      pr_ex_mem.ALU_OUT <= ALU_OUT;
-      pr_ex_mem.RF_wsel <= pr_id_ex.RF_wsel;
-      pr_ex_mem.RF_wen <= pr_id_ex.RF_wen;
-      pr_ex_mem.RF_wdata_sel <= pr_id_ex.RF_wdata_sel;
-      pr_ex_mem.mem_sel <= pr_id_ex.mem_sel;
-      pr_ex_mem.DM_wen <= pr_id_ex.DM_wen;
-    end
-  end
-
-  always_ff @(posedge clk) begin
-    if (1) begin  // TODO: add hazard detection
-      pr_mem_wb.ALU_OUT <= ALU_OUT;
-      pr_mem_wb.DM_OUT <= DM_OUT;
-
-      pr_mem_wb.RF_wsel <= pr_ex_mem.RF_wsel;
-      pr_mem_wb.RF_wen <= pr_ex_mem.RF_wen;
-      pr_mem_wb.RF_wdata_sel <= pr_ex_mem.RF_wdata_sel;
-    end
-  end
 
 endmodule
