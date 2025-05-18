@@ -15,8 +15,8 @@ module InstructionTest;
       .uart_tx()
   );
 
-  logic [  31:0] pass          [1];
-  logic [  31:0] fail          [1];
+  logic [  31:0] pass           [1];
+  logic [  31:0] fail           [1];
 
   reg   [1023:0] test_name;
 
@@ -26,12 +26,16 @@ module InstructionTest;
   reg   [2047:0] data_mem_file;
 
   reg            DEBUG = 0;
+  reg            DEBUG_REGS = 0;
+  reg            DEBUG_DM = 0;
 
   initial begin
     if (!$value$plusargs("testname=%s", test_name)) begin
       $finish;
     end
     $value$plusargs("DEBUG=%b", DEBUG);
+    $value$plusargs("DEBUG_REGS=%b", DEBUG_REGS);
+    $value$plusargs("DEBUG_DM=%b", DEBUG_DM);
 
     /* verilator lint_off WIDTHEXPAND */
     pass_file = {"./rv32ui-p-tests/", test_name, "_pass.txt"};
@@ -48,6 +52,8 @@ module InstructionTest;
     $display("Test name: %s", test_name);
 
     $display("DEBUG: %b", DEBUG);
+    $display("DEBUG_REGS: %b", DEBUG_REGS);
+    $display("DEBUG_DM: %b", DEBUG_DM);
 
     if (DEBUG) begin
       $display("Pass: %h", pass[0]);
@@ -101,19 +107,23 @@ module InstructionTest;
       end
       $display(">>>> DM_OUT: %h", core.DM_OUT);
 
-      $display(">> Registers:");
-      for (int i = 0; i < 32; i++) begin
-        $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
+      if (DEBUG_REGS) begin
+        $display(">> Registers:");
+        for (int i = 0; i < 32; i++) begin
+          $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
+        end
       end
 
-      $display("[SIM DATA MEM BEGIN], clk=%d", clk);
-      $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x", core.dm.addr_in,
-               core.dm._addr_in, core.dm.data_out);
-      $display("[SDM] +0 data=%08x", core.dm.mem[(core.dm._addr_in>>2)]);
-      $display("[SDM] +1 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+1]);
-      $display("[SDM] +2 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+2]);
-      $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en, core.dm.fn3, core.dm.rdata);
-      $display("[SIM DATA MEM END]");
+      if (DEBUG_DM) begin
+        $display("[SIM DATA MEM BEGIN], clk=%d", clk);
+        $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x", core.dm.addr_in,
+                 core.dm._addr_in, core.dm.data_out);
+        $display("[SDM] +0 data=%08x", core.dm.mem[(core.dm._addr_in>>2)]);
+        $display("[SDM] +1 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+1]);
+        $display("[SDM] +2 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+2]);
+        $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en, core.dm.fn3, core.dm.rdata);
+        $display("[SIM DATA MEM END]");
+      end
 
     end
     if (core.program_counter == pass[0]) begin
@@ -126,7 +136,7 @@ module InstructionTest;
     end
 
     i++;
-    if (i / 4 == 32'd4000) begin
+    if (i == 32'd4000) begin
       $display("TIMEOUT");
       $finish;
     end
