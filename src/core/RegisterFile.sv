@@ -18,7 +18,7 @@ module RegisterFile (
     end
   end
 
-  always_ff @(negedge wclk) begin
+  always_ff @(posedge wclk) begin
     if (wen & wsel != 5'b0) begin  // Ignore writes to register 0
       registers[wsel] <= (rst) ? 32'b0 : wdata;
     end

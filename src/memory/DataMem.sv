@@ -38,7 +38,7 @@ module DataMem (
   end
 
   integer        i;
-  always @(negedge wclk) begin
+  always @(posedge wclk) begin
     for (i = 0; i < 4; i = i + 1) begin
         if (write_enable[i] && wr_en) mem[_addr_in>>2][8*i+:8] <= wdata[8*i+:8];
     end

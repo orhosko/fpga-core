@@ -10,7 +10,7 @@ module InstructionMem (
   logic [31:0] _addr;
   assign _addr = addr - 32'h80000000;
 
-  always_ff @(negedge clk) begin
+  always_ff @(posedge clk) begin
     if(en)
        data_out <= {mem[_addr+3], mem[_addr+2], mem[_addr+1], mem[_addr]};
   end

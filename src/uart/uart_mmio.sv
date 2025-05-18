@@ -48,7 +48,7 @@ module uart_mmio (
           ADDR_TX: begin
             tx_data <= wr_data;
             tx_data_valid <= 1'b1;  // Start TX when software writes
-            $display("SHOULD BE HERE ONLY WHEN DATA IS GOING TO SEND, wr_en: %b, addr: %b, wr_data: %s", wr_en, addr, wr_data);
+            $display("SHOULD BE HERE ONLY WHEN DATA IS GOING TO BE SENT, wr_en: %b, addr: %b, wr_data: %s", wr_en, addr, wr_data);
           end
           default: begin
           end
