@@ -8,14 +8,16 @@ module ControlUnit (
     output logic [4:0] RF_rsel2,
     output logic [4:0] RF_wsel,
     output logic RF_wen,
+    output logic DM_read,
     output logic DM_wen,
     output logic [1:0] RF_wdata_sel,
     output logic ALU_OP1_SEL,
     output logic ALU_OP2_SEL,
     output logic [3:0] ALU_Operation,
-    output logic [2:0] branch_condition
+    output logic [2:0] branch_condition,
+    output logic branch,
+    output logic jump
 );
-
 
   opcode_t OPC;
   always_comb begin
@@ -74,6 +76,7 @@ module ControlUnit (
     end
   end
 
+  assign DM_read = (instruction[6:0] == `OPC_LOAD) ? 1'b1 : 1'b0;
   assign DM_wen = (instruction[6:0] == `OPC_STORE) ? 1'b1 : 1'b0;
 
   logic [4:0] rd;
@@ -131,6 +134,28 @@ module ControlUnit (
       end
       default begin
         branch_condition = 3'b000;
+      end
+    endcase
+  end
+
+  always_comb begin
+    casez (instruction[6:0])
+      B_TYPE: begin
+        branch = 1'b1;
+      end
+      default: begin
+        branch = 1'b0;
+      end
+    endcase
+  end
+
+  always_comb begin
+    casez (instruction[6:0])
+      J_TYPE, `OPC_JALR: begin
+        jump = 1'b1;
+      end
+      default: begin
+        jump = 1'b0;
       end
     endcase
   end
