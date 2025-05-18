@@ -70,7 +70,61 @@ module InstructionTest;
   always_ff @(negedge clk) begin
 
     if (DEBUG) begin
+      $display("-----------------------------");
+      $display("if_dr_en: %h", core.if_dr_en);
+      $display("id_ex_en: %h", core.id_ex_en);
+      $display("if_dr_clear: %h", core.if_dr_clear);
+      $display("id_ex_clear: %h", core.id_ex_clear);
+      $display("-----------------------------");
+      $display("-----------if/dr-------------");
+      $display(">> Instruction: %h", core.pr_if_dr.instruction);
+      $display(">> PC: %h", core.pr_if_dr.program_counter);
+      $display("-----------------------------");
+      $display("-----------id/ex-------------");
+      $display("RF_rdata1: %h", core.pr_id_ex.RF_rdata1);
+      $display("RF_rdata2: %h", core.pr_id_ex.RF_rdata2);
+      $display("Immediate_imm: %h", core.pr_id_ex.Immediate_imm);
+      $display("PC: %h", core.pr_id_ex.program_counter);
+      $display("opcode: %h", core.pr_id_ex.opcode);
 
+      $display("RF_rsel1: %h", core.pr_id_ex.RF_rsel1);
+      $display("RF_rsel2: %h", core.pr_id_ex.RF_rsel2);
+      $display("RF_wsel: %h", core.pr_id_ex.RF_wsel);
+      $display("RF_wen: %h", core.pr_id_ex.RF_wen);
+      $display("branch: %h", core.pr_id_ex.branch);
+      $display("jump: %h", core.pr_id_ex.jump);
+      $display("RF_wdata_sel: %h", core.pr_id_ex.RF_wdata_sel);
+      $display("mem_sel: %h", core.pr_id_ex.mem_sel);
+      $display("DM_read: %h", core.pr_id_ex.DM_read);
+      $display("DM_wen: %h", core.pr_id_ex.DM_wen);
+      $display("ALU_OP1_SEL: %h", core.pr_id_ex.ALU_OP1_SEL);
+      $display("ALU_OP2_SEL: %h", core.pr_id_ex.ALU_OP2_SEL);
+      $display("ALU_Operation: %h", core.pr_id_ex.ALU_Operation);
+      $display("branch_condition: %h", core.pr_id_ex.branch_condition);
+      $display("-----------------------------");
+      $display("-----------ex/mem------------");
+      $display("ALU_OUT: %h", core.pr_ex_mem.ALU_OUT);
+      $display("PC: %h", core.pr_ex_mem.program_counter);
+      $display("RF_rdata2: %h", core.pr_ex_mem.RF_rdata2);
+      $display("target: %h", core.pr_ex_mem.target);
+
+      $display("RF_wsel: %h", core.pr_ex_mem.RF_wsel);
+      $display("RF_wen: %h", core.pr_ex_mem.RF_wen);
+      $display("RF_wdata_sel: %h", core.pr_ex_mem.RF_wdata_sel);
+      $display("mem_sel: %h", core.pr_ex_mem.mem_sel);
+      $display("DM_wen: %h", core.pr_ex_mem.DM_wen);
+      $display("-----------------------------");
+      $display("-----------mem/wb------------");
+      $display("ALU_OUT: %h", core.pr_mem_wb.ALU_OUT);
+      $display("MMU_OUT: %h", core.pr_mem_wb.MMU_OUT);
+      $display("PC: %h", core.pr_mem_wb.program_counter);
+      $display("RF_wsel: %h", core.pr_mem_wb.RF_wsel);
+      $display("RF_wen: %h", core.pr_mem_wb.RF_wen);
+      $display("RF_wdata_sel: %h", core.pr_mem_wb.RF_wdata_sel);
+      $display("----------------------------- +++++++++++++");
+
+
+      /*
       $display("-----------------------------");
       $display("Read data: %h", core.im.data_out);
 
@@ -124,6 +178,7 @@ module InstructionTest;
         $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en, core.dm.fn3, core.dm.rdata);
         $display("[SIM DATA MEM END]");
       end
+       */
 
     end
     if (core.program_counter == pass[0]) begin
