@@ -1,11 +1,14 @@
+`include "../definitions.svh"
+
 module HazardUnit (
     input wire DM_wen,
     input wire id_ex_DM_read,  // only for hazard unit
-    input wire RF_rsel1,
-    input wire RF_rsel2,
+    input wire [4:0] RF_rsel1,
+    input wire [4:0] RF_rsel2,
     input wire ALU_OP2_SEL,
 
-    input wire id_ex_branch_taken,
+    input wire branch,
+    input wire id_ex_jump,
     input wire branch_taken,
     input wire [6:0] id_ex_opcode,
 
@@ -17,11 +20,13 @@ module HazardUnit (
     input wire ex_mem_RF_wen,
     input wire mem_wb_RF_wen,
 
-    output wire if_dr_en,
-    output wire id_ex_en
+    output logic if_dr_en,
+    output logic id_ex_en,
+    output logic if_dr_clear,
+    output logic id_ex_clear
 );
 
-  wire raw_hazard;
+  logic raw_hazard;
   always_comb begin
     raw_hazard = 1'b0;
     if (id_ex_RF_wen && (id_ex_RF_wsel == RF_rsel1) && (id_ex_RF_wsel != 0)) raw_hazard = 1'b1;
@@ -32,9 +37,28 @@ module HazardUnit (
     if (mem_wb_RF_wen && (mem_wb_RF_wsel == RF_rsel2) && (mem_wb_RF_wsel != 0)) raw_hazard = 1'b1;
   end
 
-  assign if_dr_en = ~raw_hazard;
+  assign if_dr_en = 1'b1;
+  assign id_ex_en = ~raw_hazard;
 
-  wire branch_hazard;
+  // TODO: some jumps only to next instruction, optimize??
+  // jump
+  always_comb begin
+    if_dr_clear = 1'b0;
+    id_ex_clear = 1'b0;
+
+    if (id_ex_jump) begin
+      if_dr_clear = 1'b1;
+      id_ex_clear = 1'b1;
+    end
+
+    if (branch_taken && branch) begin
+      if_dr_clear = 1'b1;
+      id_ex_clear = 1'b1;
+    end
+  end
+endmodule
+
+/*
   always_comb begin
      branch_hazard = 1'b0;
 
@@ -44,5 +68,4 @@ module HazardUnit (
   end
 
   assign id_ex_en = ~branch_hazard;
-
-endmodule
+*/
