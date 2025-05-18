@@ -7,6 +7,7 @@
 ./src/components/Immediate.sv
 ./src/core/Core.sv
 ./src/core/RegisterFile.sv
+./src/core/PipelineRegisters.svh
 ./src/memory/DataMem.sv
 ./src/memory/InstructionMem.sv
 ./src/memory/MMU.sv
