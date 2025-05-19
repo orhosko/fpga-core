@@ -7,7 +7,7 @@ module HazardUnit (
     input wire [4:0] RF_rsel2,
     input wire ALU_OP2_SEL,
 
-    input wire branch,
+    input wire id_ex_branch,
     input wire id_ex_jump,
     input wire branch_taken,
     input wire [6:0] id_ex_opcode,
@@ -26,6 +26,8 @@ module HazardUnit (
     output logic id_ex_clear
 );
 
+   // TODO: read and write to same address in data memory is also hazard
+
   logic raw_hazard;
   always_comb begin
     raw_hazard = 1'b0;
@@ -37,25 +39,30 @@ module HazardUnit (
     if (mem_wb_RF_wen && (mem_wb_RF_wsel == RF_rsel2) && (mem_wb_RF_wsel != 0)) raw_hazard = 1'b1;
   end
 
-  assign if_dr_en = 1'b1;
-  assign id_ex_en = ~raw_hazard;
-
   // TODO: some jumps only to next instruction, optimize??
   // jump
   always_comb begin
+    id_ex_en = 1'b1;
+    if_dr_en = ~raw_hazard;
+
     if_dr_clear = 1'b0;
     id_ex_clear = 1'b0;
 
     if (id_ex_jump) begin
+      if_dr_en = 1'b1; // TODO: not sure about this
       if_dr_clear = 1'b1;
       id_ex_clear = 1'b1;
     end
 
-    if (branch_taken && branch) begin
+    if (branch_taken && id_ex_branch) begin
+      if_dr_en = 1'b1;
       if_dr_clear = 1'b1;
       id_ex_clear = 1'b1;
     end
-  end
+
+    if (raw_hazard) begin
+      id_ex_clear = 1'b1;
+    end
 endmodule
 
 /*

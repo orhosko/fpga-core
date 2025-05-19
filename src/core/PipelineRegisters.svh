@@ -9,6 +9,7 @@ typedef struct packed {
   logic [31:0] Immediate_imm;
   logic [31:0] program_counter;
   logic [6:0] opcode;
+  logic [2:0] fn3;
 
   // control signals
   logic [4:0] RF_rsel1;
@@ -32,6 +33,7 @@ typedef struct packed {
   logic [31:0] ALU_OUT;
   logic [31:0] program_counter;
   logic [31:0] RF_rdata2;
+  logic [2:0] fn3;
   logic [31:0] target;
 
   // control signals

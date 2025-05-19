@@ -76,9 +76,64 @@ module InstructionTest;
       $display("if_dr_clear: %h", core.if_dr_clear);
       $display("id_ex_clear: %h", core.id_ex_clear);
       $display("-----------------------------");
+      $display(">> Read data: %h", core.im.data_out);
+      $display(">> PC: %h", core.program_counter);
+      $display(">> Instruction: %h", core.instruction);
+      $display("-----------------------------");
+      $display(">> Branch taken: %h", core.branch_taken);
+
+      $display(">> RF:");
+      $display(">>>> RF_rsel1: %h", core.RF_rsel1);
+      $display(">>>> RF_rdata1: %h", core.RF_rdata1);
+      $display(">>>> RF_rsel2: %h", core.RF_rsel2);
+      $display(">>>> RF_rdata2: %h", core.RF_rdata2);
+      $display(">>>> RF_wdata_sel:%h", core.RF_wdata_sel);
+      $display(">>>> RF_wsel: %h", core.RF_wsel);
+      if (core.cu.RF_wen) begin
+        $display(">>>>>> RF_wen: %h", core.cu.RF_wen);
+        $display(">>>>>> RF_wdata: %h", core.RF_wdata);
+      end
+      $display("-----------------------------");
+
+      $display(">> ALU:");
+      $display(">>>> ALU_OP1_SEL: %h", core.ALU_OP1_SEL);
+      $display(">>>> ALU_A: %h", core.ALU_A);
+      $display(">>>> ALU_OP2_SEL: %h", core.ALU_OP2_SEL);
+      $display(">>>> ALU_B: %h", core.ALU_B);
+      $display(">>>> ALU_OUT: %h", core.ALU_OUT);
+
+      $display(">> Imm: %h", core.Immediate_imm);
+      $display("-----------------------------");
+      $display(">> DM:");
+      $display(">>>> DM_wen: %h", core.DM_wen);
+      if (core.DM_wen) begin
+        $display(">>>>>> DM_ADDR: %h", core.ALU_OUT);
+        $display(">>>>>> DM_IN: %h", core.RF_rdata2);
+      end
+      $display(">>>> DM_OUT: %h", core.DM_OUT);
+
+      if (DEBUG_REGS) begin
+        $display(">> Registers:");
+        for (int i = 0; i < 32; i++) begin
+          $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
+        end
+      end
+
+      if (DEBUG_DM) begin
+        $display("[SIM DATA MEM BEGIN], clk=%d", clk);
+        $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x", core.dm.addr_in,
+                 core.dm._addr_in, core.dm.data_out);
+        $display("[SDM] +0 data=%08x", core.dm.mem[(core.dm._addr_in>>2)]);
+        $display("[SDM] +1 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+1]);
+        $display("[SDM] +2 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+2]);
+        $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en, core.dm.fn3, core.dm.rdata);
+        $display("[SIM DATA MEM END]");
+      end
+      $display("");
+      $display("-----------------------------");
       $display("-----------if/dr-------------");
-      $display(">> Instruction: %h", core.pr_if_dr.instruction);
-      $display(">> PC: %h", core.pr_if_dr.program_counter);
+      $display("Instruction: %h", core.pr_if_dr.instruction);
+      $display("PC: %h", core.pr_if_dr.program_counter);
       $display("-----------------------------");
       $display("-----------id/ex-------------");
       $display("RF_rdata1: %h", core.pr_id_ex.RF_rdata1);
@@ -122,76 +177,18 @@ module InstructionTest;
       $display("RF_wen: %h", core.pr_mem_wb.RF_wen);
       $display("RF_wdata_sel: %h", core.pr_mem_wb.RF_wdata_sel);
       $display("----------------------------- +++++++++++++");
-
-
-      /*
-      $display("-----------------------------");
-      $display("Read data: %h", core.im.data_out);
-
-      $display(">> PC: %h", core.program_counter);
-      $display(">> Instruction: %h", core.instruction);
-      $display(">> Branch taken: %h", core.branch_taken);
-
-      $display(">> RF:");
-      $display(">>>> RF_rsel1: %h", core.RF_rsel1);
-      $display(">>>> RF_rdata1: %h", core.RF_rdata1);
-      $display(">>>> RF_rsel2: %h", core.RF_rsel2);
-      $display(">>>> RF_rdata2: %h", core.RF_rdata2);
-      $display(">>>> RF_wdata_sel:%h", core.RF_wdata_sel);
-      $display(">>>> RF_wsel: %h", core.RF_wsel);
-      if (core.cu.RF_wen) begin
-        $display(">>>>>> RF_wen: %h", core.cu.RF_wen);
-        $display(">>>>>> RF_wdata: %h", core.RF_wdata);
-      end
-
-      $display(">> ALU:");
-      $display(">>>> ALU_OP1_SEL: %h", core.ALU_OP1_SEL);
-      $display(">>>> ALU_A: %h", core.ALU_A);
-      $display(">>>> ALU_OP2_SEL: %h", core.ALU_OP2_SEL);
-      $display(">>>> ALU_B: %h", core.ALU_B);
-      $display(">>>> ALU_OUT: %h", core.ALU_OUT);
-
-      $display(">> Imm: %h", core.Immediate_imm);
-
-      $display(">> DM:");
-      $display(">>>> DM_wen: %h", core.DM_wen);
-      if (core.DM_wen) begin
-        $display(">>>>>> DM_ADDR: %h", core.ALU_OUT);
-        $display(">>>>>> DM_IN: %h", core.RF_rdata2);
-      end
-      $display(">>>> DM_OUT: %h", core.DM_OUT);
-
-      if (DEBUG_REGS) begin
-        $display(">> Registers:");
-        for (int i = 0; i < 32; i++) begin
-          $display(">>>> R[%d]: %h", i, core.rf.registers[i]);
-        end
-      end
-
-      if (DEBUG_DM) begin
-        $display("[SIM DATA MEM BEGIN], clk=%d", clk);
-        $display("[SDM] addr_in=%08x, _addr_in=%08x, data_out=%08x", core.dm.addr_in,
-                 core.dm._addr_in, core.dm.data_out);
-        $display("[SDM] +0 data=%08x", core.dm.mem[(core.dm._addr_in>>2)]);
-        $display("[SDM] +1 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+1]);
-        $display("[SDM] +2 data=%08x", core.dm.mem[(core.dm._addr_in>>2)+2]);
-        $display("[SDM] wr_en=%d, fn3=%d, rdata=%08x", core.dm.wr_en, core.dm.fn3, core.dm.rdata);
-        $display("[SIM DATA MEM END]");
-      end
-       */
-
     end
-    if (core.program_counter == pass[0]) begin
+    if (core.pr_mem_wb.program_counter == pass[0]) begin
       $display("PASS");
       $finish;
     end
-    if (core.program_counter == fail[0]) begin
+    if (core.pr_mem_wb.program_counter == fail[0]) begin
       $display("FAIL");
       $finish;
     end
 
     i++;
-    if (i == 32'd4000) begin
+    if (i == 32'd2000) begin
       $display("TIMEOUT");
       $finish;
     end

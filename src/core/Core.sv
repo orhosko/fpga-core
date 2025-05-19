@@ -36,7 +36,7 @@ module Core (
   logic             [ 2:0] branch_condition;
 
   ControlUnit cu (
-      .instruction(instruction),
+      .instruction(pr_if_dr.instruction),
       .RF_rsel1(RF_rsel1),
       .RF_rsel2(RF_rsel2),
       .RF_wsel(RF_wsel),
@@ -105,7 +105,7 @@ module Core (
       .data_in(pr_ex_mem.RF_rdata2),
       .addr_in(mmu_addr_out),
       .wr_en(pr_ex_mem.DM_wen & sram_wr_en),
-      .fn3(instruction[14:12]),  // TODO: take from pipeline
+      .fn3(pr_ex_mem.fn3),
       .data_out(DM_OUT)
   );
 
@@ -153,7 +153,7 @@ module Core (
   ALU_Base alu (
       .A  (ALU_A),
       .B  (ALU_B),
-      .Ctr(ALU_Operation),
+      .Ctr(pr_id_ex.ALU_Operation),
       .Out(ALU_OUT)
   );
 
@@ -166,7 +166,7 @@ module Core (
 
   logic [31:0] Immediate_imm;
   Immediate immediate (
-      .instruction(instruction),
+      .instruction(pr_if_dr.instruction),
       .imm(Immediate_imm)
   );
 
@@ -179,10 +179,20 @@ module Core (
 
   // ----------------------------------------------------
 
-  logic if_dr_en;
-  logic id_ex_en;
-  logic if_dr_clear;
-  logic id_ex_clear;
+  logic if_dr_en = 1'b1;
+  logic id_ex_en = 1'b1;
+  logic if_dr_clear = 1'b0;
+  logic id_ex_clear = 1'b0;
+
+  logic reset = 1'b1;
+  always_ff @(posedge clk) begin
+    if (reset) begin
+      program_counter <= 32'h80000000;
+      reset <= 1'b0;
+      if_dr_clear = 1'b1;
+      id_ex_clear = 1'b1;
+    end
+  end
 
   HazardUnit hu (
       .DM_wen(DM_wen),
@@ -191,8 +201,8 @@ module Core (
       .RF_rsel2(RF_rsel2),
       .ALU_OP2_SEL(ALU_OP2_SEL),
 
-      .branch(branch),
-      .id_ex_jump(pr_id_ex.jump),
+      .id_ex_branch(pr_id_ex.branch),
+      .id_ex_jump  (pr_id_ex.jump),
       .branch_taken(branch_taken),
       .id_ex_opcode(pr_id_ex.opcode),
 
@@ -211,7 +221,7 @@ module Core (
   );
 
   always_ff @(posedge clk) begin
-    if (if_dr_en) begin
+    if (if_dr_en && ~reset) begin
       if ((branch_taken == `BRANCH_SEL_ALU && pr_id_ex.branch == 1'b1) 
         || pr_id_ex.jump == 1'b1) begin
         program_counter <= ALU_OUT;
@@ -256,7 +266,8 @@ module Core (
       pr_id_ex.RF_rdata2 <= RF_rdata2;
       pr_id_ex.Immediate_imm <= Immediate_imm;
       pr_id_ex.program_counter <= pr_if_dr.program_counter;
-      pr_id_ex.opcode <= instruction[6:0];
+      pr_id_ex.opcode <= pr_if_dr.instruction[6:0];
+      pr_id_ex.fn3 <= pr_if_dr.instruction[14:12];
 
       pr_id_ex.RF_rsel1 <= RF_rsel1;
       pr_id_ex.RF_rsel2 <= RF_rsel2;
@@ -280,6 +291,7 @@ module Core (
       pr_ex_mem.ALU_OUT <= ALU_OUT;
       pr_ex_mem.program_counter <= pr_id_ex.program_counter;
       pr_ex_mem.RF_rdata2 <= pr_id_ex.RF_rdata2;
+      pr_ex_mem.fn3 <= pr_id_ex.fn3;
 
       pr_ex_mem.RF_wsel <= pr_id_ex.RF_wsel;
       pr_ex_mem.RF_wen <= pr_id_ex.RF_wen;
@@ -291,7 +303,7 @@ module Core (
 
   always_ff @(posedge clk) begin
     if (1) begin  // TODO: add hazard detection ???
-      pr_mem_wb.ALU_OUT <= ALU_OUT;
+      pr_mem_wb.ALU_OUT <= pr_ex_mem.ALU_OUT;
       pr_mem_wb.MMU_OUT <= MMU_OUT;
       pr_mem_wb.program_counter <= pr_ex_mem.program_counter;
 
