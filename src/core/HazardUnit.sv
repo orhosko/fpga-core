@@ -2,7 +2,7 @@
 
 module HazardUnit (
     input wire DM_wen,
-    input wire id_ex_DM_read,  // only for hazard unit
+    input wire id_ex_DM_read,
     input wire [4:0] RF_rsel1,
     input wire [4:0] RF_rsel2,
     input wire ALU_OP2_SEL,
@@ -48,21 +48,31 @@ module HazardUnit (
     if_dr_clear = 1'b0;
     id_ex_clear = 1'b0;
 
+    // flush
     if (id_ex_jump) begin
       if_dr_en = 1'b1; // TODO: not sure about this
       if_dr_clear = 1'b1;
       id_ex_clear = 1'b1;
     end
 
+    // flush
     if (branch_taken && id_ex_branch) begin
       if_dr_en = 1'b1;
       if_dr_clear = 1'b1;
       id_ex_clear = 1'b1;
     end
 
+    // stall
+    if (id_ex_DM_read && DM_wen) begin
+      id_ex_clear = 1'b1;
+    end
+
+    // stall
     if (raw_hazard) begin
       id_ex_clear = 1'b1;
     end
+  end
+
 endmodule
 
 /*
